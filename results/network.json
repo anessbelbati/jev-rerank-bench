@@ -1,0 +1,47 @@
+{
+ "measured_at": "2026-09-16T17:36:51+00:00",
+ "from": "Algiers, home connection",
+ "tcp_connect": {
+  "api.typesafe.ai": {
+   "label": "Jev",
+   "median_ms": 196.78639993071556,
+   "min_ms": 192.42609990760684,
+   "samples": 7
+  },
+  "openrouter.ai": {
+   "label": "OpenRouter (Cohere, DeepSeek)",
+   "median_ms": 208.20560003630817,
+   "min_ms": 184.27749979309738,
+   "samples": 7
+  },
+  "api.zeroentropy.dev": {
+   "label": "ZeroEntropy",
+   "median_ms": 190.43479999527335,
+   "min_ms": 182.52439983189106,
+   "samples": 7
+  }
+ },
+ "jev_server_time": {
+  "jev-score-batch": {
+   "n": 20,
+   "round_trip_ms_median": 348.06709992699325,
+   "server_ms_median": 147.5,
+   "request_kb_median": 56.115234375,
+   "response_kb_median": 13.2197265625
+  },
+  "jev-noul-batch": {
+   "n": 20,
+   "round_trip_ms_median": 324.2882000049576,
+   "server_ms_median": 125.5,
+   "request_kb_median": 53.244140625,
+   "response_kb_median": 1.232421875
+  },
+  "jev-choice": {
+   "n": 20,
+   "round_trip_ms_median": 311.94705003872514,
+   "server_ms_median": 112.5,
+   "request_kb_median": 44.2109375,
+   "response_kb_median": 0.57666015625
+  }
+ }
+}

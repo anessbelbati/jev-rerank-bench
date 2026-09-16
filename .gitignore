@@ -1,0 +1,11 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+data/raw/
+candidates/*.docs.jsonl
+cache/**/*.jsonl
+results/logs/
+results/BLOG-DRAFT.md
+results/EMAIL-TYPESAFE.md
+.osgrep/

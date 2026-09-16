@@ -1,0 +1,469 @@
+{
+ "measured_at": "2026-09-16T17:43:06+00:00",
+ "dataset": "scifact",
+ "queries": 120,
+ "billing_curve": [
+  {
+   "k": 1,
+   "passages": 30,
+   "status": 200,
+   "latency_ms": 985.8870001044124,
+   "input_tokens": 10059,
+   "output_tokens": 345,
+   "cost_usd": 0.000422478,
+   "error": null,
+   "q1_choice": "none",
+   "q1_top_prob": 0.47000000000000003,
+   "q1_none_prob": 0.47000000000000003
+  },
+  {
+   "k": 2,
+   "passages": 30,
+   "status": 200,
+   "latency_ms": 300.98189995624125,
+   "input_tokens": 10494,
+   "output_tokens": 686,
+   "cost_usd": 0.00044074800000000003,
+   "error": null,
+   "q1_choice": "none",
+   "q1_top_prob": 0.48,
+   "q1_none_prob": 0.48
+  },
+  {
+   "k": 5,
+   "passages": 30,
+   "status": 200,
+   "latency_ms": 298.6471999902278,
+   "input_tokens": 11827,
+   "output_tokens": 1709,
+   "cost_usd": 0.0004967340000000001,
+   "error": null,
+   "q1_choice": "none",
+   "q1_top_prob": 0.42,
+   "q1_none_prob": 0.42
+  },
+  {
+   "k": 10,
+   "passages": 30,
+   "status": 200,
+   "latency_ms": 330.050399992615,
+   "input_tokens": 14005,
+   "output_tokens": 3416,
+   "cost_usd": 0.00058821,
+   "error": null,
+   "q1_choice": "none",
+   "q1_top_prob": 0.42,
+   "q1_none_prob": 0.42
+  },
+  {
+   "k": 20,
+   "passages": 30,
+   "status": 200,
+   "latency_ms": 610.0257998332381,
+   "input_tokens": 18451,
+   "output_tokens": 6849,
+   "cost_usd": 0.000774942,
+   "error": null,
+   "q1_choice": "none",
+   "q1_top_prob": 0.44,
+   "q1_none_prob": 0.44
+  },
+  {
+   "k": 40,
+   "passages": 30,
+   "status": 200,
+   "latency_ms": 793.8630999997258,
+   "input_tokens": 27343,
+   "output_tokens": 13709,
+   "cost_usd": 0.0011484060000000003,
+   "error": null,
+   "q1_choice": "none",
+   "q1_top_prob": 0.37,
+   "q1_none_prob": 0.37
+  }
+ ],
+ "crosstalk": [
+  {
+   "k": 1,
+   "groups": 120,
+   "calls_ok": 120,
+   "queries_scored": 120,
+   "ndcg10": 0.8815220898894216,
+   "top1": 0.8,
+   "baseline_ndcg10": 0.8873862431766343,
+   "baseline_top1": 0.8166666666666667,
+   "same_top1_share": 0.9666666666666667,
+   "latency_ms_median": 309.131050016731,
+   "input_tokens_per_call": 11467.975,
+   "cost_per_1k_queries": 0.48165495,
+   "baseline_cost_per_1k_queries": 0.47871495000000003,
+   "largest_ok_input_tokens": 15050,
+   "errors": []
+  },
+  {
+   "k": 2,
+   "groups": 60,
+   "calls_ok": 60,
+   "queries_scored": 120,
+   "ndcg10": 0.8792723899853951,
+   "top1": 0.8,
+   "baseline_ndcg10": 0.8873862431766343,
+   "baseline_top1": 0.8166666666666667,
+   "same_top1_share": 0.9,
+   "latency_ms_median": 376.0671999771148,
+   "input_tokens_per_call": 21840.533333333333,
+   "cost_per_1k_queries": 0.45865120000000004,
+   "baseline_cost_per_1k_queries": 0.47871495000000003,
+   "largest_ok_input_tokens": 27249,
+   "errors": []
+  },
+  {
+   "k": 3,
+   "groups": 40,
+   "calls_ok": 27,
+   "queries_scored": 81,
+   "ndcg10": 0.8536149655640695,
+   "top1": 0.7777777777777778,
+   "baseline_ndcg10": 0.870938080887991,
+   "baseline_top1": 0.8024691358024691,
+   "same_top1_share": 0.9135802469135802,
+   "latency_ms_median": 434.0540000703186,
+   "input_tokens_per_call": 28779.85185185185,
+   "cost_per_1k_queries": 0.4029179259259259,
+   "baseline_cost_per_1k_queries": 0.4628757777777778,
+   "largest_ok_input_tokens": 33696,
+   "errors": [
+    {
+     "status": 400,
+     "latency_ms": 223.74639986082911,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 90,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 220.83249990828335,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 90,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 222.04239992424846,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 90,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 223.05289981886744,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 90,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 226.2945999391377,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 90,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 222.25450002588332,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 89,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 216.56590001657605,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 89,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 218.9792999997735,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 89,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 230.6111000943929,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 88,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 214.3836000468582,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 88,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 223.02490007132292,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 90,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 218.65599998272955,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 90,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 217.05819992348552,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 90,
+     "error": "HTTP 400"
+    }
+   ]
+  },
+  {
+   "k": 4,
+   "groups": 30,
+   "calls_ok": 4,
+   "queries_scored": 16,
+   "ndcg10": 0.9949825493217617,
+   "top1": 1,
+   "baseline_ndcg10": 0.9949825493217617,
+   "baseline_top1": 1,
+   "same_top1_share": 1,
+   "latency_ms_median": 441.26479991246015,
+   "input_tokens_per_call": 30057.5,
+   "cost_per_1k_queries": 0.31560375,
+   "baseline_cost_per_1k_queries": 0.44714775,
+   "largest_ok_input_tokens": 33289,
+   "errors": [
+    {
+     "status": 400,
+     "latency_ms": 223.23079989291728,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 119,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 224.75910000503063,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 120,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 225.2137002069503,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 95,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 221.63760010153055,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 118,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 227.78839990496635,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 120,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 225.976699963212,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 119,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 226.3399998191744,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 99,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 229.0617001708597,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 118,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 224.48440012522042,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 118,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 224.5112000964582,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 120,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 219.82840006239712,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 94,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 221.97169996798038,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 91,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 221.05220006778836,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 118,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 225.0163999851793,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 118,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 235.3954000864178,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 118,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 225.58239987120032,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 119,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 220.6343999132514,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 119,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 218.34130003117025,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 95,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 230.7818999979645,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 120,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 229.45569991134107,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 118,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 229.96890009380877,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 118,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 222.9013000614941,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 96,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 224.25969992764294,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 114,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 230.40650016628206,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 120,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 223.25689997524023,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 119,
+     "error": "HTTP 400"
+    },
+    {
+     "status": 400,
+     "latency_ms": 221.1620998568833,
+     "input_tokens": null,
+     "cost_usd": 0.0,
+     "passages": 92,
+     "error": "HTTP 400"
+    }
+   ]
+  }
+ ]
+}

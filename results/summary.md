@@ -1,0 +1,888 @@
+# Results
+
+Ranking numbers are over queries whose BM25 top-30 contains at least one relevant passage. Latency = one HTTP round trip from Algiers, all calls of both variants. Cost = the API's own usage field × list price (OpenRouter reports the exact billed amount), per 1,000 queries of 30 candidates.
+
+## TL;DR, English (average over the English datasets each model ran on)
+
+| Model | datasets | nDCG@10 | Top-1 | median ms/call | median ms/query | $ per 1k queries | nothing-relevant AUROC | false accept @90% | ECE |
+|---|---|---|---|---|---|---|---|---|---|
+| BM25 (floor) | 8 | 0.486 | 0.453 | — | 0 | 0.00 | 0.581 | 0.821 | — |
+| Cohere Rerank 4 Pro | 8 | 0.691 | 0.726 | 818 | 844 | 2.51 | 0.779 | 0.509 | — |
+| Cohere Rerank 4 Fast | 8 | 0.684 | 0.715 | 685 | 726 | 2.01 | 0.752 | 0.581 | — |
+| ZeroEntropy zerank-2 | 8 | 0.682 | 0.719 | 1779 | 1844 | 0.22 | 0.736 | 0.595 | — |
+| DeepSeek V4.1 Flash P(yes) per pair | 8 | 0.608 | 0.617 | 1111 | 34257 | 1.38 | 0.650 | 0.804 | 0.112 |
+| DeepSeek V4.1 Flash JSON, 30 in one call | 8 | 0.682 | 0.729 | 2212 | 2212 | 1.13 | 0.750 | 0.650 | — |
+| Jev yes/no per pair | 8 | 0.670 | 0.699 | 263 | 8193 | 0.81 | 0.731 | 0.611 | 0.097 |
+| Jev 30 yes/no in one call | 8 | 0.685 | 0.719 | 394 | 396 | 0.41 | 0.747 | 0.599 | 0.098 |
+| Jev one Choice + none | 8 | 0.684 | 0.757 | 337 | 338 | 0.33 | 0.718 | 0.614 | — |
+| Jev 4-level rubric, 30 in one call | 8 | 0.692 | 0.741 | 421 | 422 | 0.45 | 0.754 | 0.563 | — |
+| Jev 45 duels in one call (top 10) | 8 | 0.580 | 0.658 | 324 | 324 | 0.21 | 0.651 | 0.723 | — |
+| Jev tournament (6 groups, then final) | 8 | 0.668 | 0.753 | 296 | 641 | 0.43 | 0.711 | 0.634 | — |
+| Jev cascade (batch prune, then 8 pairs) | 8 | 0.674 | 0.695 | 268 | 2533 | 0.63 | 0.732 | 0.601 | — |
+| Jev one Choice, passages reversed | 8 | 0.680 | 0.735 | 346 | 349 | 0.33 | — | — | — |
+
+## All datasets including French
+
+| Model | datasets | nDCG@10 | Top-1 | median ms/call | median ms/query | $ per 1k queries | nothing-relevant AUROC | false accept @90% | ECE |
+|---|---|---|---|---|---|---|---|---|---|
+| BM25 (floor) | 14 | 0.378 | 0.331 | — | 0 | 0.00 | 0.551 | 0.853 | — |
+| Cohere Rerank 4 Pro | 14 | 0.619 | 0.662 | 885 | 998 | 2.55 | 0.732 | 0.588 | — |
+| Cohere Rerank 4 Fast | 14 | 0.605 | 0.640 | 669 | 713 | 2.04 | 0.707 | 0.631 | — |
+| ZeroEntropy zerank-2 | 14 | 0.617 | 0.666 | 1805 | 1884 | 0.24 | 0.702 | 0.659 | — |
+| DeepSeek V4.1 Flash P(yes) per pair | 14 | 0.507 | 0.506 | 1093 | 33740 | 1.41 | 0.622 | 0.876 | 0.109 |
+| DeepSeek V4.1 Flash JSON, 30 in one call | 14 | 0.612 | 0.679 | 2192 | 2192 | 1.09 | 0.717 | 0.699 | — |
+| Jev yes/no per pair | 14 | 0.600 | 0.646 | 264 | 8313 | 0.88 | 0.704 | 0.652 | 0.079 |
+| Jev 30 yes/no in one call | 14 | 0.616 | 0.652 | 435 | 455 | 0.40 | 0.717 | 0.637 | 0.086 |
+| Jev one Choice + none | 14 | 0.606 | 0.687 | 382 | 394 | 0.32 | 0.696 | 0.639 | — |
+| Jev 4-level rubric, 30 in one call | 14 | 0.623 | 0.683 | 467 | 519 | 0.43 | 0.724 | 0.605 | — |
+| Jev 45 duels in one call (top 10) | 14 | 0.478 | 0.565 | 315 | 315 | 0.20 | 0.636 | 0.767 | — |
+| Jev tournament (6 groups, then final) | 14 | 0.596 | 0.684 | 295 | 658 | 0.42 | 0.692 | 0.638 | — |
+| Jev cascade (batch prune, then 8 pairs) | 14 | 0.606 | 0.642 | 270 | 2594 | 0.64 | 0.706 | 0.639 | — |
+| Jev one Choice, passages reversed | 14 | 0.606 | 0.680 | 375 | 377 | 0.32 | 0.667 | 0.633 | — |
+
+## scifact
+
+300 queries; 264 have an answer in BM25's top 30 and are scored.
+
+| Model | n | nDCG@10 | Top-1 | Recall@5 | MRR@10 | calls | median ms/call | p95 ms/call | median ms/query | $ per 1k queries | none-test AUROC | false accept @90% | ECE |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| BM25 (floor) | 264 | 0.780 | 0.625 | 0.837 | 0.738 | 0 | — | — | 0 | 0.00 | 0.674 | 0.731 | — |
+| Cohere Rerank 4 Pro | 264 | 0.886 | 0.777 | 0.970 | 0.859 | 564 | 889 | 1375 | 951 | 2.50 | 0.862 | 0.455 | 0.256* |
+| Cohere Rerank 4 Fast | 264 | 0.868 | 0.758 | 0.939 | 0.840 | 564 | 709 | 1345 | 887 | 2.00 | 0.833 | 0.500 | 0.248* |
+| ZeroEntropy zerank-2 | 264 | 0.880 | 0.780 | 0.958 | 0.857 | 564 | 2008 | 3066 | 2008 | 0.27 | 0.814 | 0.470 | 0.174* |
+| DeepSeek V4.1 Flash P(yes) per pair | 264 | 0.797 | 0.652 | 0.859 | 0.758 | 16920 | 1162 | 1405 | 34810 | 1.71 | 0.676 | 1.000 | 0.030 |
+| DeepSeek V4.1 Flash JSON, 30 in one call | 264 | 0.849 | 0.742 | 0.903 | 0.822 | 564 | 2446 | 3482 | 2446 | 1.53 | 0.800 | 1.000 | 0.034* |
+| Jev yes/no per pair | 264 | 0.880 | 0.788 | 0.934 | 0.856 | 16920 | 254 | 302 | 7818 | 0.90 | 0.837 | 0.458 | 0.023 |
+| Jev 30 yes/no in one call | 264 | 0.895 | 0.814 | 0.952 | 0.872 | 564 | 328 | 873 | 328 | 0.56 | 0.836 | 0.455 | 0.032 |
+| Jev one Choice + none | 264 | 0.892 | 0.822 | 0.937 | 0.878 | 564 | 319 | 782 | 320 | 0.47 | 0.857 | 0.405 | 0.013* |
+| Jev 4-level rubric, 30 in one call | 264 | 0.889 | 0.807 | 0.955 | 0.866 | 564 | 414 | 1048 | 414 | 0.59 | 0.838 | 0.470 | 0.144* |
+| Jev 45 duels in one call (top 10) | 264 | 0.863 | 0.803 | 0.906 | 0.855 | 564 | 289 | 512 | 289 | 0.25 | 0.830 | 0.527 | — |
+| Jev tournament (6 groups, then final) | 264 | 0.869 | 0.811 | 0.864 | 0.855 | 1128 | 293 | 675 | 581 | 0.60 | 0.854 | 0.462 | — |
+| Jev cascade (batch prune, then 8 pairs) | 264 | 0.881 | 0.784 | 0.936 | 0.854 | 5076 | 267 | 356 | 2508 | 0.80 | 0.837 | 0.458 | — |
+| Jev one Choice, passages reversed | 264 | 0.885 | 0.803 | 0.943 | 0.868 | 300 | 383 | 825 | 383 | 0.47 | — | — | 0.013* |
+
+Jev Choice's own nothing-relevant signals (scifact):
+
+| signal | AUROC | false accept @90% | median with answer | median without |
+|---|---|---|---|---|
+| max_score | 0.857 | 0.405 | 0.890 | 0.085 |
+| 1-P(none) | 0.849 | 0.402 | 0.955 | 0.125 |
+| P(any) | 0.834 | 0.485 | 0.870 | 0.130 |
+
+TypeSafe's confidence bands on real data, Jev one Choice + none (scifact), queries that do have an answer in the 30:
+
+| confidence | n | top pick is right | said none |
+|---|---|---|---|
+| <0.5 | 25 | 0.480 | 0.480 |
+| 0.5-0.9 | 106 | 0.755 | 0.349 |
+| >=0.9 | 133 | 0.940 | 0.098 |
+
+TypeSafe's confidence bands on real data, Jev tournament (6 groups, then final) (scifact), queries that do have an answer in the 30:
+
+| confidence | n | top pick is right | said none |
+|---|---|---|---|
+| <0.5 | 27 | 0.444 | 0.000 |
+| 0.5-0.9 | 95 | 0.758 | 0.000 |
+| >=0.9 | 142 | 0.915 | 0.000 |
+
+Position bias (scifact): the same 30 passages sent in reverse order to Jev Choice. Same top pick 90% of the time (n=264); nDCG@10 0.892 normal vs 0.885 reversed; mean probability shift per passage 0.005; P(none) shift 0.044.
+
+## fiqa
+
+648 queries; 411 have an answer in BM25's top 30 and are scored.
+
+| Model | n | nDCG@10 | Top-1 | Recall@5 | MRR@10 | calls | median ms/call | p95 ms/call | median ms/query | $ per 1k queries | none-test AUROC | false accept @90% | ECE |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| BM25 (floor) | 411 | 0.396 | 0.363 | 0.387 | 0.485 | 0 | — | — | 0 | 0.00 | 0.566 | 0.861 | — |
+| Cohere Rerank 4 Pro | 411 | 0.670 | 0.788 | 0.640 | 0.861 | 1059 | 760 | 1245 | 789 | 2.50 | 0.814 | 0.484 | 0.508* |
+| Cohere Rerank 4 Fast | 411 | 0.634 | 0.727 | 0.603 | 0.807 | 1059 | 629 | 1222 | 713 | 2.00 | 0.751 | 0.601 | 0.434* |
+| ZeroEntropy zerank-2 | 411 | 0.611 | 0.684 | 0.600 | 0.779 | 1059 | 1478 | 2478 | 1478 | 0.18 | 0.696 | 0.686 | 0.364* |
+| DeepSeek V4.1 Flash P(yes) per pair | 411 | 0.568 | 0.589 | 0.564 | 0.712 | 31770 | 1115 | 1386 | 33875 | 1.25 | 0.635 | 0.662 | 0.124 |
+| DeepSeek V4.1 Flash JSON, 30 in one call | 411 | 0.613 | 0.703 | 0.590 | 0.787 | 1059 | 2221 | 3383 | 2221 | 1.10 | 0.733 | 0.662 | 0.140* |
+| Jev yes/no per pair | 411 | 0.600 | 0.659 | 0.601 | 0.767 | 31770 | 253 | 302 | 7775 | 0.72 | 0.697 | 0.637 | 0.184 |
+| Jev 30 yes/no in one call | 411 | 0.620 | 0.689 | 0.599 | 0.786 | 1059 | 298 | 526 | 299 | 0.39 | 0.730 | 0.591 | 0.163 |
+| Jev one Choice + none | 411 | 0.617 | 0.693 | 0.602 | 0.793 | 1059 | 287 | 504 | 287 | 0.31 | 0.705 | 0.693 | 0.021* |
+| Jev 4-level rubric, 30 in one call | 411 | 0.616 | 0.667 | 0.608 | 0.779 | 1059 | 315 | 746 | 316 | 0.42 | 0.717 | 0.586 | 0.306* |
+| Jev 45 duels in one call (top 10) | 411 | 0.497 | 0.599 | 0.482 | 0.664 | 1059 | 283 | 463 | 284 | 0.20 | 0.660 | 0.742 | — |
+| Jev tournament (6 groups, then final) | 411 | 0.581 | 0.698 | 0.495 | 0.772 | 2118 | 280 | 465 | 562 | 0.41 | 0.708 | 0.696 | — |
+| Jev cascade (batch prune, then 8 pairs) | 411 | 0.607 | 0.659 | 0.591 | 0.768 | 9531 | 265 | 348 | 2468 | 0.59 | 0.699 | 0.640 | — |
+| Jev one Choice, passages reversed | 411 | 0.614 | 0.686 | 0.603 | 0.786 | 648 | 322 | 562 | 322 | 0.31 | — | — | 0.021* |
+
+Jev Choice's own nothing-relevant signals (fiqa):
+
+| signal | AUROC | false accept @90% | median with answer | median without |
+|---|---|---|---|---|
+| max_score | 0.705 | 0.693 | 0.700 | 0.490 |
+| 1-P(none) | 0.734 | 0.616 | 0.990 | 0.930 |
+| P(any) | 0.694 | 0.630 | 0.930 | 0.830 |
+
+TypeSafe's confidence bands on real data, Jev one Choice + none (fiqa), queries that do have an answer in the 30:
+
+| confidence | n | top pick is right | said none |
+|---|---|---|---|
+| <0.5 | 109 | 0.349 | 0.110 |
+| 0.5-0.9 | 185 | 0.719 | 0.016 |
+| >=0.9 | 117 | 0.974 | 0.000 |
+
+TypeSafe's confidence bands on real data, Jev tournament (6 groups, then final) (fiqa), queries that do have an answer in the 30:
+
+| confidence | n | top pick is right | said none |
+|---|---|---|---|
+| <0.5 | 96 | 0.427 | 0.000 |
+| 0.5-0.9 | 169 | 0.663 | 0.000 |
+| >=0.9 | 146 | 0.918 | 0.000 |
+
+Position bias (fiqa): the same 30 passages sent in reverse order to Jev Choice. Same top pick 76% of the time (n=411); nDCG@10 0.617 normal vs 0.614 reversed; mean probability shift per passage 0.015; P(none) shift 0.018.
+
+## nq
+
+500 queries; 320 have an answer in BM25's top 30 and are scored.
+
+| Model | n | nDCG@10 | Top-1 | Recall@5 | MRR@10 | calls | median ms/call | p95 ms/call | median ms/query | $ per 1k queries | none-test AUROC | false accept @90% | ECE |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| BM25 (floor) | 320 | 0.447 | 0.247 | 0.555 | 0.396 | 0 | — | — | 0 | 0.00 | 0.526 | 0.887 | — |
+| Cohere Rerank 4 Pro | 320 | 0.846 | 0.750 | 0.901 | 0.849 | 820 | 649 | 1146 | 672 | 2.50 | 0.759 | 0.572 | 0.408* |
+| Cohere Rerank 4 Fast | 320 | 0.815 | 0.694 | 0.908 | 0.809 | 820 | 602 | 1251 | 605 | 2.00 | 0.715 | 0.609 | 0.327* |
+| ZeroEntropy zerank-2 | 320 | 0.791 | 0.656 | 0.884 | 0.782 | 820 | 2077 | 3047 | 2102 | 0.10 | 0.651 | 0.713 | 0.249* |
+| DeepSeek V4.1 Flash P(yes) per pair | 320 | 0.685 | 0.481 | 0.799 | 0.650 | 24600 | 1070 | 1649 | 33919 | 0.79 | 0.598 | 0.747 | 0.097 |
+| DeepSeek V4.1 Flash JSON, 30 in one call | 320 | 0.783 | 0.681 | 0.860 | 0.786 | 820 | 1880 | 2751 | 1880 | 0.63 | 0.676 | 0.750 | 0.084* |
+| Jev yes/no per pair | 320 | 0.763 | 0.597 | 0.878 | 0.740 | 24600 | 271 | 368 | 8442 | 0.59 | 0.665 | 0.691 | 0.139 |
+| Jev 30 yes/no in one call | 320 | 0.804 | 0.659 | 0.896 | 0.793 | 820 | 304 | 557 | 305 | 0.26 | 0.679 | 0.672 | 0.129 |
+| Jev one Choice + none | 320 | 0.803 | 0.694 | 0.872 | 0.807 | 820 | 281 | 470 | 281 | 0.18 | 0.647 | 0.747 | 0.013* |
+| Jev 4-level rubric, 30 in one call | 320 | 0.807 | 0.672 | 0.903 | 0.796 | 820 | 315 | 693 | 316 | 0.30 | 0.681 | 0.659 | 0.278* |
+| Jev 45 duels in one call (top 10) | 320 | 0.631 | 0.581 | 0.676 | 0.653 | 820 | 299 | 784 | 299 | 0.15 | 0.596 | 0.825 | — |
+| Jev tournament (6 groups, then final) | 320 | 0.764 | 0.662 | 0.758 | 0.756 | 1640 | 280 | 463 | 581 | 0.25 | 0.657 | 0.741 | — |
+| Jev cascade (batch prune, then 8 pairs) | 320 | 0.768 | 0.600 | 0.885 | 0.745 | 7380 | 268 | 363 | 2515 | 0.43 | 0.674 | 0.672 | — |
+| Jev one Choice, passages reversed | 320 | 0.794 | 0.669 | 0.872 | 0.792 | 500 | 288 | 547 | 289 | 0.18 | — | — | 0.012* |
+
+Jev Choice's own nothing-relevant signals (nq):
+
+| signal | AUROC | false accept @90% | median with answer | median without |
+|---|---|---|---|---|
+| max_score | 0.647 | 0.747 | 0.840 | 0.660 |
+| 1-P(none) | 0.681 | 0.666 | 0.990 | 0.970 |
+| P(any) | 0.670 | 0.678 | 0.965 | 0.920 |
+
+TypeSafe's confidence bands on real data, Jev one Choice + none (nq), queries that do have an answer in the 30:
+
+| confidence | n | top pick is right | said none |
+|---|---|---|---|
+| <0.5 | 48 | 0.500 | 0.104 |
+| 0.5-0.9 | 141 | 0.567 | 0.050 |
+| >=0.9 | 131 | 0.901 | 0.000 |
+
+TypeSafe's confidence bands on real data, Jev tournament (6 groups, then final) (nq), queries that do have an answer in the 30:
+
+| confidence | n | top pick is right | said none |
+|---|---|---|---|
+| <0.5 | 40 | 0.450 | 0.000 |
+| 0.5-0.9 | 116 | 0.526 | 0.000 |
+| >=0.9 | 164 | 0.811 | 0.000 |
+
+Position bias (nq): the same 30 passages sent in reverse order to Jev Choice. Same top pick 68% of the time (n=320); nDCG@10 0.803 normal vs 0.794 reversed; mean probability shift per passage 0.017; P(none) shift 0.016.
+
+## nfcorpus
+
+323 queries; 239 have an answer in BM25's top 30 and are scored.
+
+| Model | n | nDCG@10 | Top-1 | Recall@5 | MRR@10 | calls | median ms/call | p95 ms/call | median ms/query | $ per 1k queries | none-test AUROC | false accept @90% | ECE |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| BM25 (floor) | 239 | 0.435 | 0.594 | 0.163 | 0.710 | 0 | — | — | 0 | 0.00 | 0.660 | 0.710 | — |
+| Cohere Rerank 4 Pro | 239 | 0.499 | 0.695 | 0.191 | 0.796 | 561 | 941 | 1743 | 954 | 2.50 | 0.733 | 0.567 | 0.292* |
+| Cohere Rerank 4 Fast | 239 | 0.496 | 0.720 | 0.193 | 0.802 | 561 | 728 | 1758 | 735 | 2.00 | 0.713 | 0.618 | 0.194* |
+| ZeroEntropy zerank-2 | 239 | 0.506 | 0.699 | 0.195 | 0.800 | 561 | 2056 | 3132 | 2065 | 0.27 | 0.733 | 0.592 | 0.196* |
+| DeepSeek V4.1 Flash P(yes) per pair | 239 | 0.463 | 0.661 | 0.171 | 0.761 | 16830 | 1065 | 1374 | 32719 | 1.72 | 0.653 | 1.000 | 0.170 |
+| DeepSeek V4.1 Flash JSON, 30 in one call | 239 | 0.493 | 0.674 | 0.188 | 0.780 | 561 | 2455 | 3558 | 2455 | 1.59 | 0.741 | 0.592 | 0.098* |
+| Jev yes/no per pair | 239 | 0.482 | 0.674 | 0.189 | 0.775 | 16830 | 265 | 356 | 8317 | 0.89 | 0.719 | 0.634 | 0.037 |
+| Jev 30 yes/no in one call | 239 | 0.498 | 0.682 | 0.193 | 0.778 | 561 | 372 | 796 | 373 | 0.56 | 0.704 | 0.626 | 0.036 |
+| Jev one Choice + none | 239 | 0.477 | 0.678 | 0.189 | 0.778 | 561 | 327 | 764 | 328 | 0.48 | 0.659 | 0.714 | 0.158* |
+| Jev 4-level rubric, 30 in one call | 239 | 0.500 | 0.695 | 0.194 | 0.787 | 561 | 373 | 1098 | 374 | 0.60 | 0.726 | 0.626 | 0.094* |
+| Jev 45 duels in one call (top 10) | 239 | 0.459 | 0.690 | 0.173 | 0.785 | 561 | 341 | 568 | 342 | 0.25 | 0.586 | 0.845 | — |
+| Jev tournament (6 groups, then final) | 239 | 0.440 | 0.699 | 0.138 | 0.778 | 1122 | 310 | 681 | 624 | 0.61 | 0.665 | 0.681 | — |
+| Jev cascade (batch prune, then 8 pairs) | 239 | 0.496 | 0.682 | 0.189 | 0.784 | 5049 | 273 | 394 | 2570 | 0.81 | 0.718 | 0.605 | — |
+| Jev one Choice, passages reversed | 239 | 0.478 | 0.682 | 0.186 | 0.784 | 323 | 325 | 719 | 354 | 0.48 | — | — | 0.156* |
+
+Jev Choice's own nothing-relevant signals (nfcorpus):
+
+| signal | AUROC | false accept @90% | median with answer | median without |
+|---|---|---|---|---|
+| max_score | 0.659 | 0.714 | 0.505 | 0.300 |
+| 1-P(none) | 0.689 | 0.693 | 0.820 | 0.630 |
+| P(any) | 0.707 | 0.639 | 0.660 | 0.520 |
+
+TypeSafe's confidence bands on real data, Jev one Choice + none (nfcorpus), queries that do have an answer in the 30:
+
+| confidence | n | top pick is right | said none |
+|---|---|---|---|
+| <0.5 | 95 | 0.611 | 0.358 |
+| 0.5-0.9 | 116 | 0.681 | 0.259 |
+| >=0.9 | 28 | 0.893 | 0.071 |
+
+TypeSafe's confidence bands on real data, Jev tournament (6 groups, then final) (nfcorpus), queries that do have an answer in the 30:
+
+| confidence | n | top pick is right | said none |
+|---|---|---|---|
+| <0.5 | 75 | 0.547 | 0.000 |
+| 0.5-0.9 | 107 | 0.720 | 0.000 |
+| >=0.9 | 57 | 0.860 | 0.000 |
+
+Position bias (nfcorpus): the same 30 passages sent in reverse order to Jev Choice. Same top pick 50% of the time (n=239); nDCG@10 0.477 normal vs 0.478 reversed; mean probability shift per passage 0.018; P(none) shift 0.052.
+
+## trec-covid
+
+50 queries; 50 have an answer in BM25's top 30 and are scored.
+
+| Model | n | nDCG@10 | Top-1 | Recall@5 | MRR@10 | calls | median ms/call | p95 ms/call | median ms/query | $ per 1k queries | none-test AUROC | false accept @90% | ECE |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| BM25 (floor) | 50 | 0.621 | 0.800 | 0.009 | 0.876 | 0 | — | — | 0 | 0.00 | 0.622 | 0.767 | — |
+| Cohere Rerank 4 Pro | 50 | 0.792 | 0.960 | 0.012 | 0.971 | 93 | 862 | 2051 | 862 | 2.50 | 0.840 | 0.442 | 0.168* |
+| Cohere Rerank 4 Fast | 50 | 0.799 | 0.960 | 0.012 | 0.973 | 93 | 700 | 1587 | 701 | 2.00 | 0.827 | 0.581 | 0.103* |
+| ZeroEntropy zerank-2 | 50 | 0.800 | 0.960 | 0.012 | 0.980 | 93 | 2843 | 3298 | 3012 | 0.21 | 0.844 | 0.535 | 0.051* |
+| DeepSeek V4.1 Flash P(yes) per pair | 50 | 0.733 | 0.920 | 0.011 | 0.953 | 2790 | 1065 | 1382 | 32786 | 1.36 | 0.651 | 0.651 | 0.271 |
+| DeepSeek V4.1 Flash JSON, 30 in one call | 50 | 0.800 | 0.960 | 0.012 | 0.973 | 93 | 2473 | 3388 | 2474 | 1.20 | 0.827 | 0.558 | 0.141* |
+| Jev yes/no per pair | 50 | 0.764 | 0.920 | 0.011 | 0.947 | 2790 | 263 | 347 | 8258 | 0.78 | 0.769 | 0.744 | 0.249 |
+| Jev 30 yes/no in one call | 50 | 0.775 | 0.940 | 0.012 | 0.958 | 93 | 687 | 1651 | 688 | 0.44 | 0.819 | 0.698 | 0.246 |
+| Jev one Choice + none | 50 | 0.750 | 0.960 | 0.011 | 0.973 | 93 | 537 | 1499 | 537 | 0.36 | 0.698 | 0.721 | 0.547* |
+| Jev 4-level rubric, 30 in one call | 50 | 0.779 | 0.940 | 0.012 | 0.959 | 93 | 706 | 1710 | 707 | 0.48 | 0.819 | 0.535 | 0.154* |
+| Jev 45 duels in one call (top 10) | 50 | 0.652 | 0.920 | 0.010 | 0.942 | 93 | 461 | 1222 | 462 | 0.21 | 0.630 | 0.860 | — |
+| Jev tournament (6 groups, then final) | 50 | 0.747 | 0.920 | 0.011 | 0.957 | 186 | 311 | 1325 | 836 | 0.47 | 0.595 | 0.837 | — |
+| Jev cascade (batch prune, then 8 pairs) | 50 | 0.770 | 0.920 | 0.011 | 0.948 | 837 | 275 | 510 | 2711 | 0.67 | 0.769 | 0.698 | — |
+| Jev one Choice, passages reversed | 50 | 0.741 | 0.940 | 0.011 | 0.964 | 50 | 477 | 1486 | 477 | 0.36 | — | — | 0.547* |
+
+Jev Choice's own nothing-relevant signals (trec-covid):
+
+| signal | AUROC | false accept @90% | median with answer | median without |
+|---|---|---|---|---|
+| max_score | 0.698 | 0.721 | 0.530 | 0.400 |
+| 1-P(none) | 0.790 | 0.651 | 0.990 | 0.880 |
+| P(any) | 0.822 | 0.581 | 0.950 | 0.790 |
+
+TypeSafe's confidence bands on real data, Jev one Choice + none (trec-covid), queries that do have an answer in the 30:
+
+| confidence | n | top pick is right | said none |
+|---|---|---|---|
+| <0.5 | 21 | 0.905 | 0.143 |
+| 0.5-0.9 | 24 | 1.000 | 0.000 |
+| >=0.9 | 5 | 1.000 | 0.000 |
+
+TypeSafe's confidence bands on real data, Jev tournament (6 groups, then final) (trec-covid), queries that do have an answer in the 30:
+
+| confidence | n | top pick is right | said none |
+|---|---|---|---|
+| <0.5 | 23 | 0.826 | 0.000 |
+| 0.5-0.9 | 19 | 1.000 | 0.000 |
+| >=0.9 | 8 | 1.000 | 0.000 |
+
+Position bias (trec-covid): the same 30 passages sent in reverse order to Jev Choice. Same top pick 56% of the time (n=50); nDCG@10 0.750 normal vs 0.741 reversed; mean probability shift per passage 0.030; P(none) shift 0.014.
+
+## bright-biology
+
+103 queries; 39 have an answer in BM25's top 30 and are scored.
+
+| Model | n | nDCG@10 | Top-1 | Recall@5 | MRR@10 | calls | median ms/call | p95 ms/call | median ms/query | $ per 1k queries | none-test AUROC | false accept @90% | ECE |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| BM25 (floor) | 39 | 0.212 | 0.256 | 0.162 | 0.344 | 0 | — | — | 0 | 0.00 | 0.522 | 0.872 | — |
+| Cohere Rerank 4 Pro | 39 | 0.414 | 0.513 | 0.346 | 0.638 | 142 | 723 | 1620 | 724 | 2.50 | 0.682 | 0.641 | 0.550* |
+| Cohere Rerank 4 Fast | 39 | 0.396 | 0.462 | 0.319 | 0.606 | 142 | 592 | 1298 | 592 | 2.00 | 0.672 | 0.667 | 0.490* |
+| ZeroEntropy zerank-2 | 39 | 0.430 | 0.564 | 0.379 | 0.683 | 142 | 605 | 2386 | 605 | 0.17 | 0.652 | 0.769 | 0.226* |
+| DeepSeek V4.1 Flash P(yes) per pair | 39 | 0.321 | 0.436 | 0.307 | 0.522 | 4260 | 1206 | 1425 | 35971 | 0.99 | 0.590 | 1.000 | 0.071 |
+| DeepSeek V4.1 Flash JSON, 30 in one call | 39 | 0.412 | 0.564 | 0.336 | 0.672 | 142 | 1814 | 2865 | 1815 | 0.62 | 0.662 | 0.769 | 0.068* |
+| Jev yes/no per pair | 39 | 0.421 | 0.538 | 0.351 | 0.651 | 4260 | 268 | 364 | 8440 | 0.71 | 0.658 | 0.769 | 0.046 |
+| Jev 30 yes/no in one call | 39 | 0.403 | 0.487 | 0.341 | 0.620 | 142 | 341 | 1232 | 341 | 0.26 | 0.652 | 0.821 | 0.078 |
+| Jev one Choice + none | 39 | 0.425 | 0.615 | 0.332 | 0.697 | 142 | 280 | 1172 | 281 | 0.17 | 0.629 | 0.692 | 0.034* |
+| Jev 4-level rubric, 30 in one call | 39 | 0.433 | 0.590 | 0.356 | 0.686 | 142 | 387 | 1456 | 387 | 0.29 | 0.677 | 0.795 | 0.246* |
+| Jev 45 duels in one call (top 10) | 39 | 0.258 | 0.359 | 0.219 | 0.432 | 142 | 286 | 1018 | 287 | 0.16 | 0.529 | 0.846 | — |
+| Jev tournament (6 groups, then final) | 39 | 0.427 | 0.615 | 0.301 | 0.672 | 284 | 294 | 866 | 607 | 0.25 | 0.636 | 0.744 | — |
+| Jev cascade (batch prune, then 8 pairs) | 39 | 0.409 | 0.513 | 0.341 | 0.632 | 1278 | 264 | 345 | 2446 | 0.45 | 0.648 | 0.769 | — |
+| Jev one Choice, passages reversed | 39 | 0.431 | 0.590 | 0.364 | 0.696 | 103 | 280 | 1176 | 280 | 0.17 | — | — | 0.032* |
+
+Jev Choice's own nothing-relevant signals (bright-biology):
+
+| signal | AUROC | false accept @90% | median with answer | median without |
+|---|---|---|---|---|
+| max_score | 0.629 | 0.692 | 0.670 | 0.500 |
+| 1-P(none) | 0.671 | 0.718 | 0.980 | 0.790 |
+| P(any) | 0.672 | 0.769 | 0.910 | 0.750 |
+
+TypeSafe's confidence bands on real data, Jev one Choice + none (bright-biology), queries that do have an answer in the 30:
+
+| confidence | n | top pick is right | said none |
+|---|---|---|---|
+| <0.5 | 8 | 0.500 | 0.250 |
+| 0.5-0.9 | 21 | 0.619 | 0.190 |
+| >=0.9 | 10 | 0.700 | 0.000 |
+
+TypeSafe's confidence bands on real data, Jev tournament (6 groups, then final) (bright-biology), queries that do have an answer in the 30:
+
+| confidence | n | top pick is right | said none |
+|---|---|---|---|
+| <0.5 | 11 | 0.364 | 0.000 |
+| 0.5-0.9 | 14 | 0.786 | 0.000 |
+| >=0.9 | 14 | 0.643 | 0.000 |
+
+Position bias (bright-biology): the same 30 passages sent in reverse order to Jev Choice. Same top pick 74% of the time (n=39); nDCG@10 0.425 normal vs 0.431 reversed; mean probability shift per passage 0.012; P(none) shift 0.031.
+
+## bright-economics
+
+103 queries; 38 have an answer in BM25's top 30 and are scored.
+
+| Model | n | nDCG@10 | Top-1 | Recall@5 | MRR@10 | calls | median ms/call | p95 ms/call | median ms/query | $ per 1k queries | none-test AUROC | false accept @90% | ECE |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| BM25 (floor) | 38 | 0.280 | 0.184 | 0.207 | 0.308 | 0 | — | — | 0 | 0.00 | 0.520 | 0.895 | — |
+| Cohere Rerank 4 Pro | 38 | 0.442 | 0.368 | 0.348 | 0.565 | 141 | 870 | 1673 | 870 | 2.50 | 0.590 | 0.763 | 0.472* |
+| Cohere Rerank 4 Fast | 38 | 0.490 | 0.474 | 0.378 | 0.634 | 141 | 644 | 1324 | 645 | 2.00 | 0.588 | 0.816 | 0.416* |
+| ZeroEntropy zerank-2 | 38 | 0.479 | 0.500 | 0.398 | 0.627 | 141 | 756 | 1679 | 756 | 0.28 | 0.596 | 0.763 | 0.247* |
+| DeepSeek V4.1 Flash P(yes) per pair | 38 | 0.374 | 0.368 | 0.294 | 0.466 | 4230 | 1150 | 1539 | 35748 | 1.49 | 0.592 | 1.000 | 0.115 |
+| DeepSeek V4.1 Flash JSON, 30 in one call | 38 | 0.549 | 0.579 | 0.417 | 0.695 | 141 | 2478 | 3495 | 2478 | 1.04 | 0.635 | 0.711 | 0.061* |
+| Jev yes/no per pair | 38 | 0.487 | 0.500 | 0.397 | 0.649 | 4230 | 273 | 366 | 8541 | 0.92 | 0.612 | 0.711 | 0.026 |
+| Jev 30 yes/no in one call | 38 | 0.508 | 0.526 | 0.408 | 0.662 | 141 | 497 | 1472 | 498 | 0.38 | 0.632 | 0.711 | 0.045 |
+| Jev one Choice + none | 38 | 0.524 | 0.632 | 0.408 | 0.743 | 141 | 321 | 1179 | 321 | 0.30 | 0.621 | 0.763 | 0.080* |
+| Jev 4-level rubric, 30 in one call | 38 | 0.529 | 0.605 | 0.406 | 0.695 | 141 | 522 | 1587 | 522 | 0.42 | 0.645 | 0.658 | 0.229* |
+| Jev 45 duels in one call (top 10) | 38 | 0.396 | 0.447 | 0.293 | 0.511 | 141 | 320 | 1231 | 320 | 0.20 | 0.520 | 0.789 | — |
+| Jev tournament (6 groups, then final) | 38 | 0.538 | 0.658 | 0.399 | 0.748 | 282 | 304 | 964 | 710 | 0.40 | 0.638 | 0.737 | — |
+| Jev cascade (batch prune, then 8 pairs) | 38 | 0.493 | 0.474 | 0.394 | 0.617 | 1269 | 275 | 417 | 2600 | 0.64 | 0.614 | 0.737 | — |
+| Jev one Choice, passages reversed | 38 | 0.516 | 0.553 | 0.429 | 0.695 | 103 | 374 | 1005 | 375 | 0.30 | — | — | 0.083* |
+
+Jev Choice's own nothing-relevant signals (bright-economics):
+
+| signal | AUROC | false accept @90% | median with answer | median without |
+|---|---|---|---|---|
+| max_score | 0.621 | 0.763 | 0.470 | 0.370 |
+| 1-P(none) | 0.642 | 0.684 | 0.880 | 0.755 |
+| P(any) | 0.648 | 0.658 | 0.700 | 0.585 |
+
+TypeSafe's confidence bands on real data, Jev one Choice + none (bright-economics), queries that do have an answer in the 30:
+
+| confidence | n | top pick is right | said none |
+|---|---|---|---|
+| <0.5 | 25 | 0.640 | 0.240 |
+| 0.5-0.9 | 9 | 0.556 | 0.000 |
+| >=0.9 | 4 | 0.750 | 0.000 |
+
+TypeSafe's confidence bands on real data, Jev tournament (6 groups, then final) (bright-economics), queries that do have an answer in the 30:
+
+| confidence | n | top pick is right | said none |
+|---|---|---|---|
+| <0.5 | 15 | 0.800 | 0.000 |
+| 0.5-0.9 | 20 | 0.550 | 0.000 |
+| >=0.9 | 3 | 0.667 | 0.000 |
+
+Position bias (bright-economics): the same 30 passages sent in reverse order to Jev Choice. Same top pick 61% of the time (n=38); nDCG@10 0.524 normal vs 0.516 reversed; mean probability shift per passage 0.013; P(none) shift 0.045.
+
+## bright-earth_science
+
+116 queries; 57 have an answer in BM25's top 30 and are scored.
+
+| Model | n | nDCG@10 | Top-1 | Recall@5 | MRR@10 | calls | median ms/call | p95 ms/call | median ms/query | $ per 1k queries | none-test AUROC | false accept @90% | ECE |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| BM25 (floor) | 57 | 0.261 | 0.228 | 0.188 | 0.334 | 0 | — | — | 0 | 0.00 | 0.527 | 0.877 | — |
+| Cohere Rerank 4 Pro | 57 | 0.492 | 0.667 | 0.439 | 0.761 | 173 | 787 | 1468 | 852 | 2.50 | 0.703 | 0.649 | 0.400* |
+| Cohere Rerank 4 Fast | 57 | 0.477 | 0.596 | 0.408 | 0.723 | 173 | 604 | 1368 | 636 | 2.00 | 0.639 | 0.667 | 0.360* |
+| ZeroEntropy zerank-2 | 57 | 0.480 | 0.614 | 0.415 | 0.725 | 173 | 575 | 1281 | 575 | 0.19 | 0.649 | 0.649 | 0.194* |
+| DeepSeek V4.1 Flash P(yes) per pair | 57 | 0.329 | 0.333 | 0.261 | 0.468 | 5190 | 1082 | 1401 | 33301 | 1.20 | 0.649 | 1.000 | 0.093 |
+| DeepSeek V4.1 Flash JSON, 30 in one call | 57 | 0.460 | 0.649 | 0.375 | 0.712 | 173 | 1989 | 2819 | 1989 | 0.75 | 0.700 | 0.579 | 0.076* |
+| Jev yes/no per pair | 57 | 0.445 | 0.579 | 0.390 | 0.688 | 5190 | 268 | 363 | 8564 | 0.75 | 0.693 | 0.614 | 0.031 |
+| Jev 30 yes/no in one call | 57 | 0.465 | 0.579 | 0.410 | 0.694 | 173 | 464 | 1379 | 533 | 0.30 | 0.692 | 0.596 | 0.065 |
+| Jev one Choice + none | 57 | 0.441 | 0.632 | 0.377 | 0.721 | 173 | 467 | 1214 | 471 | 0.22 | 0.735 | 0.544 | 0.048* |
+| Jev 4-level rubric, 30 in one call | 57 | 0.475 | 0.632 | 0.410 | 0.720 | 173 | 531 | 1600 | 563 | 0.33 | 0.714 | 0.561 | 0.216* |
+| Jev 45 duels in one call (top 10) | 57 | 0.328 | 0.439 | 0.299 | 0.521 | 173 | 291 | 22288 | 291 | 0.17 | 0.608 | 0.825 | — |
+| Jev tournament (6 groups, then final) | 57 | 0.444 | 0.614 | 0.341 | 0.709 | 346 | 289 | 1160 | 728 | 0.30 | 0.746 | 0.474 | — |
+| Jev cascade (batch prune, then 8 pairs) | 57 | 0.457 | 0.579 | 0.399 | 0.692 | 1557 | 274 | 467 | 2743 | 0.51 | 0.690 | 0.632 | — |
+| Jev one Choice, passages reversed | 57 | 0.479 | 0.684 | 0.391 | 0.765 | 173 | 396 | 1192 | 396 | 0.22 | 0.751 | 0.561 | 0.045* |
+
+Jev Choice's own nothing-relevant signals (bright-earth_science):
+
+| signal | AUROC | false accept @90% | median with answer | median without |
+|---|---|---|---|---|
+| max_score | 0.735 | 0.544 | 0.640 | 0.380 |
+| 1-P(none) | 0.692 | 0.579 | 0.940 | 0.720 |
+| P(any) | 0.671 | 0.579 | 0.800 | 0.560 |
+
+TypeSafe's confidence bands on real data, Jev one Choice + none (bright-earth_science), queries that do have an answer in the 30:
+
+| confidence | n | top pick is right | said none |
+|---|---|---|---|
+| <0.5 | 12 | 0.417 | 0.167 |
+| 0.5-0.9 | 34 | 0.647 | 0.059 |
+| >=0.9 | 11 | 0.818 | 0.091 |
+
+TypeSafe's confidence bands on real data, Jev tournament (6 groups, then final) (bright-earth_science), queries that do have an answer in the 30:
+
+| confidence | n | top pick is right | said none |
+|---|---|---|---|
+| <0.5 | 13 | 0.231 | 0.000 |
+| 0.5-0.9 | 30 | 0.700 | 0.000 |
+| >=0.9 | 14 | 0.786 | 0.000 |
+
+Position bias (bright-earth_science): the same 30 passages sent in reverse order to Jev Choice. Same top pick 84% of the time (n=57); nDCG@10 0.441 normal vs 0.479 reversed; mean probability shift per passage 0.011; P(none) shift 0.041.
+
+## bright-psychology
+
+101 queries; 29 have an answer in BM25's top 30 and are scored.
+
+| Model | n | nDCG@10 | Top-1 | Recall@5 | MRR@10 | calls | median ms/call | p95 ms/call | median ms/query | $ per 1k queries | none-test AUROC | false accept @90% | ECE |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| BM25 (floor) | 29 | 0.266 | 0.138 | 0.252 | 0.280 | 0 | — | — | 0 | 0.00 | 0.510 | 0.897 | — |
+| Cohere Rerank 4 Pro | 29 | 0.626 | 0.690 | 0.542 | 0.792 | 130 | 845 | 1670 | 1052 | 2.50 | 0.727 | 0.517 | 0.424* |
+| Cohere Rerank 4 Fast | 29 | 0.633 | 0.724 | 0.536 | 0.806 | 130 | 650 | 1528 | 653 | 2.00 | 0.699 | 0.517 | 0.358* |
+| ZeroEntropy zerank-2 | 29 | 0.629 | 0.690 | 0.564 | 0.807 | 130 | 2560 | 3579 | 2856 | 0.24 | 0.727 | 0.655 | 0.201* |
+| DeepSeek V4.1 Flash P(yes) per pair | 29 | 0.417 | 0.414 | 0.391 | 0.538 | 3900 | 1071 | 1436 | 33033 | 1.33 | 0.638 | 1.000 | 0.090 |
+| DeepSeek V4.1 Flash JSON, 30 in one call | 29 | 0.657 | 0.862 | 0.556 | 0.912 | 130 | 2364 | 2998 | 2364 | 0.88 | 0.744 | 0.552 | 0.051* |
+| Jev yes/no per pair | 29 | 0.600 | 0.655 | 0.541 | 0.764 | 3900 | 264 | 356 | 8676 | 0.83 | 0.723 | 0.586 | 0.023 |
+| Jev 30 yes/no in one call | 29 | 0.628 | 0.655 | 0.540 | 0.778 | 130 | 521 | 22475 | 673 | 0.33 | 0.737 | 0.517 | 0.038 |
+| Jev one Choice + none | 29 | 0.571 | 0.690 | 0.498 | 0.811 | 130 | 469 | 1269 | 482 | 0.25 | 0.731 | 0.483 | 0.064* |
+| Jev 4-level rubric, 30 in one call | 29 | 0.652 | 0.724 | 0.555 | 0.822 | 130 | 653 | 1640 | 807 | 0.37 | 0.741 | 0.483 | 0.174* |
+| Jev 45 duels in one call (top 10) | 29 | 0.441 | 0.586 | 0.379 | 0.621 | 130 | 304 | 22251 | 305 | 0.18 | 0.665 | 0.724 | — |
+| Jev tournament (6 groups, then final) | 29 | 0.586 | 0.690 | 0.428 | 0.796 | 260 | 298 | 1279 | 766 | 0.35 | 0.725 | 0.552 | — |
+| Jev cascade (batch prune, then 8 pairs) | 29 | 0.605 | 0.621 | 0.554 | 0.754 | 1170 | 275 | 478 | 2695 | 0.57 | 0.737 | 0.586 | — |
+| Jev one Choice, passages reversed | 29 | 0.571 | 0.655 | 0.515 | 0.783 | 130 | 451 | 1177 | 451 | 0.25 | 0.751 | 0.448 | 0.068* |
+
+Jev Choice's own nothing-relevant signals (bright-psychology):
+
+| signal | AUROC | false accept @90% | median with answer | median without |
+|---|---|---|---|---|
+| max_score | 0.731 | 0.483 | 0.720 | 0.390 |
+| 1-P(none) | 0.731 | 0.483 | 0.910 | 0.660 |
+| P(any) | 0.728 | 0.552 | 0.760 | 0.470 |
+
+TypeSafe's confidence bands on real data, Jev one Choice + none (bright-psychology), queries that do have an answer in the 30:
+
+| confidence | n | top pick is right | said none |
+|---|---|---|---|
+| <0.5 | 7 | 0.286 | 0.143 |
+| 0.5-0.9 | 14 | 0.714 | 0.071 |
+| >=0.9 | 8 | 1.000 | 0.000 |
+
+TypeSafe's confidence bands on real data, Jev tournament (6 groups, then final) (bright-psychology), queries that do have an answer in the 30:
+
+| confidence | n | top pick is right | said none |
+|---|---|---|---|
+| <0.5 | 4 | 0.250 | 0.000 |
+| 0.5-0.9 | 15 | 0.600 | 0.000 |
+| >=0.9 | 10 | 1.000 | 0.000 |
+
+Position bias (bright-psychology): the same 30 passages sent in reverse order to Jev Choice. Same top pick 90% of the time (n=29); nDCG@10 0.571 normal vs 0.571 reversed; mean probability shift per passage 0.008; P(none) shift 0.034.
+
+## bright-robotics
+
+101 queries; 35 have an answer in BM25's top 30 and are scored.
+
+| Model | n | nDCG@10 | Top-1 | Recall@5 | MRR@10 | calls | median ms/call | p95 ms/call | median ms/query | $ per 1k queries | none-test AUROC | false accept @90% | ECE |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| BM25 (floor) | 35 | 0.180 | 0.114 | 0.151 | 0.231 | 0 | — | — | 0 | 0.00 | 0.504 | 0.914 | — |
+| Cohere Rerank 4 Pro | 35 | 0.464 | 0.543 | 0.372 | 0.650 | 136 | 1090 | 1980 | 1392 | 3.04 | 0.667 | 0.743 | 0.561* |
+| Cohere Rerank 4 Fast | 35 | 0.382 | 0.429 | 0.356 | 0.539 | 136 | 678 | 1850 | 817 | 2.44 | 0.634 | 0.800 | 0.477* |
+| ZeroEntropy zerank-2 | 35 | 0.483 | 0.571 | 0.445 | 0.693 | 136 | 2129 | 3255 | 2215 | 0.33 | 0.664 | 0.800 | 0.178* |
+| DeepSeek V4.1 Flash P(yes) per pair | 35 | 0.326 | 0.343 | 0.297 | 0.439 | 4080 | 1070 | 1405 | 32720 | 1.60 | 0.586 | 1.000 | 0.103 |
+| DeepSeek V4.1 Flash JSON, 30 in one call | 35 | 0.445 | 0.543 | 0.371 | 0.617 | 136 | 2270 | 3102 | 2270 | 1.03 | 0.658 | 1.000 | 0.065* |
+| Jev yes/no per pair | 35 | 0.479 | 0.629 | 0.402 | 0.717 | 4080 | 260 | 339 | 8543 | 1.47 | 0.667 | 0.800 | 0.050 |
+| Jev 30 yes/no in one call | 35 | 0.479 | 0.571 | 0.390 | 0.667 | 136 | 498 | 22587 | 537 | 0.37 | 0.680 | 0.743 | 0.065 |
+| Jev one Choice + none | 35 | 0.469 | 0.629 | 0.388 | 0.718 | 136 | 461 | 1289 | 461 | 0.29 | 0.649 | 0.686 | 0.042* |
+| Jev 4-level rubric, 30 in one call | 35 | 0.478 | 0.571 | 0.392 | 0.670 | 136 | 581 | 22490 | 1114 | 0.41 | 0.681 | 0.686 | 0.247* |
+| Jev 45 duels in one call (top 10) | 35 | 0.277 | 0.400 | 0.233 | 0.446 | 136 | 301 | 22287 | 301 | 0.22 | 0.655 | 0.800 | — |
+| Jev tournament (6 groups, then final) | 35 | 0.458 | 0.629 | 0.339 | 0.709 | 272 | 288 | 22234 | 623 | 0.41 | 0.666 | 0.743 | — |
+| Jev cascade (batch prune, then 8 pairs) | 35 | 0.486 | 0.629 | 0.403 | 0.715 | 1224 | 266 | 478 | 2628 | 0.77 | 0.679 | 0.714 | — |
+| Jev one Choice, passages reversed | 35 | 0.454 | 0.600 | 0.381 | 0.700 | 136 | 333 | 1197 | 333 | 0.29 | 0.606 | 0.629 | 0.043* |
+
+Jev Choice's own nothing-relevant signals (bright-robotics):
+
+| signal | AUROC | false accept @90% | median with answer | median without |
+|---|---|---|---|---|
+| max_score | 0.649 | 0.686 | 0.500 | 0.370 |
+| 1-P(none) | 0.668 | 0.686 | 0.900 | 0.800 |
+| P(any) | 0.680 | 0.714 | 0.760 | 0.600 |
+
+TypeSafe's confidence bands on real data, Jev one Choice + none (bright-robotics), queries that do have an answer in the 30:
+
+| confidence | n | top pick is right | said none |
+|---|---|---|---|
+| <0.5 | 18 | 0.611 | 0.389 |
+| 0.5-0.9 | 15 | 0.600 | 0.067 |
+| >=0.9 | 2 | 1.000 | 0.000 |
+
+TypeSafe's confidence bands on real data, Jev tournament (6 groups, then final) (bright-robotics), queries that do have an answer in the 30:
+
+| confidence | n | top pick is right | said none |
+|---|---|---|---|
+| <0.5 | 16 | 0.562 | 0.000 |
+| 0.5-0.9 | 12 | 0.667 | 0.000 |
+| >=0.9 | 7 | 0.714 | 0.000 |
+
+Position bias (bright-robotics): the same 30 passages sent in reverse order to Jev Choice. Same top pick 74% of the time (n=35); nDCG@10 0.469 normal vs 0.454 reversed; mean probability shift per passage 0.013; P(none) shift 0.049.
+
+## bright-stackoverflow
+
+117 queries; 62 have an answer in BM25's top 30 and are scored.
+
+| Model | n | nDCG@10 | Top-1 | Recall@5 | MRR@10 | calls | median ms/call | p95 ms/call | median ms/query | $ per 1k queries | none-test AUROC | false accept @90% | ECE |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| BM25 (floor) | 62 | 0.268 | 0.274 | 0.207 | 0.378 | 0 | — | — | 0 | 0.00 | 0.514 | 0.887 | — |
+| Cohere Rerank 4 Pro | 62 | 0.341 | 0.290 | 0.279 | 0.478 | 179 | 1513 | 2946 | 1868 | 2.61 | 0.563 | 0.839 | 0.432* |
+| Cohere Rerank 4 Fast | 62 | 0.339 | 0.306 | 0.287 | 0.486 | 179 | 762 | 1745 | 808 | 2.09 | 0.574 | 0.806 | 0.364* |
+| ZeroEntropy zerank-2 | 62 | 0.362 | 0.371 | 0.298 | 0.523 | 179 | 2928 | 3432 | 3031 | 0.56 | 0.593 | 0.887 | 0.119* |
+| DeepSeek V4.1 Flash P(yes) per pair | 62 | 0.327 | 0.339 | 0.284 | 0.469 | 5370 | 1078 | 1459 | 33814 | 2.55 | 0.524 | 1.000 | 0.115 |
+| DeepSeek V4.1 Flash JSON, 30 in one call | 62 | 0.378 | 0.387 | 0.307 | 0.538 | 179 | 2509 | 3646 | 2509 | 2.16 | 0.586 | 1.000 | 0.068* |
+| Jev yes/no per pair | 62 | 0.363 | 0.387 | 0.301 | 0.544 | 5370 | 269 | 351 | 8491 | 1.49 | 0.591 | 0.839 | 0.034 |
+| Jev 30 yes/no in one call | 62 | 0.370 | 0.339 | 0.319 | 0.543 | 179 | 695 | 22307 | 695 | 0.72 | 0.588 | 0.855 | 0.061 |
+| Jev one Choice + none | 62 | 0.371 | 0.371 | 0.336 | 0.539 | 179 | 522 | 22465 | 667 | 0.64 | 0.538 | 0.871 | 0.069* |
+| Jev 4-level rubric, 30 in one call | 62 | 0.375 | 0.371 | 0.326 | 0.549 | 179 | 775 | 23018 | 775 | 0.75 | 0.598 | 0.855 | 0.166* |
+| Jev 45 duels in one call (top 10) | 62 | 0.306 | 0.339 | 0.257 | 0.469 | 179 | 355 | 22266 | 355 | 0.32 | 0.538 | 0.887 | — |
+| Jev tournament (6 groups, then final) | 62 | 0.342 | 0.355 | 0.231 | 0.521 | 358 | 321 | 1947 | 806 | 0.80 | 0.552 | 0.726 | — |
+| Jev cascade (batch prune, then 8 pairs) | 62 | 0.379 | 0.387 | 0.320 | 0.555 | 1611 | 263 | 556 | 2720 | 1.11 | 0.592 | 0.806 | — |
+| Jev one Choice, passages reversed | 62 | 0.394 | 0.452 | 0.319 | 0.591 | 179 | 702 | 1641 | 702 | 0.64 | 0.580 | 0.823 | 0.070* |
+
+Jev Choice's own nothing-relevant signals (bright-stackoverflow):
+
+| signal | AUROC | false accept @90% | median with answer | median without |
+|---|---|---|---|---|
+| max_score | 0.538 | 0.871 | 0.465 | 0.450 |
+| 1-P(none) | 0.594 | 0.855 | 0.840 | 0.780 |
+| P(any) | 0.587 | 0.855 | 0.690 | 0.610 |
+
+TypeSafe's confidence bands on real data, Jev one Choice + none (bright-stackoverflow), queries that do have an answer in the 30:
+
+| confidence | n | top pick is right | said none |
+|---|---|---|---|
+| <0.5 | 28 | 0.321 | 0.357 |
+| 0.5-0.9 | 27 | 0.333 | 0.185 |
+| >=0.9 | 7 | 0.714 | 0.000 |
+
+TypeSafe's confidence bands on real data, Jev tournament (6 groups, then final) (bright-stackoverflow), queries that do have an answer in the 30:
+
+| confidence | n | top pick is right | said none |
+|---|---|---|---|
+| <0.5 | 28 | 0.286 | 0.000 |
+| 0.5-0.9 | 25 | 0.360 | 0.000 |
+| >=0.9 | 9 | 0.556 | 0.000 |
+
+Position bias (bright-stackoverflow): the same 30 passages sent in reverse order to Jev Choice. Same top pick 68% of the time (n=62); nDCG@10 0.371 normal vs 0.394 reversed; mean probability shift per passage 0.016; P(none) shift 0.048.
+
+## bright-sustainable_living
+
+108 queries; 47 have an answer in BM25's top 30 and are scored.
+
+| Model | n | nDCG@10 | Top-1 | Recall@5 | MRR@10 | calls | median ms/call | p95 ms/call | median ms/query | $ per 1k queries | none-test AUROC | false accept @90% | ECE |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| BM25 (floor) | 47 | 0.193 | 0.170 | 0.165 | 0.273 | 0 | — | — | 0 | 0.00 | 0.505 | 0.894 | — |
+| Cohere Rerank 4 Pro | 47 | 0.447 | 0.489 | 0.379 | 0.648 | 155 | 958 | 1685 | 1380 | 2.50 | 0.599 | 0.809 | 0.470* |
+| Cohere Rerank 4 Fast | 47 | 0.445 | 0.511 | 0.390 | 0.658 | 155 | 617 | 1371 | 674 | 2.00 | 0.604 | 0.787 | 0.382* |
+| ZeroEntropy zerank-2 | 47 | 0.490 | 0.617 | 0.434 | 0.733 | 155 | 2225 | 3189 | 2325 | 0.21 | 0.623 | 0.723 | 0.221* |
+| DeepSeek V4.1 Flash P(yes) per pair | 47 | 0.306 | 0.319 | 0.281 | 0.448 | 4650 | 1057 | 1416 | 32769 | 1.20 | 0.564 | 1.000 | 0.085 |
+| DeepSeek V4.1 Flash JSON, 30 in one call | 47 | 0.508 | 0.596 | 0.413 | 0.722 | 155 | 2029 | 4166 | 2030 | 0.73 | 0.644 | 0.830 | 0.050* |
+| Jev yes/no per pair | 47 | 0.487 | 0.617 | 0.435 | 0.731 | 4650 | 270 | 371 | 8693 | 0.79 | 0.670 | 0.638 | 0.037 |
+| Jev 30 yes/no in one call | 47 | 0.503 | 0.596 | 0.427 | 0.738 | 155 | 470 | 1406 | 471 | 0.29 | 0.665 | 0.702 | 0.045 |
+| Jev one Choice + none | 47 | 0.459 | 0.553 | 0.392 | 0.710 | 155 | 447 | 22372 | 448 | 0.21 | 0.647 | 0.766 | 0.048* |
+| Jev 4-level rubric, 30 in one call | 47 | 0.510 | 0.660 | 0.433 | 0.780 | 155 | 331 | 22051 | 331 | 0.32 | 0.669 | 0.681 | 0.228* |
+| Jev 45 duels in one call (top 10) | 47 | 0.291 | 0.426 | 0.247 | 0.507 | 155 | 286 | 2401 | 287 | 0.17 | 0.600 | 0.830 | — |
+| Jev tournament (6 groups, then final) | 47 | 0.481 | 0.617 | 0.384 | 0.751 | 310 | 280 | 21991 | 588 | 0.29 | 0.642 | 0.681 | — |
+| Jev cascade (batch prune, then 8 pairs) | 47 | 0.503 | 0.638 | 0.434 | 0.753 | 1395 | 274 | 464 | 2606 | 0.51 | 0.663 | 0.638 | — |
+| Jev one Choice, passages reversed | 47 | 0.472 | 0.574 | 0.403 | 0.734 | 155 | 302 | 1193 | 302 | 0.21 | 0.648 | 0.702 | 0.045* |
+
+Jev Choice's own nothing-relevant signals (bright-sustainable_living):
+
+| signal | AUROC | false accept @90% | median with answer | median without |
+|---|---|---|---|---|
+| max_score | 0.647 | 0.766 | 0.560 | 0.350 |
+| 1-P(none) | 0.663 | 0.723 | 0.860 | 0.680 |
+| P(any) | 0.662 | 0.745 | 0.760 | 0.510 |
+
+TypeSafe's confidence bands on real data, Jev one Choice + none (bright-sustainable_living), queries that do have an answer in the 30:
+
+| confidence | n | top pick is right | said none |
+|---|---|---|---|
+| <0.5 | 15 | 0.467 | 0.200 |
+| 0.5-0.9 | 24 | 0.500 | 0.250 |
+| >=0.9 | 8 | 0.875 | 0.000 |
+
+TypeSafe's confidence bands on real data, Jev tournament (6 groups, then final) (bright-sustainable_living), queries that do have an answer in the 30:
+
+| confidence | n | top pick is right | said none |
+|---|---|---|---|
+| <0.5 | 19 | 0.526 | 0.000 |
+| 0.5-0.9 | 19 | 0.579 | 0.000 |
+| >=0.9 | 9 | 0.889 | 0.000 |
+
+Position bias (bright-sustainable_living): the same 30 passages sent in reverse order to Jev Choice. Same top pick 72% of the time (n=47); nDCG@10 0.459 normal vs 0.472 reversed; mean probability shift per passage 0.011; P(none) shift 0.040.
+
+## csn-python
+
+300 queries; 256 have an answer in BM25's top 30 and are scored.
+
+| Model | n | nDCG@10 | Top-1 | Recall@5 | MRR@10 | calls | median ms/call | p95 ms/call | median ms/query | $ per 1k queries | none-test AUROC | false accept @90% | ECE |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| BM25 (floor) | 256 | 0.717 | 0.559 | 0.801 | 0.662 | 0 | — | — | 0 | 0.00 | 0.561 | 0.844 | — |
+| Cohere Rerank 4 Pro | 256 | 0.982 | 0.957 | 1.000 | 0.976 | 556 | 854 | 1574 | 929 | 2.57 | 0.950 | 0.145 | 0.341* |
+| Cohere Rerank 4 Fast | 256 | 0.971 | 0.930 | 1.000 | 0.962 | 556 | 878 | 1788 | 929 | 2.05 | 0.913 | 0.254 | 0.286* |
+| ZeroEntropy zerank-2 | 256 | 0.963 | 0.910 | 1.000 | 0.950 | 556 | 2413 | 3476 | 2727 | 0.26 | 0.902 | 0.230 | 0.207* |
+| DeepSeek V4.1 Flash P(yes) per pair | 256 | 0.921 | 0.828 | 0.980 | 0.898 | 16680 | 1052 | 1757 | 34224 | 1.69 | 0.805 | 0.371 | 0.021 |
+| DeepSeek V4.1 Flash JSON, 30 in one call | 256 | 0.956 | 0.926 | 0.973 | 0.946 | 556 | 1927 | 2985 | 1927 | 1.32 | 0.925 | 0.156 | 0.013* |
+| Jev yes/no per pair | 256 | 0.965 | 0.918 | 0.992 | 0.953 | 16680 | 256 | 322 | 7952 | 0.92 | 0.889 | 0.242 | 0.072 |
+| Jev 30 yes/no in one call | 256 | 0.980 | 0.953 | 0.996 | 0.973 | 556 | 326 | 669 | 335 | 0.44 | 0.925 | 0.219 | 0.058 |
+| Jev one Choice + none | 256 | 0.983 | 0.965 | 0.992 | 0.978 | 556 | 347 | 757 | 349 | 0.35 | 0.928 | 0.172 | 0.002* |
+| Jev 4-level rubric, 30 in one call | 256 | 0.983 | 0.957 | 1.000 | 0.977 | 556 | 338 | 810 | 343 | 0.47 | 0.927 | 0.176 | 0.135* |
+| Jev 45 duels in one call (top 10) | 256 | 0.881 | 0.867 | 0.891 | 0.878 | 556 | 311 | 540 | 311 | 0.22 | 0.857 | 0.352 | — |
+| Jev tournament (6 groups, then final) | 256 | 0.977 | 0.957 | 0.977 | 0.970 | 1112 | 299 | 549 | 629 | 0.45 | 0.938 | 0.172 | — |
+| Jev cascade (batch prune, then 8 pairs) | 256 | 0.968 | 0.926 | 0.992 | 0.957 | 5004 | 261 | 338 | 2445 | 0.68 | 0.896 | 0.227 | — |
+| Jev one Choice, passages reversed | 256 | 0.982 | 0.961 | 0.996 | 0.977 | 300 | 316 | 646 | 317 | 0.35 | — | — | 0.002* |
+
+Jev Choice's own nothing-relevant signals (csn-python):
+
+| signal | AUROC | false accept @90% | median with answer | median without |
+|---|---|---|---|---|
+| max_score | 0.928 | 0.172 | 0.970 | 0.290 |
+| 1-P(none) | 0.927 | 0.215 | 0.980 | 0.480 |
+| P(any) | 0.921 | 0.230 | 0.910 | 0.400 |
+
+TypeSafe's confidence bands on real data, Jev one Choice + none (csn-python), queries that do have an answer in the 30:
+
+| confidence | n | top pick is right | said none |
+|---|---|---|---|
+| <0.5 | 14 | 0.786 | 0.143 |
+| 0.5-0.9 | 66 | 0.924 | 0.015 |
+| >=0.9 | 176 | 0.994 | 0.000 |
+
+TypeSafe's confidence bands on real data, Jev tournament (6 groups, then final) (csn-python), queries that do have an answer in the 30:
+
+| confidence | n | top pick is right | said none |
+|---|---|---|---|
+| <0.5 | 8 | 0.875 | 0.000 |
+| 0.5-0.9 | 56 | 0.893 | 0.000 |
+| >=0.9 | 192 | 0.979 | 0.000 |
+
+Position bias (csn-python): the same 30 passages sent in reverse order to Jev Choice. Same top pick 97% of the time (n=256); nDCG@10 0.983 normal vs 0.982 reversed; mean probability shift per passage 0.004; P(none) shift 0.029.
+
+## miracl-fr
+
+269 queries; 152 have an answer in BM25's top 30 and are scored.
+
+| Model | n | nDCG@10 | Top-1 | Recall@5 | MRR@10 | calls | median ms/call | p95 ms/call | median ms/query | $ per 1k queries | none-test AUROC | false accept @90% | ECE |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| BM25 (floor) | 152 | 0.234 | 0.079 | 0.251 | 0.199 | 0 | — | — | 0 | 0.00 | 0.502 | 0.901 | — |
+| Cohere Rerank 4 Pro | 152 | 0.764 | 0.783 | 0.782 | 0.867 | 421 | 654 | 1179 | 683 | 2.50 | 0.764 | 0.605 | 0.496* |
+| Cohere Rerank 4 Fast | 152 | 0.723 | 0.664 | 0.758 | 0.793 | 421 | 566 | 1016 | 587 | 2.00 | 0.733 | 0.605 | 0.400* |
+| ZeroEntropy zerank-2 | 152 | 0.728 | 0.711 | 0.737 | 0.815 | 421 | 622 | 2480 | 622 | 0.11 | 0.681 | 0.750 | 0.263* |
+| DeepSeek V4.1 Flash P(yes) per pair | 152 | 0.529 | 0.408 | 0.575 | 0.552 | 12630 | 1061 | 1345 | 32677 | 0.84 | 0.549 | 0.829 | 0.146 |
+| DeepSeek V4.1 Flash JSON, 30 in one call | 152 | 0.669 | 0.645 | 0.683 | 0.745 | 421 | 1829 | 2650 | 1829 | 0.68 | 0.708 | 0.625 | 0.111* |
+| Jev yes/no per pair | 152 | 0.663 | 0.586 | 0.675 | 0.711 | 12630 | 258 | 331 | 7878 | 0.60 | 0.667 | 0.770 | 0.158 |
+| Jev 30 yes/no in one call | 152 | 0.690 | 0.632 | 0.735 | 0.745 | 421 | 289 | 583 | 289 | 0.27 | 0.702 | 0.717 | 0.142 |
+| Jev one Choice + none | 152 | 0.700 | 0.684 | 0.714 | 0.789 | 421 | 283 | 546 | 283 | 0.19 | 0.701 | 0.691 | 0.024* |
+| Jev 4-level rubric, 30 in one call | 152 | 0.696 | 0.671 | 0.712 | 0.765 | 421 | 303 | 785 | 303 | 0.31 | 0.700 | 0.704 | 0.308* |
+| Jev 45 duels in one call (top 10) | 152 | 0.410 | 0.454 | 0.395 | 0.498 | 421 | 279 | 474 | 279 | 0.15 | 0.636 | 0.882 | — |
+| Jev tournament (6 groups, then final) | 152 | 0.689 | 0.651 | 0.689 | 0.774 | 842 | 281 | 461 | 570 | 0.26 | 0.673 | 0.691 | — |
+| Jev cascade (batch prune, then 8 pairs) | 152 | 0.660 | 0.579 | 0.718 | 0.707 | 3789 | 285 | 381 | 2656 | 0.44 | 0.667 | 0.770 | — |
+| Jev one Choice, passages reversed | 152 | 0.675 | 0.664 | 0.695 | 0.770 | 269 | 296 | 545 | 296 | 0.19 | — | — | 0.025* |
+
+Jev Choice's own nothing-relevant signals (miracl-fr):
+
+| signal | AUROC | false accept @90% | median with answer | median without |
+|---|---|---|---|---|
+| max_score | 0.701 | 0.691 | 0.820 | 0.550 |
+| 1-P(none) | 0.705 | 0.691 | 0.980 | 0.920 |
+| P(any) | 0.679 | 0.704 | 0.950 | 0.865 |
+
+TypeSafe's confidence bands on real data, Jev one Choice + none (miracl-fr), queries that do have an answer in the 30:
+
+| confidence | n | top pick is right | said none |
+|---|---|---|---|
+| <0.5 | 29 | 0.345 | 0.172 |
+| 0.5-0.9 | 61 | 0.623 | 0.082 |
+| >=0.9 | 62 | 0.903 | 0.000 |
+
+TypeSafe's confidence bands on real data, Jev tournament (6 groups, then final) (miracl-fr), queries that do have an answer in the 30:
+
+| confidence | n | top pick is right | said none |
+|---|---|---|---|
+| <0.5 | 34 | 0.324 | 0.000 |
+| 0.5-0.9 | 54 | 0.630 | 0.000 |
+| >=0.9 | 64 | 0.844 | 0.000 |
+
+Position bias (miracl-fr): the same 30 passages sent in reverse order to Jev Choice. Same top pick 81% of the time (n=152); nDCG@10 0.700 normal vs 0.675 reversed; mean probability shift per passage 0.012; P(none) shift 0.022.
+
+ECE marked * is for scores the vendor does not present as probabilities (shown for completeness, not held against them).
+
+## Usage totals (check these against each vendor's dashboard)
+
+| Model | dataset | calls | usage | $ all variants |
+|---|---|---|---|---|
+| Cohere Rerank 4 Pro | scifact | 564 | search_units=564 | 1.4100 |
+| Cohere Rerank 4 Fast | scifact | 564 | search_units=564 | 1.1280 |
+| ZeroEntropy zerank-2 | scifact | 564 | total_tokens=6164440, total_bytes=29441718, inference_latency_s=233.48 | 0.1541 |
+| DeepSeek V4.1 Flash P(yes) per pair | scifact | 16920 | prompt_tokens=6371684, completion_tokens=16920, total_tokens=6388604, cost=0.76, is_byok=0 | 0.7572 |
+| DeepSeek V4.1 Flash JSON, 30 in one call | scifact | 564 | prompt_tokens=5269193, completion_tokens=118440, total_tokens=5387633, cost=0.84, is_byok=0 | 0.8420 |
+| Jev yes/no per pair | scifact | 16920 | input_tokens=12088213, output_tokens=372240 | 0.5077 |
+| Jev 30 yes/no in one call | scifact | 564 | input_tokens=7468237, output_tokens=306816 | 0.3137 |
+| Jev one Choice + none | scifact | 564 | input_tokens=6379717, output_tokens=175944 | 0.2679 |
+| Jev 4-level rubric, 30 in one call | scifact | 564 | input_tokens=7941997, output_tokens=256056 | 0.3336 |
+| Jev 45 duels in one call (top 10) | scifact | 564 | input_tokens=3412087, output_tokens=991512 | 0.1433 |
+| Jev tournament (6 groups, then final) | scifact | 1128 | input_tokens=8071107, output_tokens=283390 | 0.3390 |
+| Jev cascade (batch prune, then 8 pairs) | scifact | 5076 | input_tokens=10712731, output_tokens=406080 | 0.4499 |
+| Jev one Choice, passages reversed | scifact | 300 | input_tokens=3388110, output_tokens=93740 | 0.1423 |
+| Cohere Rerank 4 Pro | fiqa | 1059 | search_units=1059 | 2.6475 |
+| Cohere Rerank 4 Fast | fiqa | 1059 | search_units=1059 | 2.1180 |
+| ZeroEntropy zerank-2 | fiqa | 1059 | total_tokens=7564780, total_bytes=37031485, inference_latency_s=437.91 | 0.1891 |
+| DeepSeek V4.1 Flash P(yes) per pair | fiqa | 31770 | prompt_tokens=8789444, completion_tokens=31770, total_tokens=8821214, cost=1.17, is_byok=0 | 1.1677 |
+| DeepSeek V4.1 Flash JSON, 30 in one call | fiqa | 1059 | prompt_tokens=6856806, completion_tokens=222454, total_tokens=7079260, cost=1.1, is_byok=0 | 1.1000 |
+| Jev yes/no per pair | fiqa | 31770 | input_tokens=18279982, output_tokens=698940 | 0.7678 |
+| Jev 30 yes/no in one call | fiqa | 1059 | input_tokens=9822746, output_tokens=576096 | 0.4126 |
+| Jev one Choice + none | fiqa | 1059 | input_tokens=7778876, output_tokens=331177 | 0.3267 |
+| Jev 4-level rubric, 30 in one call | fiqa | 1059 | input_tokens=10712306, output_tokens=480786 | 0.4499 |
+| Jev 45 duels in one call (top 10) | fiqa | 1059 | input_tokens=4973155, output_tokens=1861722 | 0.2089 |
+| Jev tournament (6 groups, then final) | fiqa | 2118 | input_tokens=10252602, output_tokens=538302 | 0.4306 |
+| Jev cascade (batch prune, then 8 pairs) | fiqa | 9531 | input_tokens=14982151, output_tokens=762480 | 0.6293 |
+| Jev one Choice, passages reversed | fiqa | 648 | input_tokens=4758686, output_tokens=202680 | 0.1999 |
+| Cohere Rerank 4 Pro | nq | 820 | search_units=820 | 2.0500 |
+| Cohere Rerank 4 Fast | nq | 820 | search_units=820 | 1.6400 |
+| ZeroEntropy zerank-2 | nq | 820 | total_tokens=3291835, total_bytes=16636101, inference_latency_s=364.15 | 0.0823 |
+| DeepSeek V4.1 Flash P(yes) per pair | nq | 24600 | prompt_tokens=4227883, completion_tokens=24600, total_tokens=4252483, cost=0.63, is_byok=0 | 0.6278 |
+| DeepSeek V4.1 Flash JSON, 30 in one call | nq | 820 | prompt_tokens=2784241, completion_tokens=172264, total_tokens=2956505, cost=0.5, is_byok=0 | 0.4951 |
+| Jev yes/no per pair | nq | 24600 | input_tokens=11589807, output_tokens=541200 | 0.4868 |
+| Jev 30 yes/no in one call | nq | 820 | input_tokens=5116130, output_tokens=446080 | 0.2149 |
+| Jev one Choice + none | nq | 820 | input_tokens=3533530, output_tokens=256414 | 0.1484 |
+| Jev 4-level rubric, 30 in one call | nq | 820 | input_tokens=5804930, output_tokens=372280 | 0.2438 |
+| Jev 45 duels in one call (top 10) | nq | 820 | input_tokens=3010063, output_tokens=1441560 | 0.1264 |
+| Jev tournament (6 groups, then final) | nq | 1640 | input_tokens=4886396, output_tokens=415384 | 0.2052 |
+| Jev cascade (batch prune, then 8 pairs) | nq | 7380 | input_tokens=8335183, output_tokens=590400 | 0.3501 |
+| Jev one Choice, passages reversed | nq | 500 | input_tokens=2150207, output_tokens=156370 | 0.0903 |
+| Cohere Rerank 4 Pro | nfcorpus | 561 | search_units=561 | 1.4025 |
+| Cohere Rerank 4 Fast | nfcorpus | 561 | search_units=561 | 1.1220 |
+| ZeroEntropy zerank-2 | nfcorpus | 561 | total_tokens=6094994, total_bytes=29072565, inference_latency_s=278.06 | 0.1524 |
+| DeepSeek V4.1 Flash P(yes) per pair | nfcorpus | 16830 | prompt_tokens=6405640, completion_tokens=16830, total_tokens=6422470, cost=0.8, is_byok=0 | 0.8039 |
+| DeepSeek V4.1 Flash JSON, 30 in one call | nfcorpus | 561 | prompt_tokens=5510474, completion_tokens=117810, total_tokens=5628284, cost=0.87, is_byok=0 | 0.8748 |
+| Jev yes/no per pair | nfcorpus | 16830 | input_tokens=11913246, output_tokens=370260 | 0.5004 |
+| Jev 30 yes/no in one call | nfcorpus | 561 | input_tokens=7562795, output_tokens=305184 | 0.3176 |
+| Jev one Choice + none | nfcorpus | 561 | input_tokens=6480065, output_tokens=175127 | 0.2722 |
+| Jev 4-level rubric, 30 in one call | nfcorpus | 561 | input_tokens=8034035, output_tokens=254694 | 0.3374 |
+| Jev 45 duels in one call (top 10) | nfcorpus | 561 | input_tokens=3361512, output_tokens=986238 | 0.1412 |
+| Jev tournament (6 groups, then final) | nfcorpus | 1122 | input_tokens=8203257, output_tokens=283038 | 0.3445 |
+| Jev cascade (batch prune, then 8 pairs) | nfcorpus | 5049 | input_tokens=10813409, output_tokens=403920 | 0.4542 |
+| Jev one Choice, passages reversed | nfcorpus | 323 | input_tokens=3718188, output_tokens=100895 | 0.1562 |
+| Cohere Rerank 4 Pro | trec-covid | 93 | search_units=93 | 0.2325 |
+| Cohere Rerank 4 Fast | trec-covid | 93 | search_units=93 | 0.1860 |
+| ZeroEntropy zerank-2 | trec-covid | 93 | total_tokens=757658, total_bytes=3879586, inference_latency_s=42.62 | 0.0189 |
+| DeepSeek V4.1 Flash P(yes) per pair | trec-covid | 2790 | prompt_tokens=823912, completion_tokens=2790, total_tokens=826702, cost=0.12, is_byok=0 | 0.1158 |
+| DeepSeek V4.1 Flash JSON, 30 in one call | trec-covid | 93 | prompt_tokens=652775, completion_tokens=19530, total_tokens=672305, cost=0.11, is_byok=0 | 0.1092 |
+| Jev yes/no per pair | trec-covid | 2790 | input_tokens=1708982, output_tokens=61380 | 0.0718 |
+| Jev 30 yes/no in one call | trec-covid | 93 | input_tokens=962466, output_tokens=50592 | 0.0404 |
+| Jev one Choice + none | trec-covid | 93 | input_tokens=782976, output_tokens=29085 | 0.0329 |
+| Jev 4-level rubric, 30 in one call | trec-covid | 93 | input_tokens=1040586, output_tokens=42222 | 0.0437 |
+| Jev 45 duels in one call (top 10) | trec-covid | 93 | input_tokens=461524, output_tokens=163494 | 0.0194 |
+| Jev tournament (6 groups, then final) | trec-covid | 186 | input_tokens=1018625, output_tokens=47410 | 0.0428 |
+| Jev cascade (batch prune, then 8 pairs) | trec-covid | 837 | input_tokens=1448712, output_tokens=66960 | 0.0608 |
+| Jev one Choice, passages reversed | trec-covid | 50 | input_tokens=430350, output_tokens=15644 | 0.0181 |
+| Cohere Rerank 4 Pro | bright-biology | 142 | search_units=142 | 0.3550 |
+| Cohere Rerank 4 Fast | bright-biology | 142 | search_units=142 | 0.2840 |
+| ZeroEntropy zerank-2 | bright-biology | 142 | total_tokens=980428, total_bytes=4909820, inference_latency_s=55.62 | 0.0245 |
+| DeepSeek V4.1 Flash P(yes) per pair | bright-biology | 4260 | prompt_tokens=1145566, completion_tokens=4260, total_tokens=1149826, cost=0.14, is_byok=0 | 0.1361 |
+| DeepSeek V4.1 Flash JSON, 30 in one call | bright-biology | 142 | prompt_tokens=468333, completion_tokens=29820, total_tokens=498153, cost=0.08, is_byok=0 | 0.0831 |
+| Jev yes/no per pair | bright-biology | 4260 | input_tokens=2428927, output_tokens=93720 | 0.1020 |
+| Jev 30 yes/no in one call | bright-biology | 142 | input_tokens=865797, output_tokens=77248 | 0.0364 |
+| Jev one Choice + none | bright-biology | 142 | input_tokens=591737, output_tokens=44342 | 0.0249 |
+| Jev 4-level rubric, 30 in one call | bright-biology | 142 | input_tokens=985077, output_tokens=64468 | 0.0414 |
+| Jev 45 duels in one call (top 10) | bright-biology | 142 | input_tokens=532378, output_tokens=249636 | 0.0224 |
+| Jev tournament (6 groups, then final) | bright-biology | 284 | input_tokens=834373, output_tokens=71714 | 0.0350 |
+| Jev cascade (batch prune, then 8 pairs) | bright-biology | 1278 | input_tokens=1532455, output_tokens=102240 | 0.0644 |
+| Jev one Choice, passages reversed | bright-biology | 103 | input_tokens=429040, output_tokens=32167 | 0.0180 |
+| Cohere Rerank 4 Pro | bright-economics | 141 | search_units=141 | 0.3525 |
+| Cohere Rerank 4 Fast | bright-economics | 141 | search_units=141 | 0.2820 |
+| ZeroEntropy zerank-2 | bright-economics | 141 | total_tokens=1585926, total_bytes=7216913, inference_latency_s=73.34 | 0.0396 |
+| DeepSeek V4.1 Flash P(yes) per pair | bright-economics | 4230 | prompt_tokens=1725455, completion_tokens=4230, total_tokens=1729685, cost=0.19, is_byok=0 | 0.1905 |
+| DeepSeek V4.1 Flash JSON, 30 in one call | bright-economics | 141 | prompt_tokens=855818, completion_tokens=29610, total_tokens=885428, cost=0.14, is_byok=0 | 0.1373 |
+| Jev yes/no per pair | bright-economics | 4230 | input_tokens=3081712, output_tokens=93060 | 0.1294 |
+| Jev 30 yes/no in one call | bright-economics | 141 | input_tokens=1280105, output_tokens=76704 | 0.0538 |
+| Jev one Choice + none | bright-economics | 141 | input_tokens=1007975, output_tokens=44031 | 0.0423 |
+| Jev 4-level rubric, 30 in one call | bright-economics | 141 | input_tokens=1398545, output_tokens=64014 | 0.0587 |
+| Jev 45 duels in one call (top 10) | bright-economics | 141 | input_tokens=679370, output_tokens=247878 | 0.0285 |
+| Jev tournament (6 groups, then final) | bright-economics | 282 | input_tokens=1358113, output_tokens=71300 | 0.0570 |
+| Jev cascade (batch prune, then 8 pairs) | bright-economics | 1269 | input_tokens=2150753, output_tokens=101520 | 0.0903 |
+| Jev one Choice, passages reversed | bright-economics | 103 | input_tokens=736010, output_tokens=32165 | 0.0309 |
+| Cohere Rerank 4 Pro | bright-earth_science | 173 | search_units=173 | 0.4325 |
+| Cohere Rerank 4 Fast | bright-earth_science | 173 | search_units=173 | 0.3460 |
+| ZeroEntropy zerank-2 | bright-earth_science | 173 | total_tokens=1288797, total_bytes=6151682, inference_latency_s=59.79 | 0.0322 |
+| DeepSeek V4.1 Flash P(yes) per pair | bright-earth_science | 5190 | prompt_tokens=1483861, completion_tokens=5190, total_tokens=1489051, cost=0.19, is_byok=0 | 0.1919 |
+| DeepSeek V4.1 Flash JSON, 30 in one call | bright-earth_science | 173 | prompt_tokens=705715, completion_tokens=36330, total_tokens=742045, cost=0.12, is_byok=0 | 0.1201 |
+| Jev yes/no per pair | bright-earth_science | 5190 | input_tokens=3073716, output_tokens=114180 | 0.1291 |
+| Jev 30 yes/no in one call | bright-earth_science | 173 | input_tokens=1208629, output_tokens=94112 | 0.0508 |
+| Jev one Choice + none | bright-earth_science | 173 | input_tokens=874739, output_tokens=54023 | 0.0367 |
+| Jev 4-level rubric, 30 in one call | bright-earth_science | 173 | input_tokens=1353949, output_tokens=78542 | 0.0569 |
+| Jev 45 duels in one call (top 10) | bright-earth_science | 173 | input_tokens=700941, output_tokens=304134 | 0.0294 |
+| Jev tournament (6 groups, then final) | bright-earth_science | 346 | input_tokens=1211888, output_tokens=87410 | 0.0509 |
+| Jev cascade (batch prune, then 8 pairs) | bright-earth_science | 1557 | input_tokens=2064033, output_tokens=124560 | 0.0867 |
+| Jev one Choice, passages reversed | bright-earth_science | 173 | input_tokens=874739, output_tokens=54031 | 0.0367 |
+| Cohere Rerank 4 Pro | bright-psychology | 130 | search_units=130 | 0.3250 |
+| Cohere Rerank 4 Fast | bright-psychology | 130 | search_units=130 | 0.2600 |
+| ZeroEntropy zerank-2 | bright-psychology | 130 | total_tokens=1202021, total_bytes=5843241, inference_latency_s=58.89 | 0.0301 |
+| DeepSeek V4.1 Flash P(yes) per pair | bright-psychology | 3900 | prompt_tokens=1351308, completion_tokens=3900, total_tokens=1355208, cost=0.16, is_byok=0 | 0.1603 |
+| DeepSeek V4.1 Flash JSON, 30 in one call | bright-psychology | 130 | prompt_tokens=650717, completion_tokens=27300, total_tokens=678017, cost=0.11, is_byok=0 | 0.1085 |
+| Jev yes/no per pair | bright-psychology | 3900 | input_tokens=2558237, output_tokens=85800 | 0.1074 |
+| Jev 30 yes/no in one call | bright-psychology | 130 | input_tokens=1029178, output_tokens=70720 | 0.0432 |
+| Jev one Choice + none | bright-psychology | 130 | input_tokens=778278, output_tokens=40570 | 0.0327 |
+| Jev 4-level rubric, 30 in one call | bright-psychology | 130 | input_tokens=1138378, output_tokens=59020 | 0.0478 |
+| Jev 45 duels in one call (top 10) | bright-psychology | 130 | input_tokens=559781, output_tokens=228540 | 0.0235 |
+| Jev tournament (6 groups, then final) | bright-psychology | 260 | input_tokens=1072770, output_tokens=65516 | 0.0451 |
+| Jev cascade (batch prune, then 8 pairs) | bright-psychology | 1170 | input_tokens=1763713, output_tokens=93600 | 0.0741 |
+| Jev one Choice, passages reversed | bright-psychology | 130 | input_tokens=778278, output_tokens=40570 | 0.0327 |
+| Cohere Rerank 4 Pro | bright-robotics | 136 | search_units=170 | 0.4250 |
+| Cohere Rerank 4 Fast | bright-robotics | 136 | search_units=170 | 0.3400 |
+| ZeroEntropy zerank-2 | bright-robotics | 136 | total_tokens=1875936, total_bytes=7735933, inference_latency_s=61.73 | 0.0469 |
+| DeepSeek V4.1 Flash P(yes) per pair | bright-robotics | 4080 | prompt_tokens=3659168, completion_tokens=4080, total_tokens=3663248, cost=0.2, is_byok=0 | 0.1964 |
+| DeepSeek V4.1 Flash JSON, 30 in one call | bright-robotics | 136 | prompt_tokens=842555, completion_tokens=28560, total_tokens=871115, cost=0.13, is_byok=0 | 0.1294 |
+| Jev yes/no per pair | bright-robotics | 4080 | input_tokens=5079305, output_tokens=89760 | 0.2133 |
+| Jev 30 yes/no in one call | bright-robotics | 136 | input_tokens=1228044, output_tokens=73984 | 0.0516 |
+| Jev one Choice + none | bright-robotics | 136 | input_tokens=965564, output_tokens=42454 | 0.0406 |
+| Jev 4-level rubric, 30 in one call | bright-robotics | 136 | input_tokens=1342284, output_tokens=61744 | 0.0564 |
+| Jev 45 duels in one call (top 10) | bright-robotics | 136 | input_tokens=714343, output_tokens=239088 | 0.0300 |
+| Jev tournament (6 groups, then final) | bright-robotics | 272 | input_tokens=1350015, output_tokens=68724 | 0.0567 |
+| Jev cascade (batch prune, then 8 pairs) | bright-robotics | 1224 | input_tokens=2614882, output_tokens=97920 | 0.1098 |
+| Jev one Choice, passages reversed | bright-robotics | 136 | input_tokens=965564, output_tokens=42480 | 0.0406 |
+| Cohere Rerank 4 Pro | bright-stackoverflow | 179 | search_units=185 | 0.4625 |
+| Cohere Rerank 4 Fast | bright-stackoverflow | 179 | search_units=185 | 0.3700 |
+| ZeroEntropy zerank-2 | bright-stackoverflow | 179 | total_tokens=3861511, total_bytes=15232103, inference_latency_s=103.36 | 0.0965 |
+| DeepSeek V4.1 Flash P(yes) per pair | bright-stackoverflow | 5370 | prompt_tokens=4299878, completion_tokens=5370, total_tokens=4305248, cost=0.36, is_byok=0 | 0.3637 |
+| DeepSeek V4.1 Flash JSON, 30 in one call | bright-stackoverflow | 179 | prompt_tokens=2382662, completion_tokens=37622, total_tokens=2420284, cost=0.35, is_byok=0 | 0.3505 |
+| Jev yes/no per pair | bright-stackoverflow | 5370 | input_tokens=6167646, output_tokens=118140 | 0.2590 |
+| Jev 30 yes/no in one call | bright-stackoverflow | 179 | input_tokens=3008146, output_tokens=97376 | 0.1263 |
+| Jev one Choice + none | bright-stackoverflow | 179 | input_tokens=2662676, output_tokens=55889 | 0.1118 |
+| Jev 4-level rubric, 30 in one call | bright-stackoverflow | 179 | input_tokens=3158506, output_tokens=81266 | 0.1327 |
+| Jev 45 duels in one call (top 10) | bright-stackoverflow | 179 | input_tokens=1322655, output_tokens=314682 | 0.0556 |
+| Jev tournament (6 groups, then final) | bright-stackoverflow | 358 | input_tokens=3342151, output_tokens=90404 | 0.1404 |
+| Jev cascade (batch prune, then 8 pairs) | bright-stackoverflow | 1611 | input_tokens=4622099, output_tokens=128880 | 0.1941 |
+| Jev one Choice, passages reversed | bright-stackoverflow | 179 | input_tokens=2662676, output_tokens=55897 | 0.1118 |
+| Cohere Rerank 4 Pro | bright-sustainable_living | 155 | search_units=155 | 0.3875 |
+| Cohere Rerank 4 Fast | bright-sustainable_living | 155 | search_units=155 | 0.3100 |
+| ZeroEntropy zerank-2 | bright-sustainable_living | 155 | total_tokens=1300737, total_bytes=6287815, inference_latency_s=61.16 | 0.0325 |
+| DeepSeek V4.1 Flash P(yes) per pair | bright-sustainable_living | 4650 | prompt_tokens=1481505, completion_tokens=4650, total_tokens=1486155, cost=0.17, is_byok=0 | 0.1716 |
+| DeepSeek V4.1 Flash JSON, 30 in one call | bright-sustainable_living | 155 | prompt_tokens=621284, completion_tokens=32582, total_tokens=653866, cost=0.11, is_byok=0 | 0.1055 |
+| Jev yes/no per pair | bright-sustainable_living | 4650 | input_tokens=2907105, output_tokens=102300 | 0.1221 |
+| Jev 30 yes/no in one call | bright-sustainable_living | 155 | input_tokens=1061413, output_tokens=84320 | 0.0446 |
+| Jev one Choice + none | bright-sustainable_living | 155 | input_tokens=762263, output_tokens=48377 | 0.0320 |
+| Jev 4-level rubric, 30 in one call | bright-sustainable_living | 155 | input_tokens=1191613, output_tokens=70370 | 0.0500 |
+| Jev 45 duels in one call (top 10) | bright-sustainable_living | 155 | input_tokens=626088, output_tokens=272490 | 0.0263 |
+| Jev tournament (6 groups, then final) | bright-sustainable_living | 310 | input_tokens=1069471, output_tokens=78232 | 0.0449 |
+| Jev cascade (batch prune, then 8 pairs) | bright-sustainable_living | 1395 | input_tokens=1890146, output_tokens=111600 | 0.0794 |
+| Jev one Choice, passages reversed | bright-sustainable_living | 155 | input_tokens=762263, output_tokens=48395 | 0.0320 |
+| Cohere Rerank 4 Pro | csn-python | 556 | search_units=572 | 1.4300 |
+| Cohere Rerank 4 Fast | csn-python | 556 | search_units=572 | 1.1440 |
+| ZeroEntropy zerank-2 | csn-python | 556 | total_tokens=5884101, total_bytes=27796530, inference_latency_s=340.97 | 0.1471 |
+| DeepSeek V4.1 Flash P(yes) per pair | csn-python | 16680 | prompt_tokens=7566051, completion_tokens=16680, total_tokens=7582731, cost=0.74, is_byok=0 | 0.7402 |
+| DeepSeek V4.1 Flash JSON, 30 in one call | csn-python | 556 | prompt_tokens=4463054, completion_tokens=116760, total_tokens=4579814, cost=0.71, is_byok=0 | 0.7105 |
+| Jev yes/no per pair | csn-python | 16680 | input_tokens=12372066, output_tokens=366960 | 0.5196 |
+| Jev 30 yes/no in one call | csn-python | 556 | input_tokens=5798454, output_tokens=302464 | 0.2435 |
+| Jev one Choice + none | csn-python | 556 | input_tokens=4725374, output_tokens=173662 | 0.1985 |
+| Jev 4-level rubric, 30 in one call | csn-python | 556 | input_tokens=6265494, output_tokens=252424 | 0.2632 |
+| Jev 45 duels in one call (top 10) | csn-python | 556 | input_tokens=2890448, output_tokens=977448 | 0.1214 |
+| Jev tournament (6 groups, then final) | csn-python | 1112 | input_tokens=6076198, output_tokens=279998 | 0.2552 |
+| Jev cascade (batch prune, then 8 pairs) | csn-python | 5004 | input_tokens=9084299, output_tokens=400320 | 0.3815 |
+| Jev one Choice, passages reversed | csn-python | 300 | input_tokens=2529041, output_tokens=93838 | 0.1062 |
+| Cohere Rerank 4 Pro | miracl-fr | 421 | search_units=421 | 1.0525 |
+| Cohere Rerank 4 Fast | miracl-fr | 421 | search_units=421 | 0.8420 |
+| ZeroEntropy zerank-2 | miracl-fr | 421 | total_tokens=1873503, total_bytes=8134231, inference_latency_s=135.22 | 0.0468 |
+| DeepSeek V4.1 Flash P(yes) per pair | miracl-fr | 12630 | prompt_tokens=2316276, completion_tokens=12630, total_tokens=2328906, cost=0.34, is_byok=0 | 0.3410 |
+| DeepSeek V4.1 Flash JSON, 30 in one call | miracl-fr | 421 | prompt_tokens=1569535, completion_tokens=88442, total_tokens=1657977, cost=0.26, is_byok=0 | 0.2643 |
+| Jev yes/no per pair | miracl-fr | 12630 | input_tokens=6062386, output_tokens=277860 | 0.2546 |
+| Jev 30 yes/no in one call | miracl-fr | 421 | input_tokens=2723737, output_tokens=229024 | 0.1144 |
+| Jev one Choice + none | miracl-fr | 421 | input_tokens=1911207, output_tokens=131609 | 0.0803 |
+| Jev 4-level rubric, 30 in one call | miracl-fr | 421 | input_tokens=3077377, output_tokens=191134 | 0.1292 |
+| Jev 45 duels in one call (top 10) | miracl-fr | 421 | input_tokens=1551620, output_tokens=740118 | 0.0652 |
+| Jev tournament (6 groups, then final) | miracl-fr | 842 | input_tokens=2613814, output_tokens=213554 | 0.1098 |
+| Jev cascade (batch prune, then 8 pairs) | miracl-fr | 3789 | input_tokens=4384198, output_tokens=303120 | 0.1841 |
+| Jev one Choice, passages reversed | miracl-fr | 269 | input_tokens=1221067, output_tokens=84109 | 0.0513 |

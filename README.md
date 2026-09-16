@@ -25,6 +25,7 @@ script in this repo.
 | Jev tournament (6 groups, then final) | 0.668 | 75% | 641 ms | 0.43 | 0.71 |
 | DeepSeek V4.1 Flash P(yes) per pair | 0.608 | 62% | 34.3 s | 1.38 | 0.65 |
 | Jev 45 duels in one call (top 10) | 0.580 | 66% | 324 ms | 0.21 | 0.65 |
+| Qwen2.5-1.5B RLCD, one passage per prompt (self-hosted) | 0.471 | 40% | 748 ms | 0.20 | 0.57 |
 | Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | 0.340 | 30% | 419 ms | 0.09 | 0.55 |
 | Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | 0.255 | 22% | 360 ms | 0.08 | 0.52 |
 | BM25 (floor) | 0.486 | 45% | – | 0 | 0.58 |
@@ -38,7 +39,10 @@ script in this repo.
 - The open-source "Qwen-2.5-1B-RLCD" recipe (Qwen2.5-1.5B, no training, all 30 keys scored in one batched pass), run with its own
   inference code on rented RTX 4090s: below the BM25 floor in both modes (Jev rubric ahead by +35.2 points, range +33.2 to +37.4,).
   Its yes/no score separates relevant from irrelevant passages by only 0.046 (Jev, same wording: 0.429) and drifts with
-  position (0.195, at slot 1, 0.384 at slot 30). NevIR: 7% and 19% of pairs, below the 25% of guessing. `rlcd_check.py` has the check.
+  position (0.195 at slot 1, 0.384 at slot 30). NevIR: 7% and 19% of pairs, below the 25% of guessing. `rlcd_check.py` has the check.
+  Given the easiest shape (one passage per prompt, one yes/no key, its own function) it reaches 0.471 nDCG, 40% right top picks: a tie with BM25
+  (gap -1.5, range -3.3 to +0.4, within noise), +21.6 points above its own 30-key version, NevIR 34%. Order test: the same 30 passages reversed change its top
+  pick 93% of the time (1617 questions; Jev Choice 25%); each probability moves by 0.160 on average (Jev 0.013.). Not noise: stable, and stably about position.
 - Where Jev loses, and it is real: FiQA (Cohere Pro by 5.0 points), Natural Questions (by 3.9), TREC-COVID
   (ZeroEntropy by 2.1, barely), French (Cohere Pro by 6.4).
 

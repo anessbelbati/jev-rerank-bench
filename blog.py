@@ -60,7 +60,7 @@ def sec(x):
 
 rows = {m: {"ndcg": en_avg(m, "ndcg10"), "top1": en_avg(m, "top1"), "ms": en_avg(m, "query_ms_median"), "call_ms": en_avg(m, "call_ms_median"),
             "cost": en_avg(m, "cost_per_1k_queries"), "none": en_avg(m, "nothing_relevant", "auroc"), "fa": en_avg(m, "nothing_relevant", "false_accept_rate"),
-            "ece": en_avg(m, "calibration", "ece"), "complete": complete(m)} for m in S["models"] if m != "jev-choice-reversed"}
+            "ece": en_avg(m, "calibration", "ece"), "complete": complete(m)} for m in S["models"] if not m.endswith("-reversed")}
 ranked = sorted((m for m in rows if rows[m]["complete"] and m != "bm25"), key=lambda m: -rows[m]["ndcg"])
 best = ranked[0]
 best_dedicated = max((m for m in DEDICATED if rows[m]["complete"]), key=lambda m: rows[m]["ndcg"])
@@ -142,7 +142,7 @@ P("## Results: ranking quality")
 P("")
 P("Per dataset, nDCG@10 (higher is better), scored questions in brackets:")
 P("")
-show = [m for m in ["cohere-pro", "cohere-fast", "zerank-2", "deepseek-json", "deepseek-pair", "qwen-rlcd-batch", "qwen-rlcd-rubric", "jev-choice", "jev-noul-batch", "jev-score-batch", "jev-noul-pair", "bm25"] if m in rows]
+show = [m for m in ["cohere-pro", "cohere-fast", "zerank-2", "deepseek-json", "deepseek-pair", "qwen-rlcd-batch", "qwen-rlcd-rubric", "qwen-rlcd-pair", "jev-choice", "jev-noul-batch", "jev-score-batch", "jev-noul-pair", "bm25"] if m in rows]
 P("| Dataset | " + " | ".join(LABELS[m] for m in show) + " |")
 P("|---|" + "---|" * len(show))
 for d in EN:
@@ -200,9 +200,32 @@ if "qwen-rlcd-batch" in rows and rows["qwen-rlcd-batch"]["complete"]:
          f"A 1.5B model asked to keep 30 passages apart in one prompt mostly answers from where the passage sits, not from what it says. " if CHK and q in CHK and "jev-noul-batch" in CHK else "")
       + "One honest note on the run: on 24 GB cards the model's one-shot pass ran out of memory on the longest code-heavy prompts (StackOverflow and robotics), so those rows were scored six keys at a time against the same prefill, which is the same arithmetic in smaller pieces; the raw rows say which ones.")
     P("")
+    qp = "qwen-rlcd-pair" if "qwen-rlcd-pair" in rows and rows["qwen-rlcd-pair"]["complete"] else None
+    if qp:
+        pr_pb = SIG["pairs"]["ndcg10"].get("qwen-rlcd-pair|bm25") if SIG else None
+        pr_pq = SIG["pairs"]["ndcg10"].get("qwen-rlcd-pair|qwen-rlcd-batch") if SIG else None
+        P(f"To be fair to the model rather than to the recipe, I also gave it the easiest possible shape: one passage per prompt, one yes/no key, thirty prompts per query, still scored by its own function. "
+          f"That version reaches nDCG {f(rows[qp]['ndcg'])} and a right top pick {pct(rows[qp]['top1'])} of the time"
+          + (f"; against BM25: {rng(pr_pb)}, {tag(pr_pb)}" if pr_pb else "") + (f"; against its own 30-key version: {rng(pr_pq)}, {tag(pr_pq)}" if pr_pq else "") + ". "
+          + (f"Its scores separate relevant from irrelevant passages by {f(CHK[qp]['gap'])}, against {f(CHK['jev-noul-pair']['gap'])} for Jev asked one passage at a time with the same words. " if CHK and qp in CHK and "jev-noul-pair" in CHK else "")
+          + f"It costs {sec(rows[qp]['ms'])} of GPU time per query (thirty prompts one after the other, ${f(rows[qp]['cost'], 3)} per 1,000)"
+          + (f", and it gets {pct(NEV[qp]['paired_accuracy'])} of NevIR pairs right" if NEV and qp in NEV else "") + ".")
+        P("")
+    pbq = {d: D[d].get("position_bias_qwen") for d in EN}; pbq = {d: x for d, x in pbq.items() if x}
+    pbj = {d: D[d].get("position_bias") for d in EN}; pbj = {d: x for d, x in pbj.items() if x}
+    if pbq and pbj:
+        rev_nq = sum(x["n"] for x in pbq.values()); same_q = sum(x["n"] * x["same_top1_share"] for x in pbq.values()) / rev_nq
+        move_q = sum(x["n"] * x["mean_abs_prob_diff"] for x in pbq.values()) / rev_nq
+        rev_nj = sum(x["n"] for x in pbj.values()); same_j = sum(x["n"] * x["same_top1_share"] for x in pbj.values()) / rev_nj
+        move_j = sum(x["n"] * x["mean_abs_prob_diff"] for x in pbj.values()) / rev_nj
+        P(f"Is it at least consistent, or is it noise? A forward pass with no sampling returns the same numbers on every repeat, so the repeat test is clean by construction; the order test is the one that bites. "
+          f"Send the same 30 passages in reverse order and the 30-key version changes its top pick {pct(1 - same_q)} of the time (pooled over the 8 datasets, {rev_nq} questions) and moves each passage's probability by {f(move_q)} on average; "
+          f"Jev's Choice, same test, changes its top pick {pct(1 - same_j)} of the time ({rev_nj} questions) and moves each probability by {f(move_j)}. "
+          f"So it is not random: it is stable, and stably wrong about where to look.")
+        P("")
 from common import BRIGHT
 BR = [d for d in BRIGHT if d in D]
-BR_MODELS = [m for m in ("cohere-pro", "zerank-2", "deepseek-json", "qwen-rlcd-batch", "jev-score-batch", "jev-choice", "jev-noul-batch") if all(m in D[d]["models"] and D[d]["models"][m]["failed"] == 0 for d in BR)]
+BR_MODELS = [m for m in ("cohere-pro", "zerank-2", "deepseek-json", "qwen-rlcd-batch", "qwen-rlcd-pair", "jev-score-batch", "jev-choice", "jev-noul-batch") if all(m in D[d]["models"] and D[d]["models"][m]["failed"] == 0 for d in BR)]
 if len(BR) > 2 and BR_MODELS:
     P("### The reasoning block: seven BRIGHT subsets")
     P("")
@@ -264,7 +287,7 @@ P("| Model | median per call | median per query (30 candidates) | $ per 1,000 qu
 P("|---|---|---|---|---|")
 bill = {"cohere-pro": "1 search unit per query", "cohere-fast": "1 search unit per query", "zerank-2": "the passages, at $0.025/M tokens",
         "deepseek-pair": "30 prompts per query at $0.15/M", "deepseek-json": "the passages once at $0.15/M", "jev-noul-pair": "30 states per query at $0.042/M",
-        "qwen-rlcd-batch": "GPU seconds on a rented RTX 4090 at $0.74/h", "qwen-rlcd-rubric": "GPU seconds on a rented RTX 4090 at $0.74/h",
+        "qwen-rlcd-batch": "GPU seconds on a rented RTX 4090 at $0.74/h", "qwen-rlcd-rubric": "GPU seconds on a rented RTX 4090 at $0.74/h", "qwen-rlcd-pair": "GPU seconds on a rented RTX 4090 at $0.74/h, 30 prompts in sequence",
         "jev-noul-batch": "the passages once + 30 questions at $0.042/M", "jev-choice": "the passages once + 1 question at $0.042/M",
         "jev-score-batch": "the passages once + 30 rubric questions at $0.042/M", "jev-duel": "10 passages + 45 questions", "jev-tournament": "two calls",
         "jev-cascade": "one batched call + 8 pair calls"}

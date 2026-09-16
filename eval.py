@@ -22,7 +22,7 @@ from common import CACHE, CANDIDATES, DATASETS, ENGLISH, RESULTS, read_jsonl, js
 MODELS = ["bm25", "cohere-pro", "cohere-fast", "zerank-2", "deepseek-pair", "deepseek-json",
           "jev-noul-pair", "jev-noul-batch", "jev-choice",
           "jev-score-batch", "jev-duel", "jev-tournament", "jev-cascade", "jev-choice-reversed",
-          "qwen-rlcd-batch", "qwen-rlcd-rubric"]
+          "qwen-rlcd-batch", "qwen-rlcd-rubric", "qwen-rlcd-pair", "qwen-rlcd-batch-reversed"]
 LABELS = {"bm25": "BM25 (floor)", "cohere-pro": "Cohere Rerank 4 Pro", "cohere-fast": "Cohere Rerank 4 Fast",
           "zerank-2": "ZeroEntropy zerank-2",
           "deepseek-pair": "DeepSeek V4.1 Flash P(yes) per pair", "deepseek-json": "DeepSeek V4.1 Flash JSON, 30 in one call",
@@ -30,9 +30,10 @@ LABELS = {"bm25": "BM25 (floor)", "cohere-pro": "Cohere Rerank 4 Pro", "cohere-f
           "jev-score-batch": "Jev 4-level rubric, 30 in one call", "jev-duel": "Jev 45 duels in one call (top 10)",
           "jev-tournament": "Jev tournament (6 groups, then final)", "jev-cascade": "Jev cascade (batch prune, then 8 pairs)",
           "jev-choice-reversed": "Jev one Choice, passages reversed",
-          "qwen-rlcd-batch": "Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted)", "qwen-rlcd-rubric": "Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted)"}
+          "qwen-rlcd-batch": "Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted)", "qwen-rlcd-rubric": "Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted)",
+          "qwen-rlcd-pair": "Qwen2.5-1.5B RLCD, one passage per prompt (self-hosted)", "qwen-rlcd-batch-reversed": "Qwen2.5-1.5B RLCD, 30 yes/no keys, passages reversed"}
 # Models whose scores are presented as probabilities and so can be held to calibration.
-PROB_MODELS = {"jev-noul-pair", "jev-noul-batch", "deepseek-pair", "qwen-rlcd-batch"}
+PROB_MODELS = {"jev-noul-pair", "jev-noul-batch", "deepseek-pair", "qwen-rlcd-batch", "qwen-rlcd-pair"}
 
 
 def load_run(model: str, dataset: str, variant: str) -> dict[str, dict]:
@@ -170,6 +171,7 @@ def evaluate() -> dict:
             dsres["models"][m] = res
         dsres["thresholds"] = thresholds(ds, cands, eval_qids)
         dsres["position_bias"] = position_bias(ds, cands, eval_qids)
+        dsres["position_bias_qwen"] = position_bias(ds, cands, eval_qids, "qwen-rlcd-batch", "qwen-rlcd-batch-reversed")
         out["datasets"][ds] = dsres
     return out
 
@@ -197,9 +199,9 @@ def thresholds(ds: str, cands: dict, eval_qids: list[str]) -> dict:
     return out
 
 
-def position_bias(ds: str, cands: dict, eval_qids: list[str]) -> dict | None:
+def position_bias(ds: str, cands: dict, eval_qids: list[str], normal: str = "jev-choice", reversed_: str = "jev-choice-reversed") -> dict | None:
     """Same 30 passages sent in reverse order: does the answer change?"""
-    a, b = load_run("jev-choice", ds, "present"), load_run("jev-choice-reversed", ds, "present")
+    a, b = load_run(normal, ds, "present"), load_run(reversed_, ds, "present")
     both = [q for q in eval_qids if q in a and q in b and a[q]["ok"] and b[q]["ok"]]
     if not both:
         return None
@@ -207,7 +209,7 @@ def position_bias(ds: str, cands: dict, eval_qids: list[str]) -> dict | None:
     nd_a = statistics.mean(ndcg(order(a[q]), cands[q]["relevant"]) for q in both)
     nd_b = statistics.mean(ndcg(order(b[q]), cands[q]["relevant"]) for q in both)
     mean_abs = statistics.mean(abs(x - y) for q in both for x, y in zip(a[q]["scores"], b[q]["scores"]))
-    none_diff = statistics.mean(abs(a[q]["extra"]["none_prob"] - b[q]["extra"]["none_prob"]) for q in both)
+    none_diff = statistics.mean(abs(a[q]["extra"]["none_prob"] - b[q]["extra"]["none_prob"]) for q in both) if "none_prob" in a[both[0]].get("extra", {}) else None
     return {"n": len(both), "same_top1_share": same_top1 / len(both), "ndcg10_normal": nd_a, "ndcg10_reversed": nd_b,
             "mean_abs_prob_diff": mean_abs, "mean_abs_none_prob_diff": none_diff}
 

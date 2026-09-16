@@ -75,7 +75,7 @@ def main() -> dict:
     overall = {}
     pairs = {}
     for met in ("ndcg10", "top1"):
-        models = [m for m in MODELS if all(m in boot_ds[ds][met] for ds in ENGLISH)]
+        models = [m for m in MODELS if not m.endswith("-reversed") and all(m in boot_ds[ds][met] for ds in ENGLISH)]
         boot = {m: np.mean([boot_ds[ds][met][m] for ds in ENGLISH], axis=0) for m in models}
         obs = {m: float(np.mean([obs_ds[ds][met][m] for ds in ENGLISH])) for m in models}
         best = max(models, key=lambda m: obs[m])
@@ -83,7 +83,8 @@ def main() -> dict:
         pairs[met] = {f"{a}|{b}": pair(boot, obs, a, b) for a, b in (("jev-score-batch", "cohere-pro"), ("jev-choice", "cohere-pro"),
                                                                        ("jev-noul-batch", "cohere-pro"), ("jev-score-batch", "zerank-2"),
                                                                        ("jev-choice", "jev-score-batch"), ("cohere-pro", "zerank-2"),
-                                                                       ("jev-score-batch", "deepseek-json"), ("jev-score-batch", "jev-noul-pair"))
+                                                                       ("jev-score-batch", "deepseek-json"), ("jev-score-batch", "jev-noul-pair"),
+                                                                       ("qwen-rlcd-pair", "bm25"), ("qwen-rlcd-batch", "bm25"), ("qwen-rlcd-pair", "qwen-rlcd-batch"))
                       if a in boot and b in boot}
         print(f"\n8-dataset average, {met}: best = {best} ({obs[best]:.3f})")
         for m in sorted(models, key=lambda m: -obs[m]):
@@ -94,7 +95,7 @@ def main() -> dict:
     bright = {}
     bsets = [d for d in BRIGHT if d in boot_ds]
     for met in ("ndcg10", "top1"):
-        models = [m for m in MODELS if all(m in boot_ds[ds][met] for ds in bsets)]
+        models = [m for m in MODELS if not m.endswith("-reversed") and all(m in boot_ds[ds][met] for ds in bsets)]
         boot = {m: np.mean([boot_ds[ds][met][m] for ds in bsets], axis=0) for m in models}
         obs = {m: float(np.mean([obs_ds[ds][met][m] for ds in bsets])) for m in models}
         best = max(models, key=lambda m: obs[m])

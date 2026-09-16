@@ -7,6 +7,10 @@ own `run_parallel_generation`, on a rented GPU, in two modes that mirror the Jev
 
 - qwen-rlcd-batch : 30 boolean keys, one per passage, same wording as Jev's yes/no; score = P(true)
 - qwen-rlcd-rubric: 30 enum keys with the same four-level rubric as Jev's Score mode; score = expected level / 3
+- qwen-rlcd-pair  : one passage per prompt, one boolean key, 30 prompts per query scored one after the other with the
+                    same function (the fairest shape for a small model: nothing to keep apart); score = P(true)
+- qwen-rlcd-batch-reversed: the batch mode with the 30 passages in reverse order (order-sensitivity test, like
+                    jev-choice-reversed); scores are mapped back to the original order
 
 Writes rows in the exact cache format run.py uses, so eval.py / significance.py / nevir_eval.py need no changes.
 Cost = GPU seconds × the pod's hourly price (passed in). Latency = wall clock of the model call on the GPU.
@@ -107,8 +111,30 @@ def run_parallel_chunked(context: str, schema, chunk: int = 6, temperature: floa
             "suffix_eval_ms": None, "sequential_forward_passes": passes, "field_telemetry": telemetry}
 
 
+def score_pairs(query: str, docs: list[str]):
+    """One prompt per passage, one boolean key, the recipe's own function each time; the query's time is the sum."""
+    from core.engine import run_parallel_generation
+    from core.schema import StructuredSchema
+    schema = StructuredSchema({"answer": {"type": "boolean", "description": QUESTION}})
+    t0 = time.perf_counter()
+    scores, per_passage = [], []
+    for d in docs:
+        res = run_parallel_generation(f"Query: {query}\n\nPassage: {d}", schema, temperature=1.0)
+        tel = res["field_telemetry"]["answer"]
+        scores.append({c["choice"]: c["probability"] for c in tel["top_choices"]}.get("true", 0.0))
+        per_passage.append({"prefill_ms": res["prefill_ms"], "suffix_eval_ms": res["suffix_eval_ms"], "top_choices": tel["top_choices"]})
+    ms = (time.perf_counter() - t0) * 1000
+    return scores, ms, {"mode": "pair_sequential", "elapsed_ms": round(ms, 2), "prompts": len(docs), "per_passage": per_passage}
+
+
 def score_row(mode: str, query: str, docs: list[str]):
     from core.engine import run_parallel_generation
+    if mode == "pair":
+        return score_pairs(query, docs)
+    if mode == "batch-reversed":
+        scores, ms, raw = score_row("batch", query, docs[::-1])
+        raw["passage_order"] = "reversed: p01 in the prompt is the last passage of the candidate list"
+        return scores[::-1], ms, raw
     schema = schema_for(mode, len(docs))
     t0 = time.perf_counter()
     try:
@@ -141,14 +167,17 @@ def main():
     ap.add_argument("--datasets", nargs="+", required=True)
     ap.add_argument("--modes", nargs="+", default=["batch", "rubric"])
     ap.add_argument("--max-chars", type=int, default=2000)
+    ap.add_argument("--variants", nargs="+", default=["present", "absent"])
+    ap.add_argument("--shard", default="0/1", help="k/n: this pod takes every n-th row starting at k")
     args = ap.parse_args()
+    shard_k, shard_n = (int(x) for x in args.shard.split("/"))
     root = Path(args.root)
     for mode in args.modes:
         key = f"qwen-rlcd-{mode}"
         for ds in args.datasets:
             docs = {r["did"]: r["text"] for r in read_jsonl(root / "candidates" / f"{ds}.docs.jsonl")}
-            rows = read_jsonl(root / "candidates" / f"{ds}.jsonl")
-            for variant in ("present", "absent"):
+            rows = read_jsonl(root / "candidates" / f"{ds}.jsonl")[shard_k::shard_n]
+            for variant in args.variants:
                 out = root / "cache" / key / f"{ds}.{variant}.jsonl"
                 out.parent.mkdir(parents=True, exist_ok=True)
                 done = {r["qid"] for r in map(json.loads, open(out, encoding="utf-8")) if r["ok"]} if out.exists() else set()

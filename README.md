@@ -106,6 +106,8 @@ first stage, stated as such. (100 passages at 2,000 characters is ~35,000 tokens
 | `jev-cascade` | `jev-latest` | one batched yes/no call prunes 30 to 8, then per-pair yes/no on the 8 |
 | `jev-choice-reversed` | `jev-latest` | `jev-choice` with the passages sent in reverse order (position-bias check only) |
 | `qwen-rlcd-batch` / `qwen-rlcd-rubric` | Qwen2.5-1.5B-Instruct with parallel constrained decoding of JSON keys (the open-source "Qwen-2.5-1B-RLCD" recipe posted the day after Jev's launch; no training; transformers port `shreyansh26/Qwen-2.5-1B-RLCD`, Apache 2.0), self-hosted on rented RTX 4090s | one prefill per query, then all 30 keys scored in one batched pass with the model's own `run_parallel_generation`; 30 boolean keys with Jev's wording (score = P(true)) or 30 enum keys with Jev's 4-level rubric (score = expected level); when the one-shot pass runs out of memory on a 24 GB card (the longest code-heavy prompts in StackOverflow and robotics) the same keys are scored six at a time against the same prefill, and the raw row says so; `rlcd_runner.py` |
+| `qwen-rlcd-pair` | same model and code | the fairest shape for a small model: one passage per prompt, one boolean key with Jev's wording, 30 prompts per query scored one after the other with the recipe's own function; score = P(true); latency = the sum of the 30 |
+| `qwen-rlcd-batch-reversed` | same | `qwen-rlcd-batch` with the 30 passages in reverse order (order-sensitivity check, the twin of `jev-choice-reversed`); never in the rankings |
 
 Jev, DeepSeek and the Qwen RLCD runs get the same wording: *"Does the passage contain the information needed to answer or verify the
 query?"* (`rerankers/__init__.py`). Cohere and ZeroEntropy take the query and the documents.

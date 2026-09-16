@@ -678,9 +678,9 @@
     "jev-duel": 0.5797250152202047,
     "jev-tournament": 0.6678177757618404,
     "jev-cascade": 0.6738662379430074,
-    "jev-choice-reversed": 0.6800674513908092,
     "qwen-rlcd-batch": 0.25506357152518827,
-    "qwen-rlcd-rubric": 0.3400117498419044
+    "qwen-rlcd-rubric": 0.3400117498419044,
+    "qwen-rlcd-pair": 0.47108378199994794
    },
    "vs_best": {
     "bm25": {
@@ -815,17 +815,6 @@
      "p": 0.0,
      "real": true
     },
-    "jev-choice-reversed": {
-     "a": "jev-score-batch",
-     "b": "jev-choice-reversed",
-     "diff": 0.012071502788325361,
-     "ci95": [
-      0.0037154520878107528,
-      0.02065808024963661
-     ],
-     "p": 0.0048,
-     "real": true
-    },
     "qwen-rlcd-batch": {
      "a": "jev-score-batch",
      "b": "qwen-rlcd-batch",
@@ -844,6 +833,17 @@
      "ci95": [
       0.3316625691570344,
       0.37356206685997406
+     ],
+     "p": 0.0,
+     "real": true
+    },
+    "qwen-rlcd-pair": {
+     "a": "jev-score-batch",
+     "b": "qwen-rlcd-pair",
+     "diff": 0.22105517217918658,
+     "ci95": [
+      0.20256860678149646,
+      0.23947255902481812
      ],
      "p": 0.0,
      "real": true
@@ -866,9 +866,9 @@
     "jev-duel": 0.658340912260044,
     "jev-tournament": 0.7525572837112784,
     "jev-cascade": 0.6947190809040311,
-    "jev-choice-reversed": 0.7354040908479265,
     "qwen-rlcd-batch": 0.22004848951823935,
-    "qwen-rlcd-rubric": 0.2962103996329274
+    "qwen-rlcd-rubric": 0.2962103996329274,
+    "qwen-rlcd-pair": 0.4004517485540957
    },
    "vs_best": {
     "bm25": {
@@ -1003,17 +1003,6 @@
      "p": 0.0,
      "real": true
     },
-    "jev-choice-reversed": {
-     "a": "jev-choice",
-     "b": "jev-choice-reversed",
-     "diff": 0.02194365095700679,
-     "ci95": [
-      -0.004281231299969504,
-      0.049205554649686484
-     ],
-     "p": 0.1044,
-     "real": false
-    },
     "qwen-rlcd-batch": {
      "a": "jev-choice",
      "b": "qwen-rlcd-batch",
@@ -1032,6 +1021,17 @@
      "ci95": [
       0.4218373850800268,
       0.5007172630057112
+     ],
+     "p": 0.0,
+     "real": true
+    },
+    "qwen-rlcd-pair": {
+     "a": "jev-choice",
+     "b": "qwen-rlcd-pair",
+     "diff": 0.35689599325083754,
+     "ci95": [
+      0.3177097035309883,
+      0.3976499305827484
      ],
      "p": 0.0,
      "real": true
@@ -1128,6 +1128,39 @@
     ],
     "p": 0.0,
     "real": true
+   },
+   "qwen-rlcd-pair|bm25": {
+    "a": "qwen-rlcd-pair",
+    "b": "bm25",
+    "diff": -0.014980230918543058,
+    "ci95": [
+     -0.0332817550568905,
+     0.003614927822763413
+    ],
+    "p": 0.11,
+    "real": false
+   },
+   "qwen-rlcd-batch|bm25": {
+    "a": "qwen-rlcd-batch",
+    "b": "bm25",
+    "diff": -0.23100044139330272,
+    "ci95": [
+     -0.255125701226404,
+     -0.20612227741919886
+    ],
+    "p": 0.0,
+    "real": true
+   },
+   "qwen-rlcd-pair|qwen-rlcd-batch": {
+    "a": "qwen-rlcd-pair",
+    "b": "qwen-rlcd-batch",
+    "diff": 0.21602021047475967,
+    "ci95": [
+     0.19315046832300323,
+     0.23805153281978222
+    ],
+    "p": 0.0,
+    "real": true
    }
   },
   "top1": {
@@ -1218,6 +1251,39 @@
     ],
     "p": 0.0002,
     "real": true
+   },
+   "qwen-rlcd-pair|bm25": {
+    "a": "qwen-rlcd-pair",
+    "b": "bm25",
+    "diff": -0.053018527166601326,
+    "ci95": [
+     -0.09106493462547059,
+     -0.01485200567922203
+    ],
+    "p": 0.0068,
+    "real": true
+   },
+   "qwen-rlcd-batch|bm25": {
+    "a": "qwen-rlcd-batch",
+    "b": "bm25",
+    "diff": -0.23342178620245768,
+    "ci95": [
+     -0.27191228649488675,
+     -0.19471263797588262
+    ],
+    "p": 0.0,
+    "real": true
+   },
+   "qwen-rlcd-pair|qwen-rlcd-batch": {
+    "a": "qwen-rlcd-pair",
+    "b": "qwen-rlcd-batch",
+    "diff": 0.18040325903585636,
+    "ci95": [
+     0.14172109440545758,
+     0.2171939312279145
+    ],
+    "p": 0.0,
+    "real": true
    }
   }
  },
@@ -1248,9 +1314,9 @@
     "jev-duel": 0.3283214572013661,
     "jev-tournament": 0.4679262489190918,
     "jev-cascade": 0.47603667470001226,
-    "jev-choice-reversed": 0.4739618488721253,
     "qwen-rlcd-batch": 0.1572880876089171,
-    "qwen-rlcd-rubric": 0.16451641210342433
+    "qwen-rlcd-rubric": 0.16451641210342433,
+    "qwen-rlcd-pair": 0.24068840137221528
    },
    "vs_best": {
     "bm25": {
@@ -1385,17 +1451,6 @@
      "p": 0.001,
      "real": true
     },
-    "jev-choice-reversed": {
-     "a": "jev-score-batch",
-     "b": "jev-choice-reversed",
-     "diff": 0.019308251379217323,
-     "ci95": [
-      0.004520672911075082,
-      0.034554033801948845
-     ],
-     "p": 0.0112,
-     "real": true
-    },
     "qwen-rlcd-batch": {
      "a": "jev-score-batch",
      "b": "qwen-rlcd-batch",
@@ -1414,6 +1469,17 @@
      "ci95": [
       0.29495486972367113,
       0.36211770683267663
+     ],
+     "p": 0.0,
+     "real": true
+    },
+    "qwen-rlcd-pair": {
+     "a": "jev-score-batch",
+     "b": "qwen-rlcd-pair",
+     "diff": 0.2525816988791273,
+     "ci95": [
+      0.22109106064141448,
+      0.28427206686945966
      ],
      "p": 0.0,
      "real": true
@@ -1457,9 +1523,9 @@
     "jev-duel": 0.4279125371599653,
     "jev-tournament": 0.596771575314915,
     "jev-cascade": 0.548586831720814,
-    "jev-choice-reversed": 0.5868341567331486,
     "qwen-rlcd-batch": 0.12002924228102348,
-    "qwen-rlcd-rubric": 0.1293638195803082
+    "qwen-rlcd-rubric": 0.1293638195803082,
+    "qwen-rlcd-pair": 0.17629813024893748
    },
    "vs_best": {
     "bm25": {
@@ -1594,17 +1660,6 @@
      "p": 0.0548,
      "real": false
     },
-    "jev-choice-reversed": {
-     "a": "deepseek-json",
-     "b": "jev-choice-reversed",
-     "diff": 0.010300172261159424,
-     "ci95": [
-      -0.0390748548044738,
-      0.05930167466685675
-     ],
-     "p": 0.6848,
-     "real": false
-    },
     "qwen-rlcd-batch": {
      "a": "deepseek-json",
      "b": "qwen-rlcd-batch",
@@ -1623,6 +1678,17 @@
      "ci95": [
       0.4050801453712343,
       0.5282843687660946
+     ],
+     "p": 0.0,
+     "real": true
+    },
+    "qwen-rlcd-pair": {
+     "a": "deepseek-json",
+     "b": "qwen-rlcd-pair",
+     "diff": 0.4208361987453706,
+     "ci95": [
+      0.3587628833579523,
+      0.4815287417817864
      ],
      "p": 0.0,
      "real": true

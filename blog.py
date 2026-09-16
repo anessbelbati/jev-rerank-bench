@@ -27,6 +27,7 @@ SIG = json.load(open(RESULTS / "significance.json", encoding="utf-8")) if (RESUL
 def rng(pr): return f"gap {100 * pr['diff']:+.1f} points, 95% range {100 * pr['ci95'][0]:+.1f} to {100 * pr['ci95'][1]:+.1f}"
 def tag(pr): return ("real" if pr["p"] < 0.01 else f"real, but barely (p = {pr['p']:.3f})") if pr["real"] else "within noise"
 NEV = json.load(open(RESULTS / "nevir.json", encoding="utf-8")) if (RESULTS / "nevir.json").exists() else None
+CHK = json.load(open(RESULTS / "rlcd_check.json", encoding="utf-8")) if (RESULTS / "rlcd_check.json").exists() else None
 
 
 def complete(m: str) -> bool:
@@ -141,7 +142,7 @@ P("## Results: ranking quality")
 P("")
 P("Per dataset, nDCG@10 (higher is better), scored questions in brackets:")
 P("")
-show = [m for m in ["cohere-pro", "cohere-fast", "zerank-2", "deepseek-json", "deepseek-pair", "jev-choice", "jev-noul-batch", "jev-score-batch", "jev-noul-pair", "bm25"] if m in rows]
+show = [m for m in ["cohere-pro", "cohere-fast", "zerank-2", "deepseek-json", "deepseek-pair", "qwen-rlcd-batch", "qwen-rlcd-rubric", "jev-choice", "jev-noul-batch", "jev-score-batch", "jev-noul-pair", "bm25"] if m in rows]
 P("| Dataset | " + " | ".join(LABELS[m] for m in show) + " |")
 P("|---|" + "---|" * len(show))
 for d in EN:
@@ -179,9 +180,29 @@ P(f"Among the Jev setups, the simple ones win: {LABELS[best_jev_simple]} at {f(r
   f"The pairwise duels idea ({f(rows['jev-duel']['ndcg'])}) fails because it only duels BM25's top 10, and the answer is often lower; "
   f"tournament ({f(rows['jev-tournament']['ndcg'])}) and cascade ({f(rows['jev-cascade']['ndcg'])}) don't beat one plain call either.")
 P("")
+if "qwen-rlcd-batch" in rows and rows["qwen-rlcd-batch"]["complete"]:
+    q = "qwen-rlcd-batch"; qr = "qwen-rlcd-rubric" if "qwen-rlcd-rubric" in rows and rows["qwen-rlcd-rubric"]["complete"] else None
+    best_q = max([m for m in (q, qr) if m], key=lambda m: rows[m]["ndcg"])
+    pr_q = SIG["overall"]["ndcg10"]["vs_best"].get(best_q) if SIG else None
+    P("### The open-source answer: a 1.5B model with parallel constrained decoding")
+    P("")
+    P(f"The day after the launch, several people posted the same idea on Hugging Face under the name \"Qwen-2.5-1B-RLCD\": take Qwen2.5-1.5B-Instruct, no training, prefill the prompt once, then score every JSON key in one batched pass by a softmax over the allowed answers. "
+      f"It is exactly the shape of Jev's one-call modes, so I ran it the same two ways, with the model's own inference code, on rented RTX 4090s: 30 yes/no keys with Jev's wording, and 30 keys with Jev's four-level rubric. "
+      f"Result on the 8-dataset headline: {LABELS[q]} {f(rows[q]['ndcg'])}" + (f", {LABELS[qr]} {f(rows[qr]['ndcg'])}" if qr else "") + f", against {f(rows[best]['ndcg'])} for {LABELS[best]}"
+      + (f" ({rng(pr_q)}, {tag(pr_q)})" if pr_q else "") + f"; top pick {pct(rows[best_q]['top1'])} vs {pct(rows[top1_best]['top1'])}. "
+      f"Per query it took {sec(rows[best_q]['ms'])} of GPU time on the 4090 (${f(rows[best_q]['cost'], 3)} per 1,000 queries at the pod's hourly price, setup not counted), "
+      f"and it keeps its probabilities, so it also gets a calibration row and a NevIR row below. The recipe is real and cheap; whether a 1.5B model is enough is what the numbers say.")
+    P("")
+    P(f"They say no. Both versions land below the BM25 order they were handed ({f(rows['bm25']['ndcg'])}): the model makes the keyword ranking worse. "
+      + (f"The scores are not random, just weak: over the 8 datasets a relevant passage scores {f(CHK[q]['relevant_mean'])} on average and an irrelevant one {f(CHK[q]['non_relevant_mean'])} in the yes/no version (gap {f(CHK[q]['gap'])}), "
+         f"against {f(CHK['jev-noul-batch']['relevant_mean'])} vs {f(CHK['jev-noul-batch']['non_relevant_mean'])} (gap {f(CHK['jev-noul-batch']['gap'])}) for Jev's yes/no with the same wording and the same 30 passages in one call. "
+         f"And the yes/no version drifts with position: the 30th passage in the list averages {f(CHK[q]['position_mean']['30'])} and the 1st {f(CHK[q]['position_mean']['1'])}, although the 1st is far more often the relevant one. "
+         f"A 1.5B model asked to keep 30 passages apart in one prompt mostly answers from where the passage sits, not from what it says. " if CHK and q in CHK and "jev-noul-batch" in CHK else "")
+      + "One honest note on the run: on 24 GB cards the model's one-shot pass ran out of memory on the longest code-heavy prompts (StackOverflow and robotics), so those rows were scored six keys at a time against the same prefill, which is the same arithmetic in smaller pieces; the raw rows say which ones.")
+    P("")
 from common import BRIGHT
 BR = [d for d in BRIGHT if d in D]
-BR_MODELS = [m for m in ("cohere-pro", "zerank-2", "deepseek-json", "jev-score-batch", "jev-choice", "jev-noul-batch") if all(m in D[d]["models"] and D[d]["models"][m]["failed"] == 0 for d in BR)]
+BR_MODELS = [m for m in ("cohere-pro", "zerank-2", "deepseek-json", "qwen-rlcd-batch", "jev-score-batch", "jev-choice", "jev-noul-batch") if all(m in D[d]["models"] and D[d]["models"][m]["failed"] == 0 for d in BR)]
 if len(BR) > 2 and BR_MODELS:
     P("### The reasoning block: seven BRIGHT subsets")
     P("")
@@ -243,6 +264,7 @@ P("| Model | median per call | median per query (30 candidates) | $ per 1,000 qu
 P("|---|---|---|---|---|")
 bill = {"cohere-pro": "1 search unit per query", "cohere-fast": "1 search unit per query", "zerank-2": "the passages, at $0.025/M tokens",
         "deepseek-pair": "30 prompts per query at $0.15/M", "deepseek-json": "the passages once at $0.15/M", "jev-noul-pair": "30 states per query at $0.042/M",
+        "qwen-rlcd-batch": "GPU seconds on a rented RTX 4090 at $0.74/h", "qwen-rlcd-rubric": "GPU seconds on a rented RTX 4090 at $0.74/h",
         "jev-noul-batch": "the passages once + 30 questions at $0.042/M", "jev-choice": "the passages once + 1 question at $0.042/M",
         "jev-score-batch": "the passages once + 30 rubric questions at $0.042/M", "jev-duel": "10 passages + 45 questions", "jev-tournament": "two calls",
         "jev-cascade": "one batched call + 8 pair calls"}
@@ -386,7 +408,7 @@ P(f"- **Skip:** the yes/no-per-pair pattern in TypeSafe's cookbook (dearer and w
 P("")
 P("## Reproduce it")
 P("")
-P("Code, candidate lists, every raw API response and the scoring script: [GitHub link]. `uv sync`, put four keys in `.env`, `uv run candidates/build.py`, `uv run run.py --model <name> --dataset all`, `uv run eval.py`. "
+P("Code, candidate lists, every raw API response and the scoring script: https://github.com/anessbelbati/jev-rerank-bench. `uv sync`, put four keys in `.env`, `uv run candidates/build.py`, `uv run run.py --model <name> --dataset all`, `uv run eval.py`. "
   f"The whole thing cost about ${sum(D[d]['models'][m]['cost_usd_all_variants'] for d in D for m in D[d]['models']) + (sum(v['cost_usd'] for m, v in NEV.items() if m in LABELS) if NEV else 0):.0f} in API calls.")
 
 (RESULTS / "BLOG-DRAFT.md").write_text("\n".join(L), encoding="utf-8")

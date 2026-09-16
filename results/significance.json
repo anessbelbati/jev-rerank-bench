@@ -678,7 +678,9 @@
     "jev-duel": 0.5797250152202047,
     "jev-tournament": 0.6678177757618404,
     "jev-cascade": 0.6738662379430074,
-    "jev-choice-reversed": 0.6800674513908092
+    "jev-choice-reversed": 0.6800674513908092,
+    "qwen-rlcd-batch": 0.25506357152518827,
+    "qwen-rlcd-rubric": 0.3400117498419044
    },
    "vs_best": {
     "bm25": {
@@ -823,6 +825,28 @@
      ],
      "p": 0.0048,
      "real": true
+    },
+    "qwen-rlcd-batch": {
+     "a": "jev-score-batch",
+     "b": "qwen-rlcd-batch",
+     "diff": 0.43707538265394624,
+     "ci95": [
+      0.4138116119755512,
+      0.46010428721471547
+     ],
+     "p": 0.0,
+     "real": true
+    },
+    "qwen-rlcd-rubric": {
+     "a": "jev-score-batch",
+     "b": "qwen-rlcd-rubric",
+     "diff": 0.3521272043372301,
+     "ci95": [
+      0.3316625691570344,
+      0.37356206685997406
+     ],
+     "p": 0.0,
+     "real": true
     }
    }
   },
@@ -842,7 +866,9 @@
     "jev-duel": 0.658340912260044,
     "jev-tournament": 0.7525572837112784,
     "jev-cascade": 0.6947190809040311,
-    "jev-choice-reversed": 0.7354040908479265
+    "jev-choice-reversed": 0.7354040908479265,
+    "qwen-rlcd-batch": 0.22004848951823935,
+    "qwen-rlcd-rubric": 0.2962103996329274
    },
    "vs_best": {
     "bm25": {
@@ -987,6 +1013,28 @@
      ],
      "p": 0.1044,
      "real": false
+    },
+    "qwen-rlcd-batch": {
+     "a": "jev-choice",
+     "b": "qwen-rlcd-batch",
+     "diff": 0.537299252286694,
+     "ci95": [
+      0.4963673413704691,
+      0.5784168605196001
+     ],
+     "p": 0.0,
+     "real": true
+    },
+    "qwen-rlcd-rubric": {
+     "a": "jev-choice",
+     "b": "qwen-rlcd-rubric",
+     "diff": 0.46113734217200586,
+     "ci95": [
+      0.4218373850800268,
+      0.5007172630057112
+     ],
+     "p": 0.0,
+     "real": true
     }
    }
   }
@@ -1200,7 +1248,9 @@
     "jev-duel": 0.3283214572013661,
     "jev-tournament": 0.4679262489190918,
     "jev-cascade": 0.47603667470001226,
-    "jev-choice-reversed": 0.4739618488721253
+    "jev-choice-reversed": 0.4739618488721253,
+    "qwen-rlcd-batch": 0.1572880876089171,
+    "qwen-rlcd-rubric": 0.16451641210342433
    },
    "vs_best": {
     "bm25": {
@@ -1345,6 +1395,28 @@
      ],
      "p": 0.0112,
      "real": true
+    },
+    "qwen-rlcd-batch": {
+     "a": "jev-score-batch",
+     "b": "qwen-rlcd-batch",
+     "diff": 0.3359820126424255,
+     "ci95": [
+      0.2979287891707544,
+      0.37334334102562816
+     ],
+     "p": 0.0,
+     "real": true
+    },
+    "qwen-rlcd-rubric": {
+     "a": "jev-score-batch",
+     "b": "qwen-rlcd-rubric",
+     "diff": 0.3287536881479183,
+     "ci95": [
+      0.29495486972367113,
+      0.36211770683267663
+     ],
+     "p": 0.0,
+     "real": true
     }
    },
    "jev_vs_other": {
@@ -1385,7 +1457,9 @@
     "jev-duel": 0.4279125371599653,
     "jev-tournament": 0.596771575314915,
     "jev-cascade": 0.548586831720814,
-    "jev-choice-reversed": 0.5868341567331486
+    "jev-choice-reversed": 0.5868341567331486,
+    "qwen-rlcd-batch": 0.12002924228102348,
+    "qwen-rlcd-rubric": 0.1293638195803082
    },
    "vs_best": {
     "bm25": {
@@ -1530,6 +1604,28 @@
      ],
      "p": 0.6848,
      "real": false
+    },
+    "qwen-rlcd-batch": {
+     "a": "deepseek-json",
+     "b": "qwen-rlcd-batch",
+     "diff": 0.4771050867132846,
+     "ci95": [
+      0.412063441750537,
+      0.5389578457433242
+     ],
+     "p": 0.0,
+     "real": true
+    },
+    "qwen-rlcd-rubric": {
+     "a": "deepseek-json",
+     "b": "qwen-rlcd-rubric",
+     "diff": 0.4677705094139999,
+     "ci95": [
+      0.4050801453712343,
+      0.5282843687660946
+     ],
+     "p": 0.0,
+     "real": true
     }
    },
    "jev_vs_other": {

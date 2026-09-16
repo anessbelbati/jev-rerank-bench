@@ -21,16 +21,18 @@ from common import CACHE, CANDIDATES, DATASETS, ENGLISH, RESULTS, read_jsonl, js
 
 MODELS = ["bm25", "cohere-pro", "cohere-fast", "zerank-2", "deepseek-pair", "deepseek-json",
           "jev-noul-pair", "jev-noul-batch", "jev-choice",
-          "jev-score-batch", "jev-duel", "jev-tournament", "jev-cascade", "jev-choice-reversed"]
+          "jev-score-batch", "jev-duel", "jev-tournament", "jev-cascade", "jev-choice-reversed",
+          "qwen-rlcd-batch", "qwen-rlcd-rubric"]
 LABELS = {"bm25": "BM25 (floor)", "cohere-pro": "Cohere Rerank 4 Pro", "cohere-fast": "Cohere Rerank 4 Fast",
           "zerank-2": "ZeroEntropy zerank-2",
           "deepseek-pair": "DeepSeek V4.1 Flash P(yes) per pair", "deepseek-json": "DeepSeek V4.1 Flash JSON, 30 in one call",
           "jev-noul-pair": "Jev yes/no per pair", "jev-noul-batch": "Jev 30 yes/no in one call", "jev-choice": "Jev one Choice + none",
           "jev-score-batch": "Jev 4-level rubric, 30 in one call", "jev-duel": "Jev 45 duels in one call (top 10)",
           "jev-tournament": "Jev tournament (6 groups, then final)", "jev-cascade": "Jev cascade (batch prune, then 8 pairs)",
-          "jev-choice-reversed": "Jev one Choice, passages reversed"}
+          "jev-choice-reversed": "Jev one Choice, passages reversed",
+          "qwen-rlcd-batch": "Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted)", "qwen-rlcd-rubric": "Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted)"}
 # Models whose scores are presented as probabilities and so can be held to calibration.
-PROB_MODELS = {"jev-noul-pair", "jev-noul-batch", "deepseek-pair"}
+PROB_MODELS = {"jev-noul-pair", "jev-noul-batch", "deepseek-pair", "qwen-rlcd-batch"}
 
 
 def load_run(model: str, dataset: str, variant: str) -> dict[str, dict]:

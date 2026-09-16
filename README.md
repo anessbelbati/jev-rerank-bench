@@ -25,6 +25,8 @@ script in this repo.
 | Jev tournament (6 groups, then final) | 0.668 | 75% | 641 ms | 0.43 | 0.71 |
 | DeepSeek V4.1 Flash P(yes) per pair | 0.608 | 62% | 34.3 s | 1.38 | 0.65 |
 | Jev 45 duels in one call (top 10) | 0.580 | 66% | 324 ms | 0.21 | 0.65 |
+| Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | 0.340 | 30% | 419 ms | 0.09 | 0.55 |
+| Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | 0.255 | 22% | 360 ms | 0.08 | 0.52 |
 | BM25 (floor) | 0.486 | 45% | – | 0 | 0.58 |
 
 - Ranking quality: Jev rubric and Cohere Pro are tied (gap +0.1 points, 95% range −0.9 to +1.2 over 10,000 paired
@@ -33,6 +35,10 @@ script in this repo.
 - Negation (NevIR, 1,383 pairs): Jev rubric 71% of pairs right, Cohere Pro 67% (gap +4.2, range +1.5 to +6.9),
   ZeroEntropy 61%; the chat-model baseline 17–22%, below the 25% of guessing.
 - Reasoning (7 BRIGHT subsets, 307 questions): Jev rubric first on average (0.493 vs 0.487), within noise.
+- The open-source "Qwen-2.5-1B-RLCD" recipe (Qwen2.5-1.5B, no training, all 30 keys scored in one batched pass), run with its own
+  inference code on rented RTX 4090s: below the BM25 floor in both modes (Jev rubric ahead by +35.2 points, range +33.2 to +37.4,).
+  Its yes/no score separates relevant from irrelevant passages by only 0.046 (Jev, same wording: 0.429) and drifts with
+  position (0.195, at slot 1, 0.384 at slot 30). NevIR: 7% and 19% of pairs, below the 25% of guessing. `rlcd_check.py` has the check.
 - Where Jev loses, and it is real: FiQA (Cohere Pro by 5.0 points), Natural Questions (by 3.9), TREC-COVID
   (ZeroEntropy by 2.1, barely), French (Cohere Pro by 6.4).
 
@@ -99,8 +105,9 @@ first stage, stated as such. (100 passages at 2,000 characters is ~35,000 tokens
 | `jev-tournament` | `jev-latest` | two calls: six Choices over groups of five (+none), then a final Choice among the winners (+none) |
 | `jev-cascade` | `jev-latest` | one batched yes/no call prunes 30 to 8, then per-pair yes/no on the 8 |
 | `jev-choice-reversed` | `jev-latest` | `jev-choice` with the passages sent in reverse order (position-bias check only) |
+| `qwen-rlcd-batch` / `qwen-rlcd-rubric` | Qwen2.5-1.5B-Instruct with parallel constrained decoding of JSON keys (the open-source "Qwen-2.5-1B-RLCD" recipe posted the day after Jev's launch; no training; transformers port `shreyansh26/Qwen-2.5-1B-RLCD`, Apache 2.0), self-hosted on rented RTX 4090s | one prefill per query, then all 30 keys scored in one batched pass with the model's own `run_parallel_generation`; 30 boolean keys with Jev's wording (score = P(true)) or 30 enum keys with Jev's 4-level rubric (score = expected level); when the one-shot pass runs out of memory on a 24 GB card (the longest code-heavy prompts in StackOverflow and robotics) the same keys are scored six at a time against the same prefill, and the raw row says so; `rlcd_runner.py` |
 
-Jev and DeepSeek get the same wording: *"Does the passage contain the information needed to answer or verify the
+Jev, DeepSeek and the Qwen RLCD runs get the same wording: *"Does the passage contain the information needed to answer or verify the
 query?"* (`rerankers/__init__.py`). Cohere and ZeroEntropy take the query and the documents.
 
 ## Fairness rules
@@ -125,6 +132,7 @@ uv run run.py --model zerank-2 --dataset all --workers 6
 uv run eval.py                  # results/summary.md, results/summary.json, charts
 uv run significance.py          # bootstrap ranges for every gap
 uv run nevir_eval.py            # negation, paired accuracy
+uv run rlcd_check.py            # signal and position drift of the Qwen RLCD scores
 uv run network.py; uv run batching.py; uv run determinism.py; uv run coldstart.py 60 120 300 600 900
 ```
 
@@ -142,12 +150,34 @@ rerankers/             jev.py  cohere.py  zerank.py  llm_logprob.py  bm25.py
 run.py                 one model on one dataset, both variants, caching every raw response
 cache/<model>/         <dataset>.<variant>.jsonl.gz  one line per query: scores, every raw response, latency, usage, cost
 eval.py                metrics, nothing-relevant test, calibration, charts  ->  results/
-significance.py  nevir_eval.py  network.py  batching.py  determinism.py  coldstart.py
+significance.py  nevir_eval.py  rlcd_check.py  network.py  batching.py  determinism.py  coldstart.py
+rlcd_runner.py         the self-hosted Qwen RLCD recipe, run on a GPU pod, writing the same cache rows
 blog.py                renders the write-up from results/*.json (numbers are never typed by hand)
 ```
 
 `candidates/*.docs.jsonl` (the passage texts) are not committed for licensing reasons; `build.py` regenerates them
 deterministically from the Hugging Face copies of the datasets.
+
+## Public evidence viewer
+
+The interactive evidence viewer lives in the personal website repository and
+is available at [anessbelbati.com/lab/jev-reranking/](https://anessbelbati.com/lab/jev-reranking/).
+This benchmark repository contains the experiments, saved results, and the data
+exporter; it does not contain a separate website app.
+
+With the local candidate passage files available, export the curated snapshot:
+
+```powershell
+uv run scripts/export_evidence.py
+# Or write directly to a website checkout:
+uv run scripts/export_evidence.py --output <website>/public/lab/jev-reranking/data
+uv run -m unittest scripts/test_export_evidence.py
+```
+
+The default output is `exports/evidence/` (Git-ignored). The export contains
+allowlisted saved outputs, the candidate snippets used in the run, prompt
+templates, attribution, source hashes, and downloadable dataset archives.
+Regeneration reads local records and makes no paid model calls.
 
 ## Prices used
 
@@ -158,6 +188,7 @@ deterministically from the Hugging Face copies of the datasets.
 | Cohere Rerank 4 Fast | $2.00 per 1,000 searches, same route | OpenRouter response | 2026-09-16 |
 | ZeroEntropy zerank-2 | $0.025 per million tokens | zeroentropy.dev/pricing | 2026-09-16 |
 | DeepSeek V4.1 Flash | $0.15 / $0.60 per million in / out; exact billed `usage.cost` per call from OpenRouter | OpenRouter response | 2026-09-16 |
+| Qwen2.5-1.5B RLCD (self-hosted) | GPU seconds of each call × $0.74 per hour (RunPod secure-cloud RTX 4090 list price); pod setup time not included | runpod.io pricing | 2026-09-16 |
 
 Usage totals per run (tokens, search units) are in `results/summary.md` so the cost can be checked against the vendor
 dashboards.

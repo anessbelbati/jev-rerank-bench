@@ -20,6 +20,8 @@ Ranking numbers are over queries whose BM25 top-30 contains at least one relevan
 | Jev tournament (6 groups, then final) | 8 | 0.668 | 0.753 | 296 | 641 | 0.43 | 0.711 | 0.634 | — |
 | Jev cascade (batch prune, then 8 pairs) | 8 | 0.674 | 0.695 | 268 | 2533 | 0.63 | 0.732 | 0.601 | — |
 | Jev one Choice, passages reversed | 8 | 0.680 | 0.735 | 346 | 349 | 0.33 | — | — | — |
+| Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | 8 | 0.255 | 0.220 | 360 | 360 | 0.08 | 0.516 | 0.894 | 0.240 |
+| Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | 8 | 0.340 | 0.296 | 419 | 419 | 0.09 | 0.545 | 0.873 | — |
 
 ## All datasets including French
 
@@ -39,6 +41,8 @@ Ranking numbers are over queries whose BM25 top-30 contains at least one relevan
 | Jev tournament (6 groups, then final) | 14 | 0.596 | 0.684 | 295 | 658 | 0.42 | 0.692 | 0.638 | — |
 | Jev cascade (batch prune, then 8 pairs) | 14 | 0.606 | 0.642 | 270 | 2594 | 0.64 | 0.706 | 0.639 | — |
 | Jev one Choice, passages reversed | 14 | 0.606 | 0.680 | 375 | 377 | 0.32 | 0.667 | 0.633 | — |
+| Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | 13 | 0.211 | 0.172 | 352 | 352 | 0.09 | 0.525 | 0.869 | 0.217 |
+| Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | 13 | 0.267 | 0.224 | 409 | 409 | 0.10 | 0.543 | 0.864 | — |
 
 ## scifact
 
@@ -60,6 +64,8 @@ Ranking numbers are over queries whose BM25 top-30 contains at least one relevan
 | Jev tournament (6 groups, then final) | 264 | 0.869 | 0.811 | 0.864 | 0.855 | 1128 | 293 | 675 | 581 | 0.60 | 0.854 | 0.462 | — |
 | Jev cascade (batch prune, then 8 pairs) | 264 | 0.881 | 0.784 | 0.936 | 0.854 | 5076 | 267 | 356 | 2508 | 0.80 | 0.837 | 0.458 | — |
 | Jev one Choice, passages reversed | 264 | 0.885 | 0.803 | 0.943 | 0.868 | 300 | 383 | 825 | 383 | 0.47 | — | — | 0.013* |
+| Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | 264 | 0.186 | 0.038 | 0.194 | 0.127 | 564 | 519 | 692 | 519 | 0.16 | 0.474 | 0.909 | 0.346 |
+| Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | 264 | 0.358 | 0.186 | 0.409 | 0.296 | 564 | 581 | 765 | 581 | 0.13 | 0.557 | 0.833 | 0.464* |
 
 Jev Choice's own nothing-relevant signals (scifact):
 
@@ -107,6 +113,8 @@ Position bias (scifact): the same 30 passages sent in reverse order to Jev Choic
 | Jev tournament (6 groups, then final) | 411 | 0.581 | 0.698 | 0.495 | 0.772 | 2118 | 280 | 465 | 562 | 0.41 | 0.708 | 0.696 | — |
 | Jev cascade (batch prune, then 8 pairs) | 411 | 0.607 | 0.659 | 0.591 | 0.768 | 9531 | 265 | 348 | 2468 | 0.59 | 0.699 | 0.640 | — |
 | Jev one Choice, passages reversed | 411 | 0.614 | 0.686 | 0.603 | 0.786 | 648 | 322 | 562 | 322 | 0.31 | — | — | 0.021* |
+| Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | 411 | 0.205 | 0.119 | 0.196 | 0.233 | 1059 | 337 | 435 | 337 | 0.07 | 0.504 | 0.920 | 0.133 |
+| Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | 411 | 0.300 | 0.258 | 0.278 | 0.383 | 1059 | 410 | 517 | 410 | 0.09 | 0.531 | 0.864 | 0.300* |
 
 Jev Choice's own nothing-relevant signals (fiqa):
 
@@ -154,6 +162,8 @@ Position bias (fiqa): the same 30 passages sent in reverse order to Jev Choice. 
 | Jev tournament (6 groups, then final) | 320 | 0.764 | 0.662 | 0.758 | 0.756 | 1640 | 280 | 463 | 581 | 0.25 | 0.657 | 0.741 | — |
 | Jev cascade (batch prune, then 8 pairs) | 320 | 0.768 | 0.600 | 0.885 | 0.745 | 7380 | 268 | 363 | 2515 | 0.43 | 0.674 | 0.672 | — |
 | Jev one Choice, passages reversed | 320 | 0.794 | 0.669 | 0.872 | 0.792 | 500 | 288 | 547 | 289 | 0.18 | — | — | 0.012* |
+| Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | 320 | 0.245 | 0.106 | 0.280 | 0.211 | 820 | 191 | 252 | 191 | 0.04 | 0.519 | 0.875 | 0.322 |
+| Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | 320 | 0.319 | 0.163 | 0.371 | 0.279 | 820 | 245 | 313 | 245 | 0.06 | 0.539 | 0.872 | 0.333* |
 
 Jev Choice's own nothing-relevant signals (nq):
 
@@ -201,6 +211,8 @@ Position bias (nq): the same 30 passages sent in reverse order to Jev Choice. Sa
 | Jev tournament (6 groups, then final) | 239 | 0.440 | 0.699 | 0.138 | 0.778 | 1122 | 310 | 681 | 624 | 0.61 | 0.665 | 0.681 | — |
 | Jev cascade (batch prune, then 8 pairs) | 239 | 0.496 | 0.682 | 0.189 | 0.784 | 5049 | 273 | 394 | 2570 | 0.81 | 0.718 | 0.605 | — |
 | Jev one Choice, passages reversed | 239 | 0.478 | 0.682 | 0.186 | 0.784 | 323 | 325 | 719 | 354 | 0.48 | — | — | 0.156* |
+| Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | 239 | 0.228 | 0.251 | 0.063 | 0.389 | 561 | 560 | 644 | 560 | 0.13 | 0.522 | 0.924 | 0.147 |
+| Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | 239 | 0.282 | 0.381 | 0.091 | 0.509 | 561 | 621 | 708 | 621 | 0.14 | 0.525 | 0.933 | 0.312* |
 
 Jev Choice's own nothing-relevant signals (nfcorpus):
 
@@ -248,6 +260,8 @@ Position bias (nfcorpus): the same 30 passages sent in reverse order to Jev Choi
 | Jev tournament (6 groups, then final) | 50 | 0.747 | 0.920 | 0.011 | 0.957 | 186 | 311 | 1325 | 836 | 0.47 | 0.595 | 0.837 | — |
 | Jev cascade (batch prune, then 8 pairs) | 50 | 0.770 | 0.920 | 0.011 | 0.948 | 837 | 275 | 510 | 2711 | 0.67 | 0.769 | 0.698 | — |
 | Jev one Choice, passages reversed | 50 | 0.741 | 0.940 | 0.011 | 0.964 | 50 | 477 | 1486 | 477 | 0.36 | — | — | 0.547* |
+| Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | 50 | 0.650 | 0.840 | 0.010 | 0.903 | 93 | 395 | 525 | 395 | 0.08 | 0.529 | 0.977 | 0.237 |
+| Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | 50 | 0.609 | 0.820 | 0.010 | 0.895 | 93 | 453 | 591 | 453 | 0.10 | 0.697 | 0.721 | 0.124* |
 
 Jev Choice's own nothing-relevant signals (trec-covid):
 
@@ -295,6 +309,8 @@ Position bias (trec-covid): the same 30 passages sent in reverse order to Jev Ch
 | Jev tournament (6 groups, then final) | 39 | 0.427 | 0.615 | 0.301 | 0.672 | 284 | 294 | 866 | 607 | 0.25 | 0.636 | 0.744 | — |
 | Jev cascade (batch prune, then 8 pairs) | 39 | 0.409 | 0.513 | 0.341 | 0.632 | 1278 | 264 | 345 | 2446 | 0.45 | 0.648 | 0.769 | — |
 | Jev one Choice, passages reversed | 39 | 0.431 | 0.590 | 0.364 | 0.696 | 103 | 280 | 1176 | 280 | 0.17 | — | — | 0.032* |
+| Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | 39 | 0.188 | 0.205 | 0.131 | 0.292 | 142 | 198 | 231 | 198 | 0.04 | 0.574 | 0.821 | 0.218 |
+| Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | 39 | 0.161 | 0.179 | 0.130 | 0.261 | 142 | 247 | 283 | 247 | 0.05 | 0.491 | 0.897 | 0.206* |
 
 Jev Choice's own nothing-relevant signals (bright-biology):
 
@@ -342,6 +358,8 @@ Position bias (bright-biology): the same 30 passages sent in reverse order to Je
 | Jev tournament (6 groups, then final) | 38 | 0.538 | 0.658 | 0.399 | 0.748 | 282 | 304 | 964 | 710 | 0.40 | 0.638 | 0.737 | — |
 | Jev cascade (batch prune, then 8 pairs) | 38 | 0.493 | 0.474 | 0.394 | 0.617 | 1269 | 275 | 417 | 2600 | 0.64 | 0.614 | 0.737 | — |
 | Jev one Choice, passages reversed | 38 | 0.516 | 0.553 | 0.429 | 0.695 | 103 | 374 | 1005 | 375 | 0.30 | — | — | 0.083* |
+| Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | 38 | 0.206 | 0.158 | 0.147 | 0.248 | 141 | 303 | 576 | 303 | 0.07 | 0.535 | 0.842 | 0.131 |
+| Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | 38 | 0.246 | 0.184 | 0.173 | 0.297 | 141 | 357 | 636 | 357 | 0.08 | 0.501 | 0.974 | 0.153* |
 
 Jev Choice's own nothing-relevant signals (bright-economics):
 
@@ -389,6 +407,8 @@ Position bias (bright-economics): the same 30 passages sent in reverse order to 
 | Jev tournament (6 groups, then final) | 57 | 0.444 | 0.614 | 0.341 | 0.709 | 346 | 289 | 1160 | 728 | 0.30 | 0.746 | 0.474 | — |
 | Jev cascade (batch prune, then 8 pairs) | 57 | 0.457 | 0.579 | 0.399 | 0.692 | 1557 | 274 | 467 | 2743 | 0.51 | 0.690 | 0.632 | — |
 | Jev one Choice, passages reversed | 57 | 0.479 | 0.684 | 0.391 | 0.765 | 173 | 396 | 1192 | 396 | 0.22 | 0.751 | 0.561 | 0.045* |
+| Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | 57 | 0.114 | 0.088 | 0.081 | 0.165 | 173 | 225 | 297 | 225 | 0.05 | 0.465 | 0.930 | 0.177 |
+| Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | 57 | 0.117 | 0.035 | 0.076 | 0.150 | 173 | 275 | 353 | 275 | 0.06 | 0.544 | 0.895 | 0.117* |
 
 Jev Choice's own nothing-relevant signals (bright-earth_science):
 
@@ -436,6 +456,8 @@ Position bias (bright-earth_science): the same 30 passages sent in reverse order
 | Jev tournament (6 groups, then final) | 29 | 0.586 | 0.690 | 0.428 | 0.796 | 260 | 298 | 1279 | 766 | 0.35 | 0.725 | 0.552 | — |
 | Jev cascade (batch prune, then 8 pairs) | 29 | 0.605 | 0.621 | 0.554 | 0.754 | 1170 | 275 | 478 | 2695 | 0.57 | 0.737 | 0.586 | — |
 | Jev one Choice, passages reversed | 29 | 0.571 | 0.655 | 0.515 | 0.783 | 130 | 451 | 1177 | 451 | 0.25 | 0.751 | 0.448 | 0.068* |
+| Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | 29 | 0.229 | 0.241 | 0.111 | 0.317 | 130 | 264 | 436 | 264 | 0.06 | 0.598 | 0.793 | 0.135 |
+| Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | 29 | 0.173 | 0.138 | 0.116 | 0.234 | 130 | 320 | 498 | 320 | 0.07 | 0.535 | 0.793 | 0.207* |
 
 Jev Choice's own nothing-relevant signals (bright-psychology):
 
@@ -483,6 +505,8 @@ Position bias (bright-psychology): the same 30 passages sent in reverse order to
 | Jev tournament (6 groups, then final) | 35 | 0.458 | 0.629 | 0.339 | 0.709 | 272 | 288 | 22234 | 623 | 0.41 | 0.666 | 0.743 | — |
 | Jev cascade (batch prune, then 8 pairs) | 35 | 0.486 | 0.629 | 0.403 | 0.715 | 1224 | 266 | 478 | 2628 | 0.77 | 0.679 | 0.714 | — |
 | Jev one Choice, passages reversed | 35 | 0.454 | 0.600 | 0.381 | 0.700 | 136 | 333 | 1197 | 333 | 0.29 | 0.606 | 0.629 | 0.043* |
+| Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | 35 | 0.145 | 0.057 | 0.110 | 0.165 | 136 | 262 | 718 | 262 | 0.10 | 0.620 | 0.629 | 0.153 |
+| Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | 35 | 0.123 | 0.086 | 0.069 | 0.159 | 136 | 321 | 1333 | 321 | 0.12 | 0.558 | 0.857 | 0.142* |
 
 Jev Choice's own nothing-relevant signals (bright-robotics):
 
@@ -530,6 +554,8 @@ Position bias (bright-robotics): the same 30 passages sent in reverse order to J
 | Jev tournament (6 groups, then final) | 62 | 0.342 | 0.355 | 0.231 | 0.521 | 358 | 321 | 1947 | 806 | 0.80 | 0.552 | 0.726 | — |
 | Jev cascade (batch prune, then 8 pairs) | 62 | 0.379 | 0.387 | 0.320 | 0.555 | 1611 | 263 | 556 | 2720 | 1.11 | 0.592 | 0.806 | — |
 | Jev one Choice, passages reversed | 62 | 0.394 | 0.452 | 0.319 | 0.591 | 179 | 702 | 1641 | 702 | 0.64 | 0.580 | 0.823 | 0.070* |
+| Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | 62 | 0.088 | 0.048 | 0.067 | 0.136 | 179 | 724 | 2527 | 724 | 0.20 | 0.460 | 0.919 | 0.271 |
+| Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | 62 | 0.126 | 0.113 | 0.080 | 0.189 | 179 | 785 | 2871 | 785 | 0.22 | 0.543 | 0.774 | 0.184* |
 
 Jev Choice's own nothing-relevant signals (bright-stackoverflow):
 
@@ -577,6 +603,8 @@ Position bias (bright-stackoverflow): the same 30 passages sent in reverse order
 | Jev tournament (6 groups, then final) | 47 | 0.481 | 0.617 | 0.384 | 0.751 | 310 | 280 | 21991 | 588 | 0.29 | 0.642 | 0.681 | — |
 | Jev cascade (batch prune, then 8 pairs) | 47 | 0.503 | 0.638 | 0.434 | 0.753 | 1395 | 274 | 464 | 2606 | 0.51 | 0.663 | 0.638 | — |
 | Jev one Choice, passages reversed | 47 | 0.472 | 0.574 | 0.403 | 0.734 | 155 | 302 | 1193 | 302 | 0.21 | 0.648 | 0.702 | 0.045* |
+| Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | 47 | 0.131 | 0.043 | 0.125 | 0.195 | 155 | 217 | 335 | 217 | 0.05 | 0.555 | 0.872 | 0.168 |
+| Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | 47 | 0.206 | 0.170 | 0.159 | 0.299 | 155 | 269 | 393 | 269 | 0.06 | 0.520 | 0.936 | 0.155* |
 
 Jev Choice's own nothing-relevant signals (bright-sustainable_living):
 
@@ -624,6 +652,8 @@ Position bias (bright-sustainable_living): the same 30 passages sent in reverse 
 | Jev tournament (6 groups, then final) | 256 | 0.977 | 0.957 | 0.977 | 0.970 | 1112 | 299 | 549 | 629 | 0.45 | 0.938 | 0.172 | — |
 | Jev cascade (batch prune, then 8 pairs) | 256 | 0.968 | 0.926 | 0.992 | 0.957 | 5004 | 261 | 338 | 2445 | 0.68 | 0.896 | 0.227 | — |
 | Jev one Choice, passages reversed | 256 | 0.982 | 0.961 | 0.996 | 0.977 | 300 | 316 | 646 | 317 | 0.35 | — | — | 0.002* |
+| Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | 256 | 0.133 | 0.043 | 0.160 | 0.097 | 556 | 376 | 593 | 376 | 0.09 | 0.475 | 0.887 | 0.387 |
+| Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | 256 | 0.445 | 0.199 | 0.559 | 0.353 | 556 | 436 | 645 | 436 | 0.10 | 0.521 | 0.887 | 0.354* |
 
 Jev Choice's own nothing-relevant signals (csn-python):
 
@@ -717,6 +747,8 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | Jev tournament (6 groups, then final) | scifact | 1128 | input_tokens=8071107, output_tokens=283390 | 0.3390 |
 | Jev cascade (batch prune, then 8 pairs) | scifact | 5076 | input_tokens=10712731, output_tokens=406080 | 0.4499 |
 | Jev one Choice, passages reversed | scifact | 300 | input_tokens=3388110, output_tokens=93740 | 0.1423 |
+| Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | scifact | 564 | gpu_ms=369534.59 | 0.0760 |
+| Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | scifact | 564 | gpu_ms=353721.67 | 0.0727 |
 | Cohere Rerank 4 Pro | fiqa | 1059 | search_units=1059 | 2.6475 |
 | Cohere Rerank 4 Fast | fiqa | 1059 | search_units=1059 | 2.1180 |
 | ZeroEntropy zerank-2 | fiqa | 1059 | total_tokens=7564780, total_bytes=37031485, inference_latency_s=437.91 | 0.1891 |
@@ -730,6 +762,8 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | Jev tournament (6 groups, then final) | fiqa | 2118 | input_tokens=10252602, output_tokens=538302 | 0.4306 |
 | Jev cascade (batch prune, then 8 pairs) | fiqa | 9531 | input_tokens=14982151, output_tokens=762480 | 0.6293 |
 | Jev one Choice, passages reversed | fiqa | 648 | input_tokens=4758686, output_tokens=202680 | 0.1999 |
+| Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | fiqa | 1059 | gpu_ms=359982.16 | 0.0740 |
+| Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | fiqa | 1059 | gpu_ms=451262.72 | 0.0928 |
 | Cohere Rerank 4 Pro | nq | 820 | search_units=820 | 2.0500 |
 | Cohere Rerank 4 Fast | nq | 820 | search_units=820 | 1.6400 |
 | ZeroEntropy zerank-2 | nq | 820 | total_tokens=3291835, total_bytes=16636101, inference_latency_s=364.15 | 0.0823 |
@@ -743,6 +777,8 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | Jev tournament (6 groups, then final) | nq | 1640 | input_tokens=4886396, output_tokens=415384 | 0.2052 |
 | Jev cascade (batch prune, then 8 pairs) | nq | 7380 | input_tokens=8335183, output_tokens=590400 | 0.3501 |
 | Jev one Choice, passages reversed | nq | 500 | input_tokens=2150207, output_tokens=156370 | 0.0903 |
+| Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | nq | 820 | gpu_ms=166383.49 | 0.0342 |
+| Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | nq | 820 | gpu_ms=228697.65 | 0.0470 |
 | Cohere Rerank 4 Pro | nfcorpus | 561 | search_units=561 | 1.4025 |
 | Cohere Rerank 4 Fast | nfcorpus | 561 | search_units=561 | 1.1220 |
 | ZeroEntropy zerank-2 | nfcorpus | 561 | total_tokens=6094994, total_bytes=29072565, inference_latency_s=278.06 | 0.1524 |
@@ -756,6 +792,8 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | Jev tournament (6 groups, then final) | nfcorpus | 1122 | input_tokens=8203257, output_tokens=283038 | 0.3445 |
 | Jev cascade (batch prune, then 8 pairs) | nfcorpus | 5049 | input_tokens=10813409, output_tokens=403920 | 0.4542 |
 | Jev one Choice, passages reversed | nfcorpus | 323 | input_tokens=3718188, output_tokens=100895 | 0.1562 |
+| Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | nfcorpus | 561 | gpu_ms=329201.3 | 0.0677 |
+| Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | nfcorpus | 561 | gpu_ms=367378.02 | 0.0755 |
 | Cohere Rerank 4 Pro | trec-covid | 93 | search_units=93 | 0.2325 |
 | Cohere Rerank 4 Fast | trec-covid | 93 | search_units=93 | 0.1860 |
 | ZeroEntropy zerank-2 | trec-covid | 93 | total_tokens=757658, total_bytes=3879586, inference_latency_s=42.62 | 0.0189 |
@@ -769,6 +807,8 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | Jev tournament (6 groups, then final) | trec-covid | 186 | input_tokens=1018625, output_tokens=47410 | 0.0428 |
 | Jev cascade (batch prune, then 8 pairs) | trec-covid | 837 | input_tokens=1448712, output_tokens=66960 | 0.0608 |
 | Jev one Choice, passages reversed | trec-covid | 50 | input_tokens=430350, output_tokens=15644 | 0.0181 |
+| Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | trec-covid | 93 | gpu_ms=37268.97 | 0.0077 |
+| Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | trec-covid | 93 | gpu_ms=42676.6 | 0.0088 |
 | Cohere Rerank 4 Pro | bright-biology | 142 | search_units=142 | 0.3550 |
 | Cohere Rerank 4 Fast | bright-biology | 142 | search_units=142 | 0.2840 |
 | ZeroEntropy zerank-2 | bright-biology | 142 | total_tokens=980428, total_bytes=4909820, inference_latency_s=55.62 | 0.0245 |
@@ -782,6 +822,8 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | Jev tournament (6 groups, then final) | bright-biology | 284 | input_tokens=834373, output_tokens=71714 | 0.0350 |
 | Jev cascade (batch prune, then 8 pairs) | bright-biology | 1278 | input_tokens=1532455, output_tokens=102240 | 0.0644 |
 | Jev one Choice, passages reversed | bright-biology | 103 | input_tokens=429040, output_tokens=32167 | 0.0180 |
+| Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | bright-biology | 142 | gpu_ms=27627.49 | 0.0057 |
+| Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | bright-biology | 142 | gpu_ms=34884.69 | 0.0072 |
 | Cohere Rerank 4 Pro | bright-economics | 141 | search_units=141 | 0.3525 |
 | Cohere Rerank 4 Fast | bright-economics | 141 | search_units=141 | 0.2820 |
 | ZeroEntropy zerank-2 | bright-economics | 141 | total_tokens=1585926, total_bytes=7216913, inference_latency_s=73.34 | 0.0396 |
@@ -795,6 +837,8 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | Jev tournament (6 groups, then final) | bright-economics | 282 | input_tokens=1358113, output_tokens=71300 | 0.0570 |
 | Jev cascade (batch prune, then 8 pairs) | bright-economics | 1269 | input_tokens=2150753, output_tokens=101520 | 0.0903 |
 | Jev one Choice, passages reversed | bright-economics | 103 | input_tokens=736010, output_tokens=32165 | 0.0309 |
+| Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | bright-economics | 141 | gpu_ms=47148.26 | 0.0097 |
+| Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | bright-economics | 141 | gpu_ms=54946.67 | 0.0113 |
 | Cohere Rerank 4 Pro | bright-earth_science | 173 | search_units=173 | 0.4325 |
 | Cohere Rerank 4 Fast | bright-earth_science | 173 | search_units=173 | 0.3460 |
 | ZeroEntropy zerank-2 | bright-earth_science | 173 | total_tokens=1288797, total_bytes=6151682, inference_latency_s=59.79 | 0.0322 |
@@ -808,6 +852,8 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | Jev tournament (6 groups, then final) | bright-earth_science | 346 | input_tokens=1211888, output_tokens=87410 | 0.0509 |
 | Jev cascade (batch prune, then 8 pairs) | bright-earth_science | 1557 | input_tokens=2064033, output_tokens=124560 | 0.0867 |
 | Jev one Choice, passages reversed | bright-earth_science | 173 | input_tokens=874739, output_tokens=54031 | 0.0367 |
+| Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | bright-earth_science | 173 | gpu_ms=40337.71 | 0.0083 |
+| Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | bright-earth_science | 173 | gpu_ms=49276.72 | 0.0101 |
 | Cohere Rerank 4 Pro | bright-psychology | 130 | search_units=130 | 0.3250 |
 | Cohere Rerank 4 Fast | bright-psychology | 130 | search_units=130 | 0.2600 |
 | ZeroEntropy zerank-2 | bright-psychology | 130 | total_tokens=1202021, total_bytes=5843241, inference_latency_s=58.89 | 0.0301 |
@@ -821,6 +867,8 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | Jev tournament (6 groups, then final) | bright-psychology | 260 | input_tokens=1072770, output_tokens=65516 | 0.0451 |
 | Jev cascade (batch prune, then 8 pairs) | bright-psychology | 1170 | input_tokens=1763713, output_tokens=93600 | 0.0741 |
 | Jev one Choice, passages reversed | bright-psychology | 130 | input_tokens=778278, output_tokens=40570 | 0.0327 |
+| Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | bright-psychology | 130 | gpu_ms=35882.97 | 0.0074 |
+| Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | bright-psychology | 130 | gpu_ms=42969.35 | 0.0088 |
 | Cohere Rerank 4 Pro | bright-robotics | 136 | search_units=170 | 0.4250 |
 | Cohere Rerank 4 Fast | bright-robotics | 136 | search_units=170 | 0.3400 |
 | ZeroEntropy zerank-2 | bright-robotics | 136 | total_tokens=1875936, total_bytes=7735933, inference_latency_s=61.73 | 0.0469 |
@@ -834,6 +882,8 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | Jev tournament (6 groups, then final) | bright-robotics | 272 | input_tokens=1350015, output_tokens=68724 | 0.0567 |
 | Jev cascade (batch prune, then 8 pairs) | bright-robotics | 1224 | input_tokens=2614882, output_tokens=97920 | 0.1098 |
 | Jev one Choice, passages reversed | bright-robotics | 136 | input_tokens=965564, output_tokens=42480 | 0.0406 |
+| Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | bright-robotics | 136 | gpu_ms=63674.35 | 0.0131 |
+| Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | bright-robotics | 136 | gpu_ms=73474.49 | 0.0151 |
 | Cohere Rerank 4 Pro | bright-stackoverflow | 179 | search_units=185 | 0.4625 |
 | Cohere Rerank 4 Fast | bright-stackoverflow | 179 | search_units=185 | 0.3700 |
 | ZeroEntropy zerank-2 | bright-stackoverflow | 179 | total_tokens=3861511, total_bytes=15232103, inference_latency_s=103.36 | 0.0965 |
@@ -847,6 +897,8 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | Jev tournament (6 groups, then final) | bright-stackoverflow | 358 | input_tokens=3342151, output_tokens=90404 | 0.1404 |
 | Jev cascade (batch prune, then 8 pairs) | bright-stackoverflow | 1611 | input_tokens=4622099, output_tokens=128880 | 0.1941 |
 | Jev one Choice, passages reversed | bright-stackoverflow | 179 | input_tokens=2662676, output_tokens=55897 | 0.1118 |
+| Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | bright-stackoverflow | 179 | gpu_ms=163157.89 | 0.0335 |
+| Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | bright-stackoverflow | 179 | gpu_ms=181111.88 | 0.0372 |
 | Cohere Rerank 4 Pro | bright-sustainable_living | 155 | search_units=155 | 0.3875 |
 | Cohere Rerank 4 Fast | bright-sustainable_living | 155 | search_units=155 | 0.3100 |
 | ZeroEntropy zerank-2 | bright-sustainable_living | 155 | total_tokens=1300737, total_bytes=6287815, inference_latency_s=61.16 | 0.0325 |
@@ -860,6 +912,8 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | Jev tournament (6 groups, then final) | bright-sustainable_living | 310 | input_tokens=1069471, output_tokens=78232 | 0.0449 |
 | Jev cascade (batch prune, then 8 pairs) | bright-sustainable_living | 1395 | input_tokens=1890146, output_tokens=111600 | 0.0794 |
 | Jev one Choice, passages reversed | bright-sustainable_living | 155 | input_tokens=762263, output_tokens=48395 | 0.0320 |
+| Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | bright-sustainable_living | 155 | gpu_ms=35444.53 | 0.0073 |
+| Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | bright-sustainable_living | 155 | gpu_ms=43736.94 | 0.0090 |
 | Cohere Rerank 4 Pro | csn-python | 556 | search_units=572 | 1.4300 |
 | Cohere Rerank 4 Fast | csn-python | 556 | search_units=572 | 1.1440 |
 | ZeroEntropy zerank-2 | csn-python | 556 | total_tokens=5884101, total_bytes=27796530, inference_latency_s=340.97 | 0.1471 |
@@ -873,6 +927,8 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | Jev tournament (6 groups, then final) | csn-python | 1112 | input_tokens=6076198, output_tokens=279998 | 0.2552 |
 | Jev cascade (batch prune, then 8 pairs) | csn-python | 5004 | input_tokens=9084299, output_tokens=400320 | 0.3815 |
 | Jev one Choice, passages reversed | csn-python | 300 | input_tokens=2529041, output_tokens=93838 | 0.1062 |
+| Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | csn-python | 556 | gpu_ms=226652.43 | 0.0466 |
+| Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | csn-python | 556 | gpu_ms=268217.67 | 0.0551 |
 | Cohere Rerank 4 Pro | miracl-fr | 421 | search_units=421 | 1.0525 |
 | Cohere Rerank 4 Fast | miracl-fr | 421 | search_units=421 | 0.8420 |
 | ZeroEntropy zerank-2 | miracl-fr | 421 | total_tokens=1873503, total_bytes=8134231, inference_latency_s=135.22 | 0.0468 |

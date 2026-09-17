@@ -13,7 +13,9 @@ import inspect
 import json
 import math
 import statistics
+import subprocess
 import sys
+import types
 import zipfile
 import zlib
 from collections import Counter, defaultdict
@@ -27,7 +29,7 @@ from common import BRIGHT, CACHE, CANDIDATES, DATASETS, ENGLISH, MAX_CHARS, PRIC
 from eval import LABELS, MODELS, PROB_MODELS, auroc, calibration, mrr, ndcg, order, order_worst, percentile, recall
 from rerankers import REGISTRY, RELEVANCE_FALSE, RELEVANCE_QUESTION, RELEVANCE_TRUE
 
-SCHEMA = "1.0"
+SCHEMA = "1.1"
 REPO = "https://github.com/anessbelbati/jev-rerank-bench"
 PUBLIC = ROOT / "exports" / "evidence"
 METRICS = ("ndcg10", "ndcg10_ties_against", "recall5", "top1", "mrr10", "tied_top_share")
@@ -47,7 +49,14 @@ DESCRIPTIONS = {
     "zerank-2": "ZeroEntropy zerank-2; one request for the candidate set.",
     "deepseek-pair": "DeepSeek V4.1 Flash via OpenRouter pinned to DeepSeek with fallbacks and reasoning disabled; normalized first-token P(yes) per passage.",
     "deepseek-json": "Same DeepSeek routing; one JSON request with integer 0–100 scores for all passages. The original adapter substitutes zero for missing IDs; extra.missing_ids exposes that behavior.",
+    "qwen-rlcd-batch": "Self-hosted Qwen2.5-1.5B-Instruct with the RLCD Transformers recipe: 30 boolean keys share one prompt; score is normalized P(true). Cost is an estimate from recorded GPU-call time, excluding setup and idle time; latency is measured on the GPU host, without an API network round trip.",
+    "qwen-rlcd-rubric": "Self-hosted Qwen RLCD with 30 four-level rubric keys; score is expected level divided by three. Cost estimates cover recorded GPU-call time only; latency is measured on the GPU host. Memory fallback modes are retained in the evidence.",
+    "qwen-rlcd-pair": "Self-hosted Qwen RLCD with one passage and one boolean key per prompt; 30 sequential prompts per retrieval query, scored by normalized P(true). Cost estimates cover recorded GPU-call time only; latency includes every sequential prompt but no API network round trip.",
+    "qwen-rlcd-batch-reversed": "Order-sensitivity diagnostic for Qwen's 30-key boolean mode: passages are reversed at input, then scores are mapped back to original candidate order. Recorded only for present queries in the original eight datasets. GPU-time cost estimate; not an independent model or a separate trained configuration.",
 }
+QWEN_PREFIX = "qwen-rlcd-"
+QWEN_COST_NOTE = "Estimate: recorded query wall-clock milliseconds / 3,600,000 × the row's GPU hourly rate. Excludes pod setup, model loading, idle time and other billed time outside the query timer; not an API invoice or total hosting cost."
+QWEN_LATENCY_NOTE = "Wall-clock model-call time measured on the GPU host; pair mode includes all sequential prompts. No client-to-provider network round trip. Not directly comparable with hosted API timings or production throughput."
 MIT_PERMISSION = """Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the \"Software\"), to deal
 in the Software without restriction, including without limitation the rights
@@ -75,7 +84,16 @@ def license_notices():
 
 
 def family(model):
-    return "Jev" if model.startswith("jev-") else "DeepSeek" if model.startswith("deepseek-") else "Cohere" if model.startswith("cohere-") else "ZeroEntropy" if model == "zerank-2" else "BM25"
+    return "Qwen RLCD" if model.startswith(QWEN_PREFIX) else "Jev" if model.startswith("jev-") else "DeepSeek" if model.startswith("deepseek-") else "Cohere" if model.startswith("cohere-") else "ZeroEntropy" if model == "zerank-2" else "BM25"
+
+
+def model_metadata(model):
+    result = {"id": model, "label": LABELS[model], "family": family(model), "description": DESCRIPTIONS[model], "prompt_id": model,
+              "experiment_role": "order_sensitivity_diagnostic" if model.endswith("-reversed") else "reranker_configuration"}
+    if model.startswith(QWEN_PREFIX):
+        result.update(cost_basis="gpu_time_estimate", cost_note=QWEN_COST_NOTE, latency_basis="gpu_host_wall_clock", latency_note=QWEN_LATENCY_NOTE,
+                      base_model="Qwen/Qwen2.5-1.5B-Instruct", implementation="shreyansh26/Qwen-2.5-1B-RLCD Transformers port", source_url=f"{REPO}/blob/main/rlcd_runner.py")
+    return result
 
 
 def source(dataset):
@@ -140,9 +158,16 @@ def latest(model, dataset, variant):
     return values, len(rows) - len(values)
 
 
-USAGE_FIELDS = {"input_tokens", "output_tokens", "prompt_tokens", "completion_tokens", "total_tokens", "total_bytes", "search_units", "cost", "inference_latency_s", "latency_mode", "served_model", "provider"}
-EXTRA_FIELDS = {"none_prob", "any_prob", "choice", "confidence", "reversed", "wins", "duels", "winners", "kept", "p_yes_raw", "provider", "missing_ids"}
+USAGE_FIELDS = {"input_tokens", "output_tokens", "prompt_tokens", "completion_tokens", "total_tokens", "total_bytes", "search_units", "cost", "inference_latency_s", "latency_mode", "served_model", "provider", "gpu_ms"}
+EXTRA_FIELDS = {"none_prob", "any_prob", "choice", "confidence", "reversed", "wins", "duels", "winners", "kept", "p_yes_raw", "provider", "missing_ids", "gpu", "usd_per_hour"}
 ANSWER_FIELDS = {"type", "noul", "choice", "confidence", "score", "probabilities", "legend"}
+
+
+def sanitized_rlcd_telemetry(value):
+    result = {k: v for k, v in value.items() if k in {"value", "type", "confidence", "cardinality", "prefill_ms", "suffix_eval_ms"}}
+    if isinstance(value.get("top_choices"), list):
+        result["top_choices"] = [{k: v for k, v in c.items() if k in {"choice", "probability"}} for c in value["top_choices"] if isinstance(c, dict)]
+    return result
 
 
 def sanitized_call(call):
@@ -168,6 +193,15 @@ def sanitized_call(call):
             if logprobs:
                 entry["first_token_logprobs"] = {"token": logprobs[0].get("token"), "logprob": logprobs[0].get("logprob"), "top_logprobs": [{"token": t.get("token"), "logprob": t.get("logprob")} for t in logprobs[0].get("top_logprobs", [])]}
             output["choices"].append(entry)
+    # RLCD records engine telemetry instead of an HTTP response. Preserve the actual
+    # allowed-label probabilities and memory fallback mode, not arbitrary pod metadata.
+    for key in ("mode", "elapsed_ms", "prefill_ms", "suffix_eval_ms", "sequential_forward_passes", "prompts", "passage_order"):
+        if key in raw:
+            output[key] = raw[key]
+    if isinstance(raw.get("field_telemetry"), dict):
+        output["field_telemetry"] = {str(k): sanitized_rlcd_telemetry(v) for k, v in raw["field_telemetry"].items() if isinstance(v, dict)}
+    if isinstance(raw.get("per_passage"), list):
+        output["per_passage"] = [sanitized_rlcd_telemetry(v) for v in raw["per_passage"] if isinstance(v, dict)]
     result["output"] = output
     return result
 
@@ -225,6 +259,18 @@ def summarize_model(model, cands, runs, query_models, nevir=False):
               "cost_denominator": "All recorded present queries, including queries with no relevant top-30 candidate; not the quality denominator.",
               "query_ms_median": statistics.median([r["query_ms"] for r in existing if r.get("ok") and finite(r.get("query_ms"))]) if any(r.get("ok") and finite(r.get("query_ms")) for r in existing) else None,
               "workers": sorted({r["workers"] for r in existing if "workers" in r})}
+    result["present_missing"] = len(cands) - len(existing)
+    result["variants"] = {}
+    for variant, rows in runs.items():
+        expected = [c for c in cands if c.get(variant)]
+        counts = Counter(row_status(rows.get(c["qid"]), c[variant]) for c in expected)
+        result["variants"][variant] = {"expected": len(expected), "recorded": sum(c["qid"] in rows for c in expected), "status_counts": dict(counts)}
+    if model.startswith(QWEN_PREFIX):
+        allrows = [rows[c["qid"]] for variant, rows in runs.items() for c in cands if c.get(variant) and c["qid"] in rows]
+        result.update(cost_basis="gpu_time_estimate", cost_note=QWEN_COST_NOTE, latency_basis="gpu_host_wall_clock", latency_note=QWEN_LATENCY_NOTE,
+                      gpu_hardware=sorted({r["extra"]["gpu"] for r in allrows if r.get("extra", {}).get("gpu")}),
+                      usd_per_hour=sorted({r["extra"]["usd_per_hour"] for r in allrows if finite(r.get("extra", {}).get("usd_per_hour"))}),
+                      inference_modes=dict(sorted(Counter(c.get("raw", {}).get("mode", "unavailable") for r in allrows for c in r.get("calls", []) if isinstance(c.get("raw"), dict)).items())))
     for key in METRICS:
         values = [query_models[r["qid"]][model].get("tied_top" if key == "tied_top_share" else key) for r in ok]
         result[key] = mean(v for v in values if v is not None)
@@ -245,12 +291,48 @@ def summarize_model(model, cands, runs, query_models, nevir=False):
     return result
 
 
+def make_rlcd_prompt(model):
+    """Execute only the runner's request builders with a fake local engine.
+
+    Importing rlcd_runner itself would import torch. AST selection avoids that and
+    excludes main(), GPU setup and model loading; the engine module is an in-memory stub.
+    """
+    source_text = (ROOT / "rlcd_runner.py").read_text(encoding="utf-8")
+    tree = ast.parse(source_text)
+    functions = {"context_for", "schema_for", "score_pairs", "score_row"}
+    selected = [n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name in functions or isinstance(n, ast.Assign) and any(isinstance(t, ast.Name) and t.id in {"QUESTION", "RUBRIC", "RUBRIC_DESC"} for t in n.targets)]
+    requests = []
+    class Schema:
+        def __init__(self, spec):
+            self.spec = spec
+    def fake_engine(context, schema, temperature=1.0):
+        requests.append({"function": "core.engine.run_parallel_generation", "context": context, "schema": schema.spec, "temperature": temperature})
+        fields = {name: {"top_choices": [{"choice": choice, "probability": 1 / len(spec.get("choices", ["true", "false"]))} for choice in spec.get("choices", ["true", "false"])]} for name, spec in schema.spec.items()}
+        return {"mode": "synthetic_prompt_capture", "elapsed_ms": 0, "prefill_ms": 0, "suffix_eval_ms": 0, "sequential_forward_passes": 2, "field_telemetry": fields}
+    engine, schema = types.ModuleType("core.engine"), types.ModuleType("core.schema")
+    engine.run_parallel_generation, schema.StructuredSchema = fake_engine, Schema
+    namespace = {"time": types.SimpleNamespace(perf_counter=lambda: 0), "torch": types.SimpleNamespace(cuda=types.SimpleNamespace(OutOfMemoryError=MemoryError))}
+    with patch.dict(sys.modules, {"core": types.ModuleType("core"), "core.engine": engine, "core.schema": schema}):
+        exec(compile(ast.Module(body=selected, type_ignores=[]), "rlcd_runner.py", "exec"), namespace)
+        namespace["score_row"](model.removeprefix(QWEN_PREFIX), "<QUERY>", [f"<PASSAGE_{i+1:02d}>" for i in range(30)])
+    repeats = len(requests)
+    if model == "qwen-rlcd-pair":
+        requests = requests[:1]
+    return {"id": model, "label": LABELS[model], "description": DESCRIPTIONS[model], "requests": requests, "requests_per_query": repeats,
+            "source_code": "\n\n".join(ast.get_source_segment(source_text, n) for n in selected), "source_url": f"{REPO}/blob/main/rlcd_runner.py",
+            "provenance": {"base_model": "https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct", "port_recorded_by_runner": "https://huggingface.co/shreyansh26/Qwen-2.5-1B-RLCD", "original_recipe_recorded_by_runner": "https://huggingface.co/harshatheg/Qwen-2.5-1B-RLCD"},
+            "note": "Context, schema and temperature are captured offline from the saved runner with placeholders and a mocked inference function. They are arguments to the local RLCD engine, not an HTTP request or a recovered byte-for-byte tokenizer prompt. The engine's exact package revision was not recorded in these cache rows. Synthetic answers are not exported as benchmark results. No torch import, model loading or GPU work occurs."}
+
+
 def make_prompts():
     """Capture real request builders with fake responses; no network calls are possible."""
     from common import Call
     from rerankers import jev, llm_logprob, cohere, zerank
     prompts = {"schema_version": SCHEMA, "shared": {"relevance_question": RELEVANCE_QUESTION, "true_criterion": RELEVANCE_TRUE, "false_criterion": RELEVANCE_FALSE, "passage_limit_chars": MAX_CHARS}, "models": []}
     for model in MODELS:
+        if model.startswith(QWEN_PREFIX):
+            prompts["models"].append(make_rlcd_prompt(model))
+            continue
         requests = []
         def ask(state, questions):
             requests.append({"model": jev.MODEL, "state": state, "questions": questions})
@@ -317,6 +399,14 @@ def dataset_downloads(dataset, output, entries):
         target = output / "downloads" / filename
         make_zip(target, {**shared, **chunk})
         downloads.append({"url": f"data/downloads/{filename}", "bytes": target.stat().st_size, "queries": len(chunk), "part": i + 1, "parts": len(groups)})
+    # A larger snapshot can split an old single ZIP. Remove only obsolete ZIPs for
+    # this exact dataset so stale downloads are not accidentally published.
+    keep = {Path(d["url"]).name for d in downloads}
+    for stale in [output / "downloads" / f"{dataset}.zip", *sorted((output / "downloads").glob(f"{dataset}-part*-of-*.zip"))]:
+        if stale.exists() and stale.name not in keep:
+            if stale.resolve().parent != (output / "downloads").resolve():
+                raise ValueError("Unexpected download cleanup path")
+            stale.unlink()
     return downloads
 
 
@@ -404,6 +494,8 @@ def export_dataset(dataset, output):
             summary.update(pairs=len(ok), pairs_total=len(pairs), pairs_missing=sum(p["status"] == "missing" for p in pairs), pairs_failed=sum(p["status"] == "failed" for p in pairs),
                            paired_accuracy=mean(p["correct"] for p in ok), question_accuracy=mean(q for p in ok for q in p["questions_correct"]), same_top_pick_share=mean(p["same_top_pick"] for p in ok))
     info = {"id": dataset, "label": LABEL_DATASETS.get(dataset, "BRIGHT " + dataset.removeprefix("bright-").replace("_", " ").title()), "group": grouping(dataset), "language": "French" if dataset == "miracl-fr" else "English", "queries_total": len(cands), "queries_eligible": sum(c["n_rel_top30"] > 0 for c in cands), "models": summaries, "source": source(dataset), "index_url": f"data/{dataset}/index.json", "download_url": f"data/downloads/{dataset}.zip", "superseded_rows": superseded}
+    timestamps = sorted(r["ts"] for model in runs.values() for rows in model.values() for r in rows.values() if r.get("ts"))
+    info["recorded_range"] = {"first": timestamps[0], "last": timestamps[-1]} if timestamps else None
     if dataset == "nevir":
         info["pairs_total"] = len(pair_cands)
     index_obj = {"schema_version": SCHEMA, "dataset": info, "queries": index}
@@ -428,6 +520,8 @@ def aggregate(group_id, label, datasets):
         macro = {k: mean(r[k] for r in scored if r[k] is not None) for k in METRICS}
         micro = {k: sum(r[k] * r["n"] for r in scored if r[k] is not None) / sum(r["n"] for r in scored if r[k] is not None) if any(r[k] is not None for r in scored) else None for k in METRICS}
         result = {**macro, "macro": macro, "query_weighted": micro, "n": n, "datasets": len(scored), "datasets_expected": len(datasets), "coverage_complete": all(r["coverage_complete"] for r in rows), "cost_queries": cost_queries, "cost_usd_present": cost if cost_queries else None, "cost_per_1k_queries": cost / cost_queries * 1000 if cost_queries else None, "missing": sum(r["missing"] for r in rows), "failed": sum(r["failed"] for r in rows), "queries_total": out["queries_total"], "queries_eligible": out["queries_eligible"]}
+        if model.startswith(QWEN_PREFIX):
+            result.update(cost_basis="gpu_time_estimate", cost_note=QWEN_COST_NOTE, latency_basis="gpu_host_wall_clock", latency_note=QWEN_LATENCY_NOTE)
         if group_id == "nevir":
             result.update({k: rows[0][k] for k in ("paired_accuracy", "question_accuracy", "pairs", "pairs_total", "pairs_missing", "pairs_failed", "same_top_pick_share")})
         out["models"][model] = result
@@ -479,11 +573,30 @@ def main():
     for dataset in datasets:
         finalize_download_notices(dataset, output)
     groups = [aggregate(gid, label, [d for d in datasets if d["group"] == gid]) for gid, label in [("original8", "Original eight retrieval datasets"), ("extra-bright", "Five additional BRIGHT subsets"), ("french", "French transfer"), ("nevir", "NevIR negation pairs")] if any(d["group"] == gid for d in datasets)]
-    input_files = sorted(set([ROOT / "common.py", ROOT / "eval.py", ROOT / "batching.py", ROOT / "results" / "batching.json", Path(__file__).resolve(), *list((ROOT / "rerankers").glob("*.py")), *[p for d in args.datasets for p in CANDIDATES.glob(f"{d}*.jsonl")], *[p for d in args.datasets for p in CACHE.glob(f"*/{d}.*.jsonl*")]]))
+    input_files = sorted(set([ROOT / "common.py", ROOT / "eval.py", ROOT / "batching.py", ROOT / "rlcd_runner.py", ROOT / "results" / "batching.json", Path(__file__).resolve(), *list((ROOT / "rerankers").glob("*.py")), *[p for d in args.datasets for p in CANDIDATES.glob(f"{d}*.jsonl")], *[p for d in args.datasets for p in CACHE.glob(f"*/{d}.*.jsonl*")]]))
     input_hashes = {p.relative_to(ROOT).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in input_files}
     version = hashlib.sha256(encoded(input_hashes)).hexdigest()[:16]
     methodology = {"ranking_population": "Only queries with at least one positively labeled passage in the BM25 top-30 and a complete valid score vector are scored for retrieval quality. All original queries remain browsable.", "ndcg": "nDCG@10 uses linear relevance gain and ideal DCG over all positive query labels, not just the candidate pool.", "tie_break": "Descending scores, stable original BM25 candidate order. The reverse-order tie sensitivity column reverses original candidate order inside ties; this can raise or lower the metric and is not a statistical bound.", "weighting": "Macro gives each dataset equal weight. Query-weighted weights each dataset by the model's scored query count. Missing configurations are null and excluded; coverage counts are displayed.", "cost": "Present-only latest recorded cost divided by all recorded present queries, including queries without a relevant top-30 candidate; no absent-variant cost in the headline. Partial coverage is shown. List prices are the benchmark's recorded prices, not a current quotation.", "latency": "Observed wall-clock time for the recorded query. Includes network, sequential subrequests and any retries. It is not server-only inference time or a throughput benchmark; workers are retained per query.", "absent": "All positively labeled passages removed and candidates refilled from further down BM25. A zero relevance value means no positive label; it does not establish factual irrelevance.", "nevir": "Separate paired accuracy: both questions must strictly favor their relevant passage. Ties count as wrong. The two passages retain fixed passage order at input. Never included in retrieval means.", "cache": "Gzipped rows first, plain rows second; the last row for each query ID wins. Superseded attempt counts are disclosed. This is a snapshot, not a reproducibility claim for mutable provider aliases.", "publishing": "Sanitized allowlisted outputs and exact 2,000-character candidate snippets only. No credentials, headers, request IDs, private files or whole corpora.", "batching": "Saved aggregate observations and reconstructed input examples only. Original per-query batched outputs were not retained."}
-    manifest = {"schema_version": SCHEMA, "version": version, "title": "Jev reranking evidence", "provenance": {"repository_url": REPO, "repository_visibility_note": "Repository visibility is controlled by its owner; this viewer does not change it.", "recorded_date": "2026-09-16", "selection": "latest row per query ID", "input_hashes_url": "data/provenance.json"}, "methodology": methodology, "models": [{"id": m, "label": LABELS[m], "family": family(m), "description": DESCRIPTIONS[m], "prompt_id": m} for m in MODELS], "groups": groups, "datasets": datasets, "prompts_url": "data/prompts.json", "batching_url": "data/batching.json", "licenses_url": "data/licenses.json", "prices_recorded": PRICES}
+    methodology["qwen_cost"] = QWEN_COST_NOTE
+    methodology["latency"] = "Hosted API latency is observed client wall-clock query time, including network and sequential subrequests. Qwen RLCD latency is wall-clock model-call time on the GPU host; its per-pair mode includes all sequential prompts. These timings have different measurement boundaries and are not a throughput or like-for-like service-latency comparison."
+    methodology["qwen_scope"] = "Qwen follow-up configurations use the same saved candidate lists, positive relevance labels, 2,000-character passage limit and stable original-order tie handling. Missing French or other unrecorded configurations remain unavailable, not zero. Cached allowed-label probabilities are preserved at their recorded precision. The engine mode records when fields were processed in smaller chunks after a GPU memory failure."
+    methodology["order_diagnostics"] = "The reversed-input configurations are order-sensitivity diagnostics, not independent models or separately trained alternatives. Their saved scores remain inspectable and have been mapped back to the original candidate order before metrics are computed."
+    metadata = []
+    for model in MODELS:
+        entry = model_metadata(model)
+        available = [d["id"] for d in datasets if d["models"][model]["present_recorded"]]
+        missing = [d["id"] for d in datasets if not d["models"][model]["present_recorded"]]
+        entry.update(available_datasets=available, unavailable_datasets=missing,
+                     coverage_note=f"Recorded present results in {len(available)} of {len(datasets)} datasets." + (" No recorded results for: " + ", ".join(missing) + "." if missing else ""))
+        metadata.append(entry)
+    try:
+        commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
+    except (OSError, subprocess.CalledProcessError):
+        commit = None
+    recorded_ranges = [d["recorded_range"] for d in datasets if d.get("recorded_range")]
+    recorded_range = {"first": min(r["first"] for r in recorded_ranges), "last": max(r["last"] for r in recorded_ranges)} if recorded_ranges else None
+    prices = {**PRICES, "qwen-rlcd": {"usd_per_hour_recorded": sorted({rate for d in datasets for m, r in d["models"].items() if m.startswith(QWEN_PREFIX) for rate in r.get("usd_per_hour", [])}), "source": "GPU hourly rate saved in each Qwen cache row (extra.usd_per_hour), not a current price lookup.", "basis": QWEN_COST_NOTE}}
+    manifest = {"schema_version": SCHEMA, "version": version, "title": "Jev reranking evidence", "provenance": {"repository_url": REPO, "repository_visibility": "public", "benchmark_commit": commit, "recorded_date": "2026-09-16", "recorded_range": recorded_range, "original_api_run_date": "2026-09-16", "snapshot_updated_date": "2026-09-17", "followup_note": "The Qwen follow-up was added to the lab on September 17. Saved Qwen timestamps are September 16 UTC; the snapshot publication date does not relabel the measurements.", "selection": "latest row per query ID", "input_hashes_url": "data/provenance.json"}, "methodology": methodology, "models": metadata, "groups": groups, "datasets": datasets, "prompts_url": "data/prompts.json", "batching_url": "data/batching.json", "licenses_url": "data/licenses.json", "prices_recorded": prices}
     write(output / "provenance.json", {"schema_version": SCHEMA, "version": version, "inputs_sha256": input_hashes})
     write(output / "manifest.json", manifest)
     files = [p for p in output.rglob("*") if p.is_file()]

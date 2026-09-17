@@ -14,8 +14,8 @@ French are reported separately. Models start with the same thirty BM25 candidate
 the duel variant only compares the first ten, and NevIR supplies its own two-passage pairs.
 
 Measurements began September 16, 2026; the Qwen controls were added September 17. Jev calls used `jev-latest`,
-reporting version 1.13.0. See the [evidence viewer](https://anessbelbati.com/lab/jev-reranking/) for the original
-benchmark, and the caches here for the later Qwen runs.
+reporting version 1.13.0. The [evidence viewer](https://anessbelbati.com/lab/jev-reranking/) includes the original
+benchmark and the Qwen follow-up, with individual questions, scores and saved outputs.
 
 ## Headline (8 English datasets, 1,617 scored questions, each dataset counts once)
 
@@ -227,8 +227,11 @@ The interactive evidence viewer lives in the personal website repository and
 is available at [anessbelbati.com/lab/jev-reranking/](https://anessbelbati.com/lab/jev-reranking/).
 This benchmark repository contains the experiments, saved results, and the data
 exporter; it does not contain a separate website app.
-The viewer's current snapshot covers the original comparison and predates the Qwen follow-up. The Qwen responses
-are available in this repository's `cache/qwen-rlcd-*` directories.
+The viewer includes the Qwen batched yes/no, four-level rubric, one-passage and reversed-order runs.
+The reversed-order run is an order-sensitivity diagnostic over the original eight datasets. Missing runs
+remain marked as missing, including Qwen on MIRACL French. Qwen costs are GPU rental estimates and
+its timings are measured on the GPU host; neither includes client network time or pod setup.
+The source responses are also available in this repository's `cache/qwen-rlcd-*` directories.
 
 With the local candidate passage files available, export the curated snapshot:
 

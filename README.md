@@ -1,13 +1,21 @@
+![Jev as a reranker. Equal-dataset nDCG@10: Jev rubric 0.692, Cohere Pro 0.691, ZeroEntropy zerank-2 0.682.](docs/readme-header.png)
+
 # jev-rerank-bench
 
-Can a decision model beat dedicated rerankers? A reproducible benchmark of **TypeSafe Jev** (`jev-latest`, 1.13.0)
-against **Cohere Rerank 4** (Pro and Fast), **ZeroEntropy zerank-2**, a **cheap chat model** (DeepSeek V4.1 Flash,
-thinking off) used two ways as the "it's just a classifier" baseline, and plain **BM25** as the floor.
+I gave [TypeSafe's Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev) thirty search results and asked
+it which ones were useful. Then I gave Cohere and ZeroEntropy the same passages. This repository contains the experiments, saved responses and scoring code.
 
-Eight public English datasets in the headline, five more BRIGHT subsets as a reasoning block, NevIR for negation, and
-MIRACL French as a side test. Every model reranks the same 30 keyword-search candidates per question. Every raw API
-response is in `cache/`, every gap in the write-up comes with a bootstrap range, and every number is produced by a
-script in this repo.
+The ranking average put **Jev's rubric at 0.692 and Cohere Pro at 0.691**, without establishing a winner. Giving
+every query equal weight instead puts Cohere ahead. Jev did better on the negation test. An open-source Qwen recipe
+improved substantially when I gave it one passage at a time, but still showed no clear gain over keyword ranking.
+
+The main comparison covers eight English datasets. Five more BRIGHT subsets, NevIR negation pairs and MIRACL
+French are reported separately. Models start with the same thirty BM25 candidates, cut to 2,000 characters each;
+the duel variant only compares the first ten, and NevIR supplies its own two-passage pairs.
+
+Measurements began September 16, 2026; the Qwen controls were added September 17. Jev calls used `jev-latest`,
+reporting version 1.13.0. See the [evidence viewer](https://anessbelbati.com/lab/jev-reranking/) for the original
+benchmark, and the caches here for the later Qwen runs.
 
 ## Headline (8 English datasets, 1,617 scored questions, each dataset counts once)
 
@@ -30,45 +38,90 @@ script in this repo.
 | Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | 0.255 | 22% | 360 ms | 0.08 | 0.52 |
 | BM25 (floor) | 0.486 | 45% | – | 0 | 0.58 |
 
-- Ranking quality: Jev rubric and Cohere Pro are tied (gap +0.1 points, 95% range −0.9 to +1.2 over 10,000 paired
-  resamples of the questions).
-- Top pick: Jev one Choice is ahead of every dedicated reranker (vs Cohere Pro +3.1 points, range +0.7 to +5.6).
+- Ranking quality: Jev rubric minus Cohere Pro is +0.001, with a 95% interval of −0.009 to +0.012. This establishes
+  neither a winner nor equivalence. With equal weight per query, Cohere scores **0.756** and Jev **0.738**.
+- Top-ranked passage: Jev Choice leads Cohere Pro by 3.1 percentage points (95% interval +0.7 to +5.6). This metric
+  ignores the separate `none` option; it is not the accuracy of the answer Jev actually selected.
 - Negation (NevIR, 1,383 pairs): Jev rubric 71% of pairs right, Cohere Pro 67% (gap +4.2, range +1.5 to +6.9),
   ZeroEntropy 61%; the chat-model baseline 17–22%, below the 25% of guessing.
-- Reasoning (7 BRIGHT subsets, 307 questions): Jev rubric first on average (0.493 vs 0.487), within noise.
-- The open-source "Qwen-2.5-1B-RLCD" recipe (Qwen2.5-1.5B, no training, all 30 keys scored in one batched pass), run with its own
-  inference code on rented RTX 4090s: below the BM25 floor in both modes (Jev rubric ahead by +35.2 points, range +33.2 to +37.4).
-  Its yes/no score separates relevant from irrelevant passages by only 0.046 (Jev, same wording: 0.430) and drifts with
-  position (0.195 at slot 1, 0.384 at slot 30). NevIR: 7% and 19% of pairs, below the 25% of guessing. `rlcd_check.py` has the check.
-  Given the easiest shape (one passage per prompt, one yes/no key, its own function) it reaches 0.471 nDCG, 40% right top picks: a tie with BM25
-  (gap -1.5, range -3.3 to +0.4, within noise), +21.6 points above its own 30-key version, NevIR 34%. Order test: the same 30 passages reversed change its top
-  pick 93% of the time (1617 questions; Jev Choice 25%); each probability moves by 0.160 on average (Jev 0.013). Not noise: stable, and stably about position.
-- Where Jev loses, and it is real: FiQA (Cohere Pro by 5.0 points), Natural Questions (by 3.9), TREC-COVID
-  (ZeroEntropy by 2.1, barely), French (Cohere Pro by 6.4).
+- Reasoning (7 BRIGHT subsets, 307 questions): Jev rubric averages 0.493 and DeepSeek JSON 0.487; their difference
+  remains unresolved. These subjects are a separate comparison, not added to the eight-dataset headline.
+- Qwen's one-passage control reaches 0.471, up from 0.255 with thirty yes/no fields. BM25 scores 0.486; the
+  Qwen-minus-BM25 interval crosses zero. Details and attribution are below.
+- Dataset differences: Cohere Pro leads Jev's yes/no batch by 5.0 points on FiQA, its rubric by 3.9 on Natural
+  Questions, and its Choice setup by 6.4 on French. zerank-2 leads the rubric by 2.1 points on TREC-COVID.
+
+The intervals are exploratory paired bootstraps, without adjustment for the multiple comparisons. NevIR kept
+passage order fixed and reuses source passages across some pairs. Its 25% chance rate assumes independent random
+choices for the two questions.
+
+Table latency is the mean of dataset medians, not a pooled median. API calls include network and serving time;
+Qwen timings are model calls on rented GPUs. Costs average the eight dataset rates over all 2,327 original queries,
+including queries without relevant candidates. API costs use saved usage and recorded rates; Qwen costs cover
+measured GPU time, excluding setup and idle time. These are not invoice-verified or equivalent deployment costs.
 
 Full tables, per-dataset numbers, latency percentiles, usage totals and every check: `results/summary.md`,
 `results/*.json`, and the charts in `results/`.
 
+## The Qwen follow-up
+
+[Harsha Gundala's original recipe](https://huggingface.co/harshatheg/Qwen-2.5-1B-RLCD) uses MLX on Apple Silicon.
+I tested [Shreyansh Singh's Transformers/PyTorch port](https://huggingface.co/shreyansh26/Qwen-2.5-1B-RLCD) on rented
+RTX 4090s. The base model is [Qwen2.5-1.5B-Instruct](https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct), from Alibaba's
+Qwen team. Despite “1B” in the recipe's name, it is a 1.5-billion-parameter model. The port adds serving code and
+presets, with no additional fine-tuning; it does not reproduce Jev's training or establish that their architectures match.
+
+The tested `run_parallel_generation` processes the shared prompt once, then reuses its internal cache to evaluate
+the fields in a batch. It scores the permitted labels and assembles JSON in code. Prefill and field evaluation
+are separate model forwards, and some labels need continuation scoring. I did not test the port's separate tree
+mode. Allowed types and normalized label scores do not guarantee correct judgments or calibrated confidence.
+
+With thirty passages together, Qwen scored 0.255 using yes/no fields and 0.340 using the rubric, both below BM25's
+0.486. Jev's rubric led Qwen's rubric by 35.2 points (95% interval +33.2 to +37.4). Giving Qwen one passage per prompt
+raised it to **0.471**: +21.6 points over its thirty-passage yes/no setup, but no demonstrated improvement over BM25
+(difference −0.015; 95% interval −0.033 to +0.004). NevIR paired accuracy was 7% for the batch yes/no configuration, 19% for
+the rubric and 34% for the one-passage configuration.
+
+Reversing the thirty passages changed Qwen's top-ranked passage on **1,498 of 1,617 queries (92.6%)**, compared with
+**400 (24.7%)** for Jev Choice. As above, these are passage rankings, excluding Jev's `none` option. No repeated
+identical Qwen requests were run. This measures order sensitivity, not repeatability or proof that position alone
+determines the answer. The one-passage control also changes context length and prompt structure; it does not
+isolate parallel decoding as the cause of the quality difference.
+
+`rlcd_check.py` provides the score diagnostics: the relevant-minus-irrelevant yes/no score gap was 0.046 for Qwen
+and 0.430 for Jev with the same wording; Qwen's mean score was 0.195 at slot 1 and 0.384 at slot 30. Under reversal,
+mean absolute score changes were 0.160 for Qwen and 0.013 for Jev Choice. Those last two values use different score
+scales—independent yes/no scores versus a distribution across choices—so they are not a relative stability measure.
+
+This tests the port's ranking quality. It does not reproduce the original quantized Mac demo or test its advertised
+JSON-generation speedup.
+
 ## What is measured
 
-- **Ranking:** nDCG@10, Top-1, Recall@5, MRR@10 over the questions whose BM25 top-30 holds at least one relevant
-  passage (a reranker can reorder, it cannot conjure). Ties in a model's scores keep BM25 order for every model; the
-  worst-case reading (ties broken against the model) is reported too, because two models hand out many identical scores.
-- **Speed:** one HTTP round trip from Algiers, median and p95, at the stated concurrency. `network.py` measures the
-  bare connection time (~200 ms to all three hosts) and Jev's own server-side time from its response header
-  (110–150 ms on 30 passages), so the network share is known.
-- **Cost:** each API's own usage field × its list price; OpenRouter returns the exact billed amount per call.
+- **Ranking:** nDCG@10, Top-1, Recall@5 and MRR@10 over questions whose BM25 top-30 holds at least one labelled
+  relevant passage. nDCG@10 rewards useful passages near the top; 0.69 does not mean 69% of questions answered
+  correctly. It uses linear relevance gains and all supplied relevance labels for the ideal ranking. Ties keep
+  BM25 order; the report also breaks ties against each model as a sensitivity check.
+- **Latency:** client-observed API timings at the stated concurrency, plus Qwen model-call timings on rented GPUs.
+  `network.py` records connection and server-header diagnostics; it does not isolate equivalent model-only times
+  across providers. Cohere used OpenRouter, and ZeroEntropy served many calls in its slower fallback mode.
+- **Cost:** saved usage multiplied by the recorded rates, or OpenRouter's returned `usage.cost`. These fields were
+  not checked against invoices. The Qwen estimate covers measured GPU time only.
 - **The "nothing relevant" test:** for every question, a twin list with every relevant passage removed and refilled
   from further down BM25. AUROC of the top score, and the false-accept rate at 90% recall. For Jev also its built-in
   `none` option and its "does any passage answer it?" question.
-- **Calibration:** ECE and reliability curves for the models whose scores are probabilities.
-- **Noise:** `significance.py` resamples the questions 10,000 times (paired across models) and reports a 95% range
-  and a p-value for every gap; the write-up calls a gap "real" only if the range excludes zero.
+- **Calibration:** ECE and reliability curves for probability-like scores. Normalizing scores does not establish
+  that their confidence values match observed error rates.
+- **Uncertainty:** `significance.py` uses 10,000 paired bootstrap resamples of queries within each dataset, then
+  averages across the fixed dataset set. An interval crossing zero is inconclusive, not evidence of equivalence.
 - **Jev under the microscope:** TypeSafe's confidence bands against real answers, order sensitivity (same 30 passages
-  reversed), repeat drift (same request twice), cold start after 1–15 minutes idle, and `batching.py`: what one extra
-  question costs when several ride on the same passages (~443 tokens, 4% of the passages), the request-size ceiling
-  (~33,700 tokens), and whether answers change when questions share a state.
-- **Negation:** `nevir_eval.py` scores NevIR by paired accuracy (both questions of a pair right, ties wrong).
+  reversed), repeated requests and cold start after 1–15 minutes idle. These repeat tests were on Jev, not Qwen.
+- **Shared text:** `batching.py` records one request per batch size with the same thirty SciFact passages. Each
+  query adds two typed questions and roughly 443 input tokens. Forty queries cost 2.7 times one query in those
+  observations. Only the first query's choice was tracked; complete batched answers were not retained. This does
+  not demonstrate quality across all forty answers or equivalent-quality savings over separate requests.
+- **Negation:** `nevir_eval.py` scores NevIR by paired accuracy: both questions must rank their correct passage
+  strictly higher; ties fail. Fixed passage order, repeated source passages and unadjusted comparisons limit inference.
 
 ## Datasets
 
@@ -88,16 +141,17 @@ Full tables, per-dataset numbers, latency percentiles, usage totals and every ch
 \* questions whose BM25 top-30 holds at least one relevant passage.
 
 **Candidates.** BM25 (`bm25s`, Snowball stemmer, language stopwords) top 30 per question over the whole corpus (for
-MIRACL, over the 100-passage pool MTEB ships per query). Every model gets the exact same 30, cut to the same 2,000
-characters. The vendors' own reports rerank the top 100 from an embedding retriever; this is a shallower, keyword-based
-first stage, stated as such. (100 passages at 2,000 characters is ~35,000 tokens, above Jev's request ceiling.)
+MIRACL, over the 100-passage pool MTEB ships per query). Models share the candidate lists and 2,000-character
+truncation; the duel's top-ten restriction and NevIR's two-passage pairs are listed separately. These are results
+for this candidate-generation pipeline, not official full-benchmark scores. Truncation can remove relevant text,
+and the source relevance labels may be incomplete.
 
 ## Models and how each is asked
 
 | key | model | how |
 |---|---|---|
 | `bm25` | BM25 order | the floor; no API |
-| `cohere-pro` / `cohere-fast` | Cohere `rerank-4-pro` / `rerank-4-fast` via OpenRouter's rerank endpoint (exact billed cost per call) | one call per query, 30 documents |
+| `cohere-pro` / `cohere-fast` | Cohere `rerank-4-pro` / `rerank-4-fast` via OpenRouter's rerank endpoint (returned usage cost per call) | one call per query, 30 documents |
 | `zerank-2` | ZeroEntropy `zerank-2` | one `POST /v1/models/rerank` per query, 30 documents |
 | `deepseek-pair` | DeepSeek V4.1 Flash via OpenRouter, pinned to DeepSeek's own API, thinking off | one call per (query, passage); temperature 0, `max_tokens` 2, `top_logprobs` 10; score = P(yes) / (P(yes) + P(no)) over the first token |
 | `deepseek-json` | same model | one call per query: all 30 passages, JSON with a 0–100 score per passage |
@@ -109,21 +163,21 @@ first stage, stated as such. (100 passages at 2,000 characters is ~35,000 tokens
 | `jev-tournament` | `jev-latest` | two calls: six Choices over groups of five (+none), then a final Choice among the winners (+none) |
 | `jev-cascade` | `jev-latest` | one batched yes/no call prunes 30 to 8, then per-pair yes/no on the 8 |
 | `jev-choice-reversed` | `jev-latest` | `jev-choice` with the passages sent in reverse order (position-bias check only) |
-| `qwen-rlcd-batch` / `qwen-rlcd-rubric` | Qwen2.5-1.5B-Instruct with parallel constrained decoding of JSON keys (the open-source "Qwen-2.5-1B-RLCD" recipe posted the day after Jev's launch; no training; transformers port `shreyansh26/Qwen-2.5-1B-RLCD`, Apache 2.0), self-hosted on rented RTX 4090s | one prefill per query, then all 30 keys scored in one batched pass with the model's own `run_parallel_generation`; 30 boolean keys with Jev's wording (score = P(true)) or 30 enum keys with Jev's 4-level rubric (score = expected level); when the one-shot pass runs out of memory on a 24 GB card (the longest code-heavy prompts in StackOverflow and robotics) the same keys are scored six at a time against the same prefill, and the raw row says so; `rlcd_runner.py` |
-| `qwen-rlcd-pair` | same model and code | the fairest shape for a small model: one passage per prompt, one boolean key with Jev's wording, 30 prompts per query scored one after the other with the recipe's own function; score = P(true); latency = the sum of the 30 |
+| `qwen-rlcd-batch` / `qwen-rlcd-rubric` | Qwen2.5-1.5B-Instruct; Shreyansh Singh's Transformers port of Harsha Gundala's constrained-decoding recipe, self-hosted on RTX 4090s | shared-prompt prefill followed by batched field evaluations using `run_parallel_generation`; boolean score = P(true), rubric score = expected level / 3. Some long code-heavy BRIGHT prompts used six fields at a time after GPU memory failures, recorded in the raw rows; see `rlcd_runner.py` |
+| `qwen-rlcd-pair` | same model and code | one passage per prompt and one boolean key with the same relevance wording; thirty sequential prompts per query using the same inference function; score = P(true), query latency includes all thirty |
 | `qwen-rlcd-batch-reversed` | same | `qwen-rlcd-batch` with the 30 passages in reverse order (order-sensitivity check, the twin of `jev-choice-reversed`); never in the rankings |
 
-Jev, DeepSeek and the Qwen RLCD runs get the same wording: *"Does the passage contain the information needed to answer or verify the
+The yes/no variants of Jev, DeepSeek and Qwen get the same wording: *"Does the passage contain the information needed to answer or verify the
 query?"* (`rerankers/__init__.py`). Cohere and ZeroEntropy take the query and the documents.
 
 ## Fairness rules
 
-- Same 30 candidates, same order, same 2,000-character truncation, same relevance wording for every model that takes one.
+- Same candidate lists and truncation, with the duel and NevIR exceptions documented above; shared wording for the yes/no variants.
 - Ties keep BM25 order for every model; `eval.py` also reports `ndcg10_ties_against`, `tied_top_share`, `zero_score_share`.
 - The 8-dataset headline was fixed before the BRIGHT block and NevIR ran; they are reported separately, not averaged in.
 - Public datasets may be in any model's training data. Stated, not fixable.
-- Every test runs from Algeria, so every API gets the same network handicap.
-- Every loss is shown. The raw responses are in `cache/`, one JSONL line per query, gzipped.
+- API clients ran from Algeria; providers and routing paths differed. Qwen ran on rented GPUs.
+- Ranking responses are in `cache/`, one JSONL line per query, gzipped. Additional diagnostics save the fields listed in their scripts.
 
 ## Reproduce
 
@@ -143,8 +197,10 @@ uv run network.py; uv run batching.py; uv run determinism.py; uv run coldstart.p
 ```
 
 Runs resume: a query already in `cache/` (plain or `.gz`) is skipped, and a failed row is redone on the next run.
-`--limit N` runs N uncached queries as a smoke test. To re-score without spending anything, skip the `run.py` lines:
-the cache in this repo is complete. The whole benchmark cost about $61 in API calls.
+`--limit N` runs N uncached queries as a smoke test. To re-score saved results without model calls, run only
+`eval.py`, `significance.py`, `nevir_eval.py` and `rlcd_check.py`. The `run.py`, network, batching, determinism and
+cold-start commands above make new paid requests. Recorded API usage was about $61; that excludes GPU rental costs
+and has not been reconciled against invoices.
 
 ## Layout
 
@@ -154,15 +210,16 @@ candidates/build.py    BM25 top-30 per query plus the "absent" twin  ->  candida
 candidates/build_nevir.py
 rerankers/             jev.py  cohere.py  zerank.py  llm_logprob.py  bm25.py
 run.py                 one model on one dataset, both variants, caching every raw response
-cache/<model>/         <dataset>.<variant>.jsonl.gz  one line per query: scores, every raw response, latency, usage, cost
+cache/<model>/         <dataset>.<variant>.jsonl.gz  saved ranking responses, scores, latency, usage, cost
 eval.py                metrics, nothing-relevant test, calibration, charts  ->  results/
 significance.py  nevir_eval.py  rlcd_check.py  network.py  batching.py  determinism.py  coldstart.py
 rlcd_runner.py         the self-hosted Qwen RLCD recipe, run on a GPU pod, writing the same cache rows
-blog.py                renders the write-up from results/*.json (numbers are never typed by hand)
+blog.py                renders an earlier experiment write-up from results/*.json
+scripts/readme_header.py  draws the README header from saved scores and the website fonts
 ```
 
-`candidates/*.docs.jsonl` (the passage texts) are not committed for licensing reasons; `build.py` regenerates them
-deterministically from the Hugging Face copies of the datasets.
+The full `candidates/*.docs.jsonl` passage files are not committed; `build.py` regenerates them from the datasets.
+Saved model responses may quote source text, and the evidence exporter includes candidate snippets with attribution.
 
 ## Public evidence viewer
 
@@ -170,6 +227,8 @@ The interactive evidence viewer lives in the personal website repository and
 is available at [anessbelbati.com/lab/jev-reranking/](https://anessbelbati.com/lab/jev-reranking/).
 This benchmark repository contains the experiments, saved results, and the data
 exporter; it does not contain a separate website app.
+The viewer's current snapshot covers the original comparison and predates the Qwen follow-up. The Qwen responses
+are available in this repository's `cache/qwen-rlcd-*` directories.
 
 With the local candidate passage files available, export the curated snapshot:
 
@@ -190,10 +249,10 @@ Regeneration reads local records and makes no paid model calls.
 | API | price | where it is stated | read |
 |---|---|---|---|
 | Jev | $0.042 per million input tokens, output free | typesafe.ai launch post | 2026-09-16 |
-| Cohere Rerank 4 Pro | $2.50 per 1,000 searches (1 query + up to 100 docs); exact billed `usage.cost` per call from OpenRouter | OpenRouter response | 2026-09-16 |
+| Cohere Rerank 4 Pro | $2.50 per 1,000 searches (1 query + up to 100 docs); reported `usage.cost` per call from OpenRouter | OpenRouter response | 2026-09-16 |
 | Cohere Rerank 4 Fast | $2.00 per 1,000 searches, same route | OpenRouter response | 2026-09-16 |
 | ZeroEntropy zerank-2 | $0.025 per million tokens | zeroentropy.dev/pricing | 2026-09-16 |
-| DeepSeek V4.1 Flash | $0.15 / $0.60 per million in / out; exact billed `usage.cost` per call from OpenRouter | OpenRouter response | 2026-09-16 |
+| DeepSeek V4.1 Flash | $0.15 / $0.60 per million in / out; reported `usage.cost` per call from OpenRouter | OpenRouter response | 2026-09-16 |
 | Qwen2.5-1.5B RLCD (self-hosted) | GPU seconds of each call × $0.74 per hour (RunPod secure-cloud RTX 4090 list price); pod setup time not included | runpod.io pricing | 2026-09-16 |
 
 Usage totals per run (tokens, search units) are in `results/summary.md` so the cost can be checked against the vendor
@@ -201,5 +260,6 @@ dashboards.
 
 ## License
 
-Code: MIT. The datasets keep their own licences (BEIR, MTEB/BRIGHT, CodeSearchNet, NevIR, MIRACL); only ids, queries
-and scores are stored here.
+Code: MIT. Dataset content keeps its source licences (BEIR, MTEB/BRIGHT, CodeSearchNet, NevIR and MIRACL), including
+text quoted in saved responses or included in evidence exports. The exporter records source attribution; the code
+licence does not replace dataset licences.

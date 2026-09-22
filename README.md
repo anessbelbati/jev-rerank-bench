@@ -6,7 +6,7 @@ I gave [TypeSafe's Jev](https://typesafe.ai/blog/introducing-system-one-models-a
 it which ones were useful. Then I gave Cohere and ZeroEntropy the same passages. This repository contains the experiments, saved responses and scoring code.
 
 The ranking average put **Jev's rubric at 0.692 and Cohere Pro at 0.691**, without establishing a winner. Giving
-every query equal weight instead puts Cohere ahead. Jev did better on the negation test. An open-source Qwen recipe
+every query equal weight instead puts Cohere ahead. Jev did better on the negation test than the rerankers; the open-weight Open-Jev 9B, run afterwards in its own block, reads negation better than Jev asked the same way (77% vs 71% of pairs). An open-source Qwen recipe
 improved substantially when I gave it one passage at a time, but still showed no clear gain over keyword ranking.
 
 The main comparison covers eight English datasets. Five more BRIGHT subsets, NevIR negation pairs and MIRACL
@@ -167,12 +167,13 @@ and the source relevance labels may be incomplete.
 | `qwen-rlcd-pair` | same model and code | one passage per prompt and one boolean key with the same relevance wording; thirty sequential prompts per query using the same inference function; score = P(true), query latency includes all thirty |
 | `laya-noul-pair` / `laya-score-pair` / `laya-multi-noul-pair` | Laya 421M (English) and Laya multilingual 322M, `convaiinnovations/laya`, Apache 2.0, self-hosted on rented RTX 4090s | one passage per prompt (512-token window), Jev's yes/no wording (score = P(true)) or Jev's 4-level rubric (score = expected level); `small_models_runner.py` |
 | `gliner25-small-pair` / `gliner25-base-pair` / `gliner25-multi-pair` | Fastino GLiNER2.5 small 74M / base 194M / multi 0.3B, self-hosted | one passage per prompt, labels `relevant` / `not relevant`; a span and label matcher used outside its design, listed for completeness |
+| `open-jev-2b-noul-pair` / `open-jev-9b-noul-pair` | Open-Jev 2B / 9B (`ZefanCai/Open-Jev-2B`, `Open-Jev-9B`; LoRA + scalar head on Qwen3.5), self-hosted on rented GPUs | the `jev-noul-pair` shape, byte for byte, sent to a local Open-Jev server (`JEV_URL`, `JEV_MODEL=open-jev`); score = P(true); `run.py --cache-as` |
 | `qwen-rlcd-batch-reversed` | same | `qwen-rlcd-batch` with the 30 passages in reverse order (order-sensitivity check, the twin of `jev-choice-reversed`); never in the rankings |
 
 The yes/no variants of Jev, DeepSeek and Qwen get the same wording: *"Does the passage contain the information needed to answer or verify the
 query?"* (`rerankers/__init__.py`). Cohere and ZeroEntropy take the query and the documents.
 
-## Open weights, self-hosted: Laya and GLiNER2.5 (run 2026-09-19, its own block)
+## Open weights, self-hosted: Laya, GLiNER2.5 and Open-Jev (runs 2026-09-19 and 2026-09-22, their own block)
 
 Laya (Convai Innovations, 421M, Apache 2.0) is the open-weight model with Jev's question shape: Choice, Score and yes/no answered with
 probabilities. Its window is 512 tokens, so it ran one passage per prompt (the only shape it allows), with Jev's 4-level rubric and with Jev's
@@ -184,6 +185,8 @@ matchers, not built for this, listed for completeness. Rows copied from the rend
 | Laya 421M 4-level rubric per pair (self-hosted) | 0.483 | 0.474 | 40% | 140 ms | 0.03 |
 | Laya 421M yes/no per pair (self-hosted) | 0.471 | 0.463 | 39% | 137 ms | 0.03 |
 | Laya multilingual 322M yes/no per pair (self-hosted) | 0.376 | 0.372 | 31% | 87 ms | 0.02 |
+| Open-Jev 2B yes/no per pair (self-hosted) | 0.544 | 0.544 | 52% | 12.3 s | 0.63 |
+| Open-Jev 9B yes/no per pair (self-hosted) | 0.600 | 0.601 | 59% | 19.1 s | 3.16 |
 | GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | 0.419 | 0.417 | 35% | 293 ms | 0.07 |
 | GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | 0.416 | 0.416 | 35% | 469 ms | 0.11 |
 | GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | 0.399 | 0.399 | 33% | 152 ms | 0.04 |
@@ -197,6 +200,21 @@ matchers, not built for this, listed for completeness. Rows copied from the rend
 - torch 2.4's fused attention gave NaN scores for Laya on mixed-length batches; fixed by zeroing NaNs at padded positions after each layer;
   batched scores match the library's own predict() within 0.004 (English) and 0.012 (multilingual). Libraries: laya 0.3.3, gliner2 2.0.0.
 - Runner: `small_models_runner.py` (same cache rows as `run.py`, GPU seconds × the pod's hourly price).
+
+Open-Jev (Zefan Cai, github.com/Zefan-Cai/Open-Jev; MIT code, Apache 2.0 adapters) is a LoRA adapter plus a scalar head on Qwen3.5-2B and
+Qwen3.5-9B trained to answer the same three question types through the same request format as Jev. It ran through this repo's own Jev
+request builders pointed at a local copy of its server (`JEV_URL`), one passage per prompt, Jev's exact yes/no wording and criteria, on rented
+GPUs (2B: RTX 4090s, four server copies per card; 9B: L40S, A100, H100, RTX PRO 6000, two to four copies per card). Run 2026-09-22.
+
+- Open-Jev 2B vs BM25: gap +5.8 points, range +3.6 to +7.9, real.
+- Open-Jev 9B vs BM25: gap +11.4 points, range +9.3 to +13.5, real.
+- Jev yes/no per pair vs Open-Jev 9B, same shape: gap +7.0 points, 95% range +5.6 to +8.5, real. NevIR pairs right: 2B 73%, 9B 77% (Jev yes/no per pair 71%).
+- Time and cost: GPU wall time of each call with several server copies sharing one card, so the per-list time carries contention and the
+  dollar figure divides the pod price by the number of copies; both are rough. Passages longer than the servers' 4,096-token window (10 lists
+  per size, all in BRIGHT robotics and StackOverflow) were redone on a 16,384-token server; every response is in `cache/open-jev-*`.
+- Setup: `pip install -e '.[train]'` of Open-Jev, adapters `ZefanCai/Open-Jev-2B` (rev 0c7aa49) and `Open-Jev-9B` (rev 47e9668),
+  `python -m jev.server --checkpoint models/Open-Jev-<N>/package/checkpoint --max-length 4096`, then
+  `JEV_URL=http://127.0.0.1:8791/v1/systemone JEV_MODEL=open-jev JEV_GPU_RATE=<pod $/h ÷ copies> uv run run.py --model jev-noul-pair --cache-as open-jev-<n>-noul-pair --dataset all`.
 ## Fairness rules
 
 - Same candidate lists and truncation, with the duel and NevIR exceptions documented above; shared wording for the yes/no variants.
@@ -286,6 +304,7 @@ Regeneration reads local records and makes no paid model calls.
 | DeepSeek V4.1 Flash | $0.15 / $0.60 per million in / out; reported `usage.cost` per call from OpenRouter | OpenRouter response | 2026-09-16 |
 | Qwen2.5-1.5B RLCD (self-hosted) | GPU seconds of each call × $0.74 per hour (RunPod secure-cloud RTX 4090 list price); pod setup time not included | runpod.io pricing | 2026-09-16 |
 | Laya, GLiNER2.5 (self-hosted) | GPU seconds of each call × $0.74 per hour (RunPod secure-cloud RTX 4090 list price); pod setup time not included | runpod.io pricing | 2026-09-19 |
+| Open-Jev 2B / 9B (self-hosted) | GPU seconds of each call × the pod's hourly price ÷ server copies sharing the card (RunPod secure cloud: RTX 4090 $0.74, L40S $1.09, A100 80GB $1.59, H100 SXM $3.49, RTX PRO 6000 $2.09); pod setup time not included | runpod.io pricing | 2026-09-22 |
 
 Usage totals per run (tokens, search units) are in `results/summary.md` so the cost can be checked against the vendor
 dashboards.

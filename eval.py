@@ -23,7 +23,8 @@ MODELS = ["bm25", "cohere-pro", "cohere-fast", "zerank-2", "deepseek-pair", "dee
           "jev-noul-pair", "jev-noul-batch", "jev-choice",
           "jev-score-batch", "jev-duel", "jev-tournament", "jev-cascade", "jev-choice-reversed",
           "qwen-rlcd-batch", "qwen-rlcd-rubric", "qwen-rlcd-pair", "qwen-rlcd-batch-reversed",
-          "laya-noul-pair", "laya-score-pair", "laya-multi-noul-pair", "gliner25-small-pair", "gliner25-base-pair", "gliner25-multi-pair"]
+          "laya-noul-pair", "laya-score-pair", "laya-multi-noul-pair", "gliner25-small-pair", "gliner25-base-pair", "gliner25-multi-pair",
+          "open-jev-2b-noul-pair", "open-jev-9b-noul-pair"]
 LABELS = {"bm25": "BM25 (floor)", "cohere-pro": "Cohere Rerank 4 Pro", "cohere-fast": "Cohere Rerank 4 Fast",
           "zerank-2": "ZeroEntropy zerank-2",
           "deepseek-pair": "DeepSeek V4.1 Flash P(yes) per pair", "deepseek-json": "DeepSeek V4.1 Flash JSON, 30 in one call",
@@ -36,10 +37,11 @@ LABELS = {"bm25": "BM25 (floor)", "cohere-pro": "Cohere Rerank 4 Pro", "cohere-f
           "laya-noul-pair": "Laya 421M yes/no per pair (self-hosted)", "laya-score-pair": "Laya 421M 4-level rubric per pair (self-hosted)",
           "laya-multi-noul-pair": "Laya multilingual 322M yes/no per pair (self-hosted)",
           "gliner25-small-pair": "GLiNER2.5 small 74M, relevant / not per pair (self-hosted)", "gliner25-base-pair": "GLiNER2.5 base 194M, relevant / not per pair (self-hosted)",
-          "gliner25-multi-pair": "GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted)"}
+          "gliner25-multi-pair": "GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted)",
+          "open-jev-2b-noul-pair": "Open-Jev 2B yes/no per pair (self-hosted)", "open-jev-9b-noul-pair": "Open-Jev 9B yes/no per pair (self-hosted)"}
 # Models whose scores are presented as probabilities and so can be held to calibration.
 PROB_MODELS = {"jev-noul-pair", "jev-noul-batch", "deepseek-pair", "qwen-rlcd-batch", "qwen-rlcd-pair",
-               "laya-noul-pair", "laya-multi-noul-pair", "gliner25-small-pair", "gliner25-base-pair", "gliner25-multi-pair"}
+               "laya-noul-pair", "laya-multi-noul-pair", "gliner25-small-pair", "gliner25-base-pair", "gliner25-multi-pair", "open-jev-2b-noul-pair", "open-jev-9b-noul-pair"}
 
 
 def load_run(model: str, dataset: str, variant: str) -> dict[str, dict]:

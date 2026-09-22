@@ -25,8 +25,12 @@ from itertools import combinations
 
 from common import PRICES, Call, QueryResult, env, post_json
 
-URL = "https://api.typesafe.ai/v1/systemone"
-MODEL = "jev-latest"
+import os
+
+# JEV_URL / JEV_MODEL let the same request builders run against a local server that speaks the same protocol
+# (used for the open-weight Open-Jev adapters); JEV_GPU_RATE (USD per hour) then bills GPU seconds instead of tokens.
+URL = os.environ.get("JEV_URL", "https://api.typesafe.ai/v1/systemone")
+MODEL = os.environ.get("JEV_MODEL", "jev-latest")
 RUBRIC = ["The passage is off-topic for the query.",
           "The passage is on a related topic but does not supply what the query asks for.",
           "The passage partly supplies the information needed to answer or verify the query.",
@@ -34,10 +38,13 @@ RUBRIC = ["The passage is off-topic for the query.",
 
 
 def _headers() -> dict:
-    return {"Authorization": f"Bearer {env('JEV_API_KEY')}", "Content-Type": "application/json", "Accept": "application/json"}
+    key = os.environ.get("JEV_API_KEY", "") if os.environ.get("JEV_URL") else env("JEV_API_KEY")
+    return {"Authorization": f"Bearer {key}", "Content-Type": "application/json", "Accept": "application/json"}
 
 
-def _cost(usage: dict) -> float:
+def _cost(usage: dict, ms: float = 0.0) -> float:
+    if os.environ.get("JEV_GPU_RATE"):
+        return ms / 3.6e6 * float(os.environ["JEV_GPU_RATE"])
     p = PRICES["jev"]
     return usage.get("input_tokens", 0) * p["input_per_m"] / 1e6 + usage.get("output_tokens", 0) * p["output_per_m"] / 1e6
 
@@ -47,7 +54,7 @@ def _ask(state, questions: dict) -> tuple[Call, dict | None]:
     if status != 200 or not isinstance(body, dict):
         return Call(ms, status, {}, 0.0, raw=body if isinstance(body, dict) else str(body)[:500], error=f"HTTP {status}"), None
     usage = body.get("usage") or {}
-    return Call(ms, status, usage, _cost(usage), raw=body), body
+    return Call(ms, status, usage, _cost(usage, ms), raw=body), body
 
 
 def _noul(instructions: str) -> dict:

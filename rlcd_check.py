@@ -12,7 +12,7 @@ import statistics
 
 from common import CACHE, CANDIDATES, ENGLISH, RESULTS, read_jsonl, jsonl_exists
 
-MODELS = ("qwen-rlcd-batch", "qwen-rlcd-rubric", "qwen-rlcd-pair", "jev-noul-batch", "jev-score-batch", "jev-noul-pair")
+MODELS = ("qwen-rlcd-batch", "qwen-rlcd-rubric", "qwen-rlcd-pair", "jev-noul-batch", "jev-score-batch", "jev-noul-pair", "open-jev-2b-noul-pair", "open-jev-9b-noul-pair")
 
 
 def main() -> dict:

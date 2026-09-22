@@ -22,15 +22,24 @@ from common import CANDIDATES, DATASETS, EXTRA, RESULTS, VARIANTS, Cache, read_j
 from rerankers import REGISTRY
 
 
-def run(model_key: str, dataset: str, variant: str, limit: int | None, workers: int) -> dict:
+def run(model_key: str, dataset: str, variant: str, limit: int | None, workers: int, cache_as: str | None = None, shard: str = "0/1", reverse: bool = False, slice_: str = "0/1", skip_file: str | None = None) -> dict:
     reranker = REGISTRY[model_key]()
-    rows = read_jsonl(CANDIDATES / f"{dataset}.jsonl")
+    k, n = (int(x) for x in shard.split("/"))
+    rows = read_jsonl(CANDIDATES / f"{dataset}.jsonl")[k::n]
+    i, m = (int(x) for x in slice_.split("/"))
+    rows = rows[i * len(rows) // m:(i + 1) * len(rows) // m]     # a fixed contiguous chunk of the shard, cut before the cache is consulted
+    model_key = cache_as or model_key      # --cache-as: same setup, another backend (e.g. Open-Jev), its own cache folder
     docs = {r["did"]: r["text"] for r in read_jsonl(CANDIDATES / f"{dataset}.docs.jsonl")}
     cache = Cache(model_key, dataset, variant)
     # A query is redone only if it is missing or its last attempt failed (a rerun repairs, it never re-spends on successes).
-    todo = [r for r in rows if r[variant] and not (cache.has(r["qid"]) and cache.rows[r["qid"]]["ok"])]
+    skip = set()
+    if skip_file:       # "dataset|variant|qid" lines: rows another machine has already finished
+        skip = {l.strip() for l in open(skip_file, encoding="utf-8") if l.strip()}
+    todo = [r for r in rows if r[variant] and not (cache.has(r["qid"]) and cache.rows[r["qid"]]["ok"]) and f"{dataset}|{variant}|{r['qid']}" not in skip]
     if limit:
         todo = todo[:limit]
+    if reverse:
+        todo = todo[::-1]       # a helper pod walks the same shard from the other end; the merge keeps one row per qid
 
     def one(r: dict) -> dict:
         cands = r[variant]
@@ -76,7 +85,13 @@ if __name__ == "__main__":
     ap.add_argument("--variant", default="both", choices=list(VARIANTS) + ["both"])
     ap.add_argument("--limit", type=int, default=None, help="only this many uncached queries (smoke test)")
     ap.add_argument("--workers", type=int, default=6)
+    ap.add_argument("--cache-as", default=None, help="write rows under this model key (a different backend via JEV_URL)")
+    ap.add_argument("--shard", default="0/1", help="k/n: this process takes every n-th query starting at k")
+    ap.add_argument("--reverse", action="store_true", help="walk datasets, variants and queries in reverse order")
+    ap.add_argument("--slice", default="0/1", help="i/m: this process takes the i-th of m contiguous chunks of its shard")
+    ap.add_argument("--skip-file", default=None, help="file of dataset|variant|qid lines to leave out (done elsewhere)")
     a = ap.parse_args()
-    for ds in (DATASETS if a.dataset == "all" else [a.dataset]):
-        for v in (VARIANTS if a.variant == "both" else [a.variant]):
-            run(a.model, ds, v, a.limit, a.workers)
+    order = lambda xs: list(xs)[::-1] if a.reverse else list(xs)
+    for ds in order(DATASETS if a.dataset == "all" else [a.dataset]):
+        for v in order(VARIANTS if a.variant == "both" else [a.variant]):
+            run(a.model, ds, v, a.limit, a.workers, a.cache_as, a.shard, a.reverse, a.slice, a.skip_file)

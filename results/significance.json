@@ -686,7 +686,9 @@
     "laya-multi-noul-pair": 0.376191470048025,
     "gliner25-small-pair": 0.3993365244720682,
     "gliner25-base-pair": 0.41856090169975113,
-    "gliner25-multi-pair": 0.4161988986590974
+    "gliner25-multi-pair": 0.4161988986590974,
+    "open-jev-2b-noul-pair": 0.5435676041443219,
+    "open-jev-9b-noul-pair": 0.6001486213018692
    },
    "vs_best": {
     "bm25": {
@@ -919,6 +921,28 @@
      ],
      "p": 0.0,
      "real": true
+    },
+    "open-jev-2b-noul-pair": {
+     "a": "jev-score-batch",
+     "b": "open-jev-2b-noul-pair",
+     "diff": 0.1485713500348126,
+     "ci95": [
+      0.13051006964187908,
+      0.16678389118890985
+     ],
+     "p": 0.0,
+     "real": true
+    },
+    "open-jev-9b-noul-pair": {
+     "a": "jev-score-batch",
+     "b": "open-jev-9b-noul-pair",
+     "diff": 0.09199033287726532,
+     "ci95": [
+      0.0777725743844951,
+      0.10687066480650885
+     ],
+     "p": 0.0,
+     "real": true
     }
    }
   },
@@ -946,7 +970,9 @@
     "laya-multi-noul-pair": 0.31473936971728345,
     "gliner25-small-pair": 0.33339628361935797,
     "gliner25-base-pair": 0.3468948462094007,
-    "gliner25-multi-pair": 0.35417965979996424
+    "gliner25-multi-pair": 0.35417965979996424,
+    "open-jev-2b-noul-pair": 0.517307535733319,
+    "open-jev-9b-noul-pair": 0.5930242847143825
    },
    "vs_best": {
     "bm25": {
@@ -1179,6 +1205,28 @@
      ],
      "p": 0.0,
      "real": true
+    },
+    "open-jev-2b-noul-pair": {
+     "a": "jev-choice",
+     "b": "open-jev-2b-noul-pair",
+     "diff": 0.24004020607161425,
+     "ci95": [
+      0.2034453740323687,
+      0.2759676311302419
+     ],
+     "p": 0.0,
+     "real": true
+    },
+    "open-jev-9b-noul-pair": {
+     "a": "jev-choice",
+     "b": "open-jev-9b-noul-pair",
+     "diff": 0.16432345709055074,
+     "ci95": [
+      0.1283569520935838,
+      0.20147357423168316
+     ],
+     "p": 0.0,
+     "real": true
     }
    }
   }
@@ -1338,6 +1386,61 @@
     ],
     "p": 0.0,
     "real": true
+   },
+   "open-jev-2b-noul-pair|bm25": {
+    "a": "open-jev-2b-noul-pair",
+    "b": "bm25",
+    "diff": 0.05750359122583093,
+    "ci95": [
+     0.036423097534523254,
+     0.07905024527801317
+    ],
+    "p": 0.0,
+    "real": true
+   },
+   "open-jev-9b-noul-pair|bm25": {
+    "a": "open-jev-9b-noul-pair",
+    "b": "bm25",
+    "diff": 0.1140846083833782,
+    "ci95": [
+     0.09317184228594143,
+     0.13514696863886702
+    ],
+    "p": 0.0,
+    "real": true
+   },
+   "jev-noul-pair|open-jev-9b-noul-pair": {
+    "a": "jev-noul-pair",
+    "b": "open-jev-9b-noul-pair",
+    "diff": 0.07019252109078344,
+    "ci95": [
+     0.056165303323713583,
+     0.08455296136410335
+    ],
+    "p": 0.0,
+    "real": true
+   },
+   "jev-noul-pair|open-jev-2b-noul-pair": {
+    "a": "jev-noul-pair",
+    "b": "open-jev-2b-noul-pair",
+    "diff": 0.1267735382483307,
+    "ci95": [
+     0.10988143257676478,
+     0.14397281738361598
+    ],
+    "p": 0.0,
+    "real": true
+   },
+   "open-jev-9b-noul-pair|laya-noul-pair": {
+    "a": "open-jev-9b-noul-pair",
+    "b": "laya-noul-pair",
+    "diff": 0.12954397957453845,
+    "ci95": [
+     0.11045952448318463,
+     0.14827254801318476
+    ],
+    "p": 0.0,
+    "real": true
    }
   },
   "top1": {
@@ -1494,6 +1597,61 @@
     ],
     "p": 0.0,
     "real": true
+   },
+   "open-jev-2b-noul-pair|bm25": {
+    "a": "open-jev-2b-noul-pair",
+    "b": "bm25",
+    "diff": 0.06383726001262197,
+    "ci95": [
+     0.02799429642875306,
+     0.10099313261597943
+    ],
+    "p": 0.0004,
+    "real": true
+   },
+   "open-jev-9b-noul-pair|bm25": {
+    "a": "open-jev-9b-noul-pair",
+    "b": "bm25",
+    "diff": 0.13955400899368547,
+    "ci95": [
+     0.09891315116234027,
+     0.17927303561500219
+    ],
+    "p": 0.0,
+    "real": true
+   },
+   "jev-noul-pair|open-jev-9b-noul-pair": {
+    "a": "jev-noul-pair",
+    "b": "open-jev-9b-noul-pair",
+    "diff": 0.10624967032286958,
+    "ci95": [
+     0.07425488849697814,
+     0.13864045271396913
+    ],
+    "p": 0.0,
+    "real": true
+   },
+   "jev-noul-pair|open-jev-2b-noul-pair": {
+    "a": "jev-noul-pair",
+    "b": "open-jev-2b-noul-pair",
+    "diff": 0.1819664193039331,
+    "ci95": [
+     0.14723272125189557,
+     0.2169449006784436
+    ],
+    "p": 0.0,
+    "real": true
+   },
+   "open-jev-9b-noul-pair|laya-noul-pair": {
+    "a": "open-jev-9b-noul-pair",
+    "b": "laya-noul-pair",
+    "diff": 0.20030023123041046,
+    "ci95": [
+     0.16301224886462184,
+     0.23787170446883393
+    ],
+    "p": 0.0,
+    "real": true
    }
   }
  },
@@ -1532,7 +1690,9 @@
     "laya-multi-noul-pair": 0.2554536527726481,
     "gliner25-small-pair": 0.18213547759617646,
     "gliner25-base-pair": 0.1996214366983704,
-    "gliner25-multi-pair": 0.24548021337314033
+    "gliner25-multi-pair": 0.24548021337314033,
+    "open-jev-2b-noul-pair": 0.28325687761174395,
+    "open-jev-9b-noul-pair": 0.4022026953434033
    },
    "vs_best": {
     "bm25": {
@@ -1765,6 +1925,28 @@
      ],
      "p": 0.0,
      "real": true
+    },
+    "open-jev-2b-noul-pair": {
+     "a": "jev-score-batch",
+     "b": "open-jev-2b-noul-pair",
+     "diff": 0.21001322263959865,
+     "ci95": [
+      0.180245037269075,
+      0.2391226012977641
+     ],
+     "p": 0.0,
+     "real": true
+    },
+    "open-jev-9b-noul-pair": {
+     "a": "jev-score-batch",
+     "b": "open-jev-9b-noul-pair",
+     "diff": 0.0910674049079393,
+     "ci95": [
+      0.06797235686976269,
+      0.11431589313717218
+     ],
+     "p": 0.0,
+     "real": true
     }
    },
    "jev_vs_other": {
@@ -1813,7 +1995,9 @@
     "laya-multi-noul-pair": 0.20634711900198408,
     "gliner25-small-pair": 0.11969828128766169,
     "gliner25-base-pair": 0.17055132150957533,
-    "gliner25-multi-pair": 0.22136539999525748
+    "gliner25-multi-pair": 0.22136539999525748,
+    "open-jev-2b-noul-pair": 0.2725295830577851,
+    "open-jev-9b-noul-pair": 0.425813304921146
    },
    "vs_best": {
     "bm25": {
@@ -2043,6 +2227,28 @@
      "ci95": [
       0.3110895120842077,
       0.4401900703763467
+     ],
+     "p": 0.0,
+     "real": true
+    },
+    "open-jev-2b-noul-pair": {
+     "a": "deepseek-json",
+     "b": "open-jev-2b-noul-pair",
+     "diff": 0.324604745936523,
+     "ci95": [
+      0.2607102520879681,
+      0.3852379218765971
+     ],
+     "p": 0.0,
+     "real": true
+    },
+    "open-jev-9b-noul-pair": {
+     "a": "deepseek-json",
+     "b": "open-jev-9b-noul-pair",
+     "diff": 0.17132102407316208,
+     "ci95": [
+      0.11363528249199899,
+      0.22883417905866024
      ],
      "p": 0.0,
      "real": true

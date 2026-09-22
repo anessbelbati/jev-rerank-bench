@@ -142,7 +142,7 @@ P("## Results: ranking quality")
 P("")
 P("Per dataset, nDCG@10 (higher is better), scored questions in brackets:")
 P("")
-show = [m for m in ["cohere-pro", "cohere-fast", "zerank-2", "deepseek-json", "deepseek-pair", "qwen-rlcd-batch", "qwen-rlcd-rubric", "qwen-rlcd-pair", "laya-score-pair", "laya-noul-pair", "jev-choice", "jev-noul-batch", "jev-score-batch", "jev-noul-pair", "bm25"] if m in rows]
+show = [m for m in ["cohere-pro", "cohere-fast", "zerank-2", "deepseek-json", "deepseek-pair", "qwen-rlcd-batch", "qwen-rlcd-rubric", "qwen-rlcd-pair", "laya-score-pair", "laya-noul-pair", "open-jev-2b-noul-pair", "open-jev-9b-noul-pair", "jev-choice", "jev-noul-batch", "jev-score-batch", "jev-noul-pair", "bm25"] if m in rows]
 P("| Dataset | " + " | ".join(LABELS[m] for m in show) + " |")
 P("|---|" + "---|" * len(show))
 for d in EN:
@@ -235,9 +235,22 @@ if "qwen-rlcd-batch" in rows and rows["qwen-rlcd-batch"]["complete"]:
           + (f"The three GLiNER2.5 label matchers (74M to 0.3B), which are not built for this and are listed for completeness only, land at " + ", ".join(f(rows[m]['ndcg']) for m in gl) + ". " if gl else "")
           + (f"So on this task the open-weight decision model sits where the keyword floor is; Jev asked the same way, one passage per prompt, is {f(rows['jev-noul-pair']['ndcg'] - rows[ls_]['ndcg'])} above it. " if "jev-noul-pair" in rows else "") + "Every response is in the repo.")
         P("")
+    oj2, oj9 = "open-jev-2b-noul-pair", "open-jev-9b-noul-pair"
+    if all(m in rows and rows[m]["complete"] for m in (oj2, oj9)) and "jev-noul-pair" in rows:
+        pr9b = SIG["pairs"]["ndcg10"].get(f"{oj9}|bm25") if SIG else None
+        pr2b = SIG["pairs"]["ndcg10"].get(f"{oj2}|bm25") if SIG else None
+        prj9 = SIG["pairs"]["ndcg10"].get(f"jev-noul-pair|{oj9}") if SIG else None
+        P(f"Open-Jev (Zefan Cai; MIT code, Apache 2.0 adapters) is the closest thing to a public copy of the model class: a LoRA adapter plus a scalar head on Qwen3.5-2B and Qwen3.5-9B, trained to answer the same three question types "
+          f"through the same request format. So it did not need a runner of its own: the request builders in this repo were pointed at a local copy of its server, one passage per prompt, Jev's exact yes/no wording and criteria, on rented GPUs. "
+          f"2B: nDCG {f(rows[oj2]['ndcg'])}, top pick {pct(rows[oj2]['top1'])}" + (f" ({rng(pr2b)} against BM25, {tag(pr2b)})" if pr2b else "") + f"; 9B: nDCG {f(rows[oj9]['ndcg'])}, top pick {pct(rows[oj9]['top1'])}"
+          + (f" ({rng(pr9b)} against BM25, {tag(pr9b)})" if pr9b else "") + "; Jev asked the same way is "
+          + (f"{rng(prj9)} above the 9B, {tag(prj9)}" if prj9 else f"{f(rows['jev-noul-pair']['ndcg'] - rows[oj9]['ndcg'])} above the 9B")
+          + (f". On NevIR's negation pairs the picture flips: 2B {pct(NEV[oj2]['paired_accuracy'])}, 9B {pct(NEV[oj9]['paired_accuracy'])} of pairs right against {pct(NEV['jev-noul-pair']['paired_accuracy'])} for Jev asked the same way" if NEV and oj2 in NEV and oj9 in NEV and "jev-noul-pair" in NEV else "")
+          + f". Time and cost for these two rows are GPU wall time with several server copies sharing one card, so the per-list time is inflated by contention and the dollar figure divides the pod price by the number of copies; treat both as rough.")
+        P("")
         P("| Open weights, self-hosted (one passage per prompt) | nDCG@10 | worst-case ties | Top pick right | Time per list of 30 | $ per 1,000 |")
         P("|---|---|---|---|---|---|")
-        for m in [ls_, ln_, "laya-multi-noul-pair"] + gl + ["bm25"]:
+        for m in [ls_, ln_, "laya-multi-noul-pair", "open-jev-2b-noul-pair", "open-jev-9b-noul-pair"] + gl + ["bm25"]:
             if m in rows and rows[m]["complete"]:
                 P(f"| {LABELS[m]} | {f(rows[m]['ndcg'])} | {f(en_avg(m, 'ndcg10_ties_against'))} | {pct(rows[m]['top1'])} | {sec(rows[m]['ms']) if rows[m]['ms'] else '–'} | {f(rows[m]['cost'], 2)} |")
         P("")
@@ -308,6 +321,7 @@ bill = {"cohere-pro": "1 search unit per query", "cohere-fast": "1 search unit p
         "qwen-rlcd-batch": "GPU seconds on a rented RTX 4090 at $0.74/h", "qwen-rlcd-rubric": "GPU seconds on a rented RTX 4090 at $0.74/h", "qwen-rlcd-pair": "GPU seconds on a rented RTX 4090 at $0.74/h, 30 prompts in sequence", "laya-noul-pair": "GPU seconds on a rented RTX 4090 at $0.74/h", "laya-score-pair": "GPU seconds on a rented RTX 4090 at $0.74/h",
         "laya-multi-noul-pair": "GPU seconds on a rented RTX 4090 at $0.74/h", "gliner25-small-pair": "GPU seconds on a rented RTX 4090 at $0.74/h",
         "gliner25-base-pair": "GPU seconds on a rented RTX 4090 at $0.74/h", "gliner25-multi-pair": "GPU seconds on a rented RTX 4090 at $0.74/h",
+        "open-jev-2b-noul-pair": "GPU seconds on a rented RTX 4090 at $0.74/h, four server copies sharing the card", "open-jev-9b-noul-pair": "GPU seconds on rented L40S, A100, H100 and RTX PRO 6000 cards at $1.09-3.49/h, two to four copies sharing each card",
         "jev-noul-batch": "the passages once + 30 questions at $0.042/M", "jev-choice": "the passages once + 1 question at $0.042/M",
         "jev-score-batch": "the passages once + 30 rubric questions at $0.042/M", "jev-duel": "10 passages + 45 questions", "jev-tournament": "two calls",
         "jev-cascade": "one batched call + 8 pair calls"}

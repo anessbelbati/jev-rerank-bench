@@ -212,6 +212,8 @@ GPUs (2B: RTX 4090s, four server copies per card; 9B: L40S, A100, H100, RTX PRO 
 - Time and cost: GPU wall time of each call with several server copies sharing one card, so the per-list time carries contention and the
   dollar figure divides the pod price by the number of copies; both are rough. Passages longer than the servers' 4,096-token window (10 lists
   per size, all in BRIGHT robotics and StackOverflow) were redone on a 16,384-token server; every response is in `cache/open-jev-*`.
+- Scripts: `openjev/pod.sh`, `openjev/fix.sh`, `openjev/merge.py`; the run's own tables: `results/eval_run_sept22.txt`,
+  `results/significance_run_sept22.txt`.
 - Setup: `pip install -e '.[train]'` of Open-Jev, adapters `ZefanCai/Open-Jev-2B` (rev 0c7aa49) and `Open-Jev-9B` (rev 47e9668),
   `python -m jev.server --checkpoint models/Open-Jev-<N>/package/checkpoint --max-length 4096`, then
   `JEV_URL=http://127.0.0.1:8791/v1/systemone JEV_MODEL=open-jev JEV_GPU_RATE=<pod $/h ÷ copies> uv run run.py --model jev-noul-pair --cache-as open-jev-<n>-noul-pair --dataset all`.
@@ -260,6 +262,8 @@ eval.py                metrics, nothing-relevant test, calibration, charts  ->  
 significance.py  nevir_eval.py  rlcd_check.py  network.py  batching.py  determinism.py  coldstart.py
 rlcd_runner.py         the self-hosted Qwen RLCD recipe, run on a GPU pod, writing the same cache rows
 small_models_runner.py the self-hosted Laya / GLiNER2.5 runs (one passage per prompt), same cache rows
+openjev/               pod.sh (one GPU pod: install Open-Jev, adapter, server copies, sharded run.py), fix.sh (full-window rerun
+                       of the long lists), merge.py (merge the pod shards, verify coverage, write cache/)
 blog.py                renders an earlier experiment write-up from results/*.json
 scripts/readme_header.py  draws the README header from saved scores and the website fonts
 ```

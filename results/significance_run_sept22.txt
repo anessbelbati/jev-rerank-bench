@@ -1,0 +1,69 @@
+scifact           n=264  best Jev jev-noul-batch vs best other cohere-pro: gap +0.009 [-0.006, +0.025] p=0.255 within noise
+fiqa              n=411  best Jev jev-noul-batch vs best other cohere-pro: gap -0.050 [-0.067, -0.034] p=0.000 REAL
+nq                n=320  best Jev jev-score-batch vs best other cohere-pro: gap -0.039 [-0.063, -0.015] p=0.002 REAL
+nfcorpus          n=239  best Jev jev-score-batch vs best other zerank-2: gap -0.006 [-0.016, +0.004] p=0.247 within noise
+trec-covid        n= 50  best Jev jev-score-batch vs best other zerank-2: gap -0.021 [-0.040, -0.002] p=0.035 REAL
+bright-biology    n= 39  best Jev jev-score-batch vs best other zerank-2: gap +0.002 [-0.025, +0.031] p=0.872 within noise
+bright-economics  n= 38  best Jev jev-tournament vs best other deepseek-json: gap -0.011 [-0.066, +0.042] p=0.684 within noise
+bright-earth_science n= 57  best Jev jev-score-batch vs best other cohere-pro: gap -0.016 [-0.054, +0.020] p=0.383 within noise
+bright-psychology n= 29  best Jev jev-score-batch vs best other deepseek-json: gap -0.005 [-0.065, +0.057] p=0.863 within noise
+bright-robotics   n= 35  best Jev jev-cascade vs best other zerank-2: gap +0.003 [-0.056, +0.060] p=0.908 within noise
+bright-stackoverflow n= 62  best Jev jev-cascade vs best other deepseek-json: gap +0.000 [-0.039, +0.038] p=0.948 within noise
+bright-sustainable_living n= 47  best Jev jev-score-batch vs best other deepseek-json: gap +0.002 [-0.042, +0.041] p=0.881 within noise
+csn-python        n=256  best Jev jev-choice vs best other cohere-pro: gap +0.001 [-0.010, +0.011] p=0.902 within noise
+miracl-fr         n=152  best Jev jev-choice vs best other cohere-pro: gap -0.064 [-0.093, -0.035] p=0.000 REAL
+
+8-dataset average, ndcg10: best = jev-score-batch (0.692)
+   vs cohere-pro           0.691  gap +0.001 [-0.009, +0.012] p=0.906 within noise
+   vs jev-noul-batch       0.685  gap +0.007 [+0.001, +0.013] p=0.014 REAL
+   vs jev-choice           0.684  gap +0.008 [+0.000, +0.017] p=0.048 REAL
+   vs cohere-fast          0.684  gap +0.008 [-0.003, +0.020] p=0.156 within noise
+   vs zerank-2             0.682  gap +0.010 [-0.000, +0.019] p=0.057 within noise
+   vs deepseek-json        0.682  gap +0.010 [-0.001, +0.021] p=0.070 within noise
+   vs jev-cascade          0.674  gap +0.018 [+0.011, +0.026] p=0.000 REAL
+   vs jev-noul-pair        0.670  gap +0.022 [+0.013, +0.031] p=0.000 REAL
+   vs jev-tournament       0.668  gap +0.024 [+0.015, +0.034] p=0.000 REAL
+   vs deepseek-pair        0.608  gap +0.084 [+0.071, +0.098] p=0.000 REAL
+   vs open-jev-9b-noul-pair 0.600  gap +0.092 [+0.078, +0.107] p=0.000 REAL
+   vs jev-duel             0.580  gap +0.112 [+0.095, +0.130] p=0.000 REAL
+   vs open-jev-2b-noul-pair 0.544  gap +0.149 [+0.131, +0.167] p=0.000 REAL
+   vs bm25                 0.486  gap +0.206 [+0.187, +0.225] p=0.000 REAL
+   vs laya-score-pair      0.483  gap +0.209 [+0.189, +0.230] p=0.000 REAL
+   vs qwen-rlcd-pair       0.471  gap +0.221 [+0.203, +0.239] p=0.000 REAL
+   vs laya-noul-pair       0.471  gap +0.222 [+0.201, +0.242] p=0.000 REAL
+   vs gliner25-base-pair   0.419  gap +0.274 [+0.251, +0.296] p=0.000 REAL
+   vs gliner25-multi-pair  0.416  gap +0.276 [+0.253, +0.298] p=0.000 REAL
+   vs gliner25-small-pair  0.399  gap +0.293 [+0.269, +0.316] p=0.000 REAL
+   vs laya-multi-noul-pair 0.376  gap +0.316 [+0.292, +0.339] p=0.000 REAL
+   vs qwen-rlcd-rubric     0.340  gap +0.352 [+0.332, +0.374] p=0.000 REAL
+   vs qwen-rlcd-batch      0.255  gap +0.437 [+0.414, +0.460] p=0.000 REAL
+
+8-dataset average, top1: best = jev-choice (0.757)
+   vs jev-tournament       0.753  gap +0.005 [-0.010, +0.019] p=0.518 within noise
+   vs jev-score-batch      0.741  gap +0.016 [-0.010, +0.042] p=0.228 within noise
+   vs deepseek-json        0.729  gap +0.029 [+0.005, +0.052] p=0.018 REAL
+   vs cohere-pro           0.726  gap +0.031 [+0.007, +0.056] p=0.008 REAL
+   vs zerank-2             0.719  gap +0.038 [+0.010, +0.066] p=0.008 REAL
+   vs jev-noul-batch       0.719  gap +0.038 [+0.012, +0.066] p=0.006 REAL
+   vs cohere-fast          0.715  gap +0.042 [+0.011, +0.074] p=0.009 REAL
+   vs jev-noul-pair        0.699  gap +0.058 [+0.033, +0.084] p=0.000 REAL
+   vs jev-cascade          0.695  gap +0.063 [+0.034, +0.091] p=0.000 REAL
+   vs jev-duel             0.658  gap +0.099 [+0.068, +0.131] p=0.000 REAL
+   vs deepseek-pair        0.617  gap +0.140 [+0.108, +0.173] p=0.000 REAL
+   vs open-jev-9b-noul-pair 0.593  gap +0.164 [+0.128, +0.201] p=0.000 REAL
+   vs open-jev-2b-noul-pair 0.517  gap +0.240 [+0.203, +0.276] p=0.000 REAL
+   vs bm25                 0.453  gap +0.304 [+0.267, +0.341] p=0.000 REAL
+   vs laya-score-pair      0.402  gap +0.355 [+0.313, +0.396] p=0.000 REAL
+   vs qwen-rlcd-pair       0.400  gap +0.357 [+0.318, +0.398] p=0.000 REAL
+   vs laya-noul-pair       0.393  gap +0.365 [+0.326, +0.404] p=0.000 REAL
+   vs gliner25-multi-pair  0.354  gap +0.403 [+0.365, +0.441] p=0.000 REAL
+   vs gliner25-base-pair   0.347  gap +0.410 [+0.371, +0.450] p=0.000 REAL
+   vs gliner25-small-pair  0.333  gap +0.424 [+0.384, +0.464] p=0.000 REAL
+   vs laya-multi-noul-pair 0.315  gap +0.443 [+0.402, +0.483] p=0.000 REAL
+   vs qwen-rlcd-rubric     0.296  gap +0.461 [+0.422, +0.501] p=0.000 REAL
+   vs qwen-rlcd-batch      0.220  gap +0.537 [+0.496, +0.578] p=0.000 REAL
+
+BRIGHT block (7 subsets, 307 questions), ndcg10: best Jev jev-score-batch vs best other deepseek-json: gap +0.006 [-0.013, +0.025] p=0.501 within noise
+
+BRIGHT block (7 subsets, 307 questions), top1: best Jev jev-tournament vs best other deepseek-json: gap -0.000 [-0.045, +0.046] p=0.995 within noise
+wrote D:\ACTIVE-PROJECTS\jev\results\significance.json

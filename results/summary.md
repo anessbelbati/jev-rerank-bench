@@ -24,6 +24,12 @@ Ranking numbers are over queries whose BM25 top-30 contains at least one relevan
 | Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | 8 | 0.340 | 0.296 | 419 | 419 | 0.09 | 0.545 | 0.873 | — |
 | Qwen2.5-1.5B RLCD, one passage per prompt (self-hosted) | 8 | 0.471 | 0.400 | 748 | 748 | 0.20 | 0.574 | 0.844 | 0.184 |
 | Qwen2.5-1.5B RLCD, 30 yes/no keys, passages reversed | 8 | 0.386 | 0.304 | 354 | 354 | 0.08 | — | — | — |
+| Laya 421M yes/no per pair (self-hosted) | 8 | 0.471 | 0.393 | 137 | 137 | 0.03 | 0.596 | 0.794 | 0.280 |
+| Laya 421M 4-level rubric per pair (self-hosted) | 8 | 0.483 | 0.402 | 140 | 140 | 0.03 | 0.604 | 0.797 | — |
+| Laya multilingual 322M yes/no per pair (self-hosted) | 8 | 0.376 | 0.315 | 87 | 87 | 0.02 | 0.550 | 0.845 | 0.364 |
+| GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | 8 | 0.399 | 0.333 | 152 | 152 | 0.04 | 0.560 | 0.863 | 0.299 |
+| GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | 8 | 0.419 | 0.347 | 293 | 293 | 0.07 | 0.573 | 0.841 | 0.324 |
+| GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | 8 | 0.416 | 0.354 | 469 | 469 | 0.11 | 0.566 | 0.839 | 0.206 |
 
 ## All datasets including French
 
@@ -47,6 +53,12 @@ Ranking numbers are over queries whose BM25 top-30 contains at least one relevan
 | Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | 13 | 0.267 | 0.224 | 409 | 409 | 0.10 | 0.543 | 0.864 | — |
 | Qwen2.5-1.5B RLCD, one passage per prompt (self-hosted) | 13 | 0.385 | 0.311 | 805 | 805 | 0.20 | 0.554 | 0.861 | 0.175 |
 | Qwen2.5-1.5B RLCD, 30 yes/no keys, passages reversed | 8 | 0.386 | 0.304 | 354 | 354 | 0.08 | — | — | — |
+| Laya 421M yes/no per pair (self-hosted) | 14 | 0.397 | 0.304 | 140 | 140 | 0.03 | 0.565 | 0.826 | 0.313 |
+| Laya 421M 4-level rubric per pair (self-hosted) | 14 | 0.398 | 0.312 | 141 | 141 | 0.03 | 0.573 | 0.823 | — |
+| Laya multilingual 322M yes/no per pair (self-hosted) | 14 | 0.343 | 0.279 | 97 | 97 | 0.02 | 0.542 | 0.860 | 0.401 |
+| GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | 14 | 0.320 | 0.245 | 181 | 181 | 0.05 | 0.540 | 0.877 | 0.330 |
+| GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | 14 | 0.344 | 0.280 | 356 | 356 | 0.10 | 0.550 | 0.854 | 0.320 |
+| GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | 14 | 0.357 | 0.296 | 569 | 569 | 0.15 | 0.550 | 0.850 | 0.220 |
 
 ## scifact
 
@@ -72,6 +84,12 @@ Ranking numbers are over queries whose BM25 top-30 contains at least one relevan
 | Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | 264 | 0.358 | 0.186 | 0.409 | 0.296 | 564 | 581 | 765 | 581 | 0.13 | 0.557 | 0.833 | 0.464* |
 | Qwen2.5-1.5B RLCD, one passage per prompt (self-hosted) | 264 | 0.681 | 0.500 | 0.774 | 0.627 | 564 | 760 | 1602 | 760 | 0.23 | 0.630 | 0.860 | 0.139 |
 | Qwen2.5-1.5B RLCD, 30 yes/no keys, passages reversed | 264 | 0.530 | 0.322 | 0.636 | 0.460 | 300 | 510 | 700 | 510 | 0.13 | — | — | 0.340* |
+| Laya 421M yes/no per pair (self-hosted) | 264 | 0.600 | 0.405 | 0.728 | 0.535 | 564 | 144 | 407 | 144 | 0.04 | 0.613 | 0.811 | 0.266 |
+| Laya 421M 4-level rubric per pair (self-hosted) | 264 | 0.627 | 0.432 | 0.735 | 0.564 | 564 | 144 | 279 | 144 | 0.03 | 0.625 | 0.811 | 0.410* |
+| Laya multilingual 322M yes/no per pair (self-hosted) | 264 | 0.389 | 0.174 | 0.474 | 0.312 | 564 | 82 | 183 | 82 | 0.02 | 0.537 | 0.879 | 0.394 |
+| GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | 264 | 0.521 | 0.345 | 0.579 | 0.463 | 564 | 174 | 441 | 174 | 0.05 | 0.595 | 0.883 | 0.130 |
+| GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | 264 | 0.488 | 0.318 | 0.536 | 0.426 | 564 | 304 | 527 | 304 | 0.07 | 0.604 | 0.814 | 0.144 |
+| GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | 264 | 0.434 | 0.265 | 0.471 | 0.369 | 564 | 482 | 934 | 482 | 0.11 | 0.571 | 0.860 | 0.099 |
 
 Jev Choice's own nothing-relevant signals (scifact):
 
@@ -123,6 +141,12 @@ Position bias (scifact): the same 30 passages sent in reverse order to Jev Choic
 | Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | 411 | 0.300 | 0.258 | 0.278 | 0.383 | 1059 | 410 | 517 | 410 | 0.09 | 0.531 | 0.864 | 0.300* |
 | Qwen2.5-1.5B RLCD, one passage per prompt (self-hosted) | 411 | 0.292 | 0.180 | 0.301 | 0.325 | 1059 | 703 | 1541 | 703 | 0.19 | 0.538 | 0.886 | 0.160 |
 | Qwen2.5-1.5B RLCD, 30 yes/no keys, passages reversed | 411 | 0.332 | 0.258 | 0.323 | 0.398 | 648 | 342 | 439 | 342 | 0.07 | — | — | 0.139* |
+| Laya 421M yes/no per pair (self-hosted) | 411 | 0.389 | 0.292 | 0.417 | 0.455 | 1059 | 144 | 270 | 144 | 0.03 | 0.573 | 0.827 | 0.274 |
+| Laya 421M 4-level rubric per pair (self-hosted) | 411 | 0.381 | 0.280 | 0.400 | 0.448 | 1059 | 144 | 274 | 144 | 0.03 | 0.579 | 0.827 | 0.424* |
+| Laya multilingual 322M yes/no per pair (self-hosted) | 411 | 0.292 | 0.190 | 0.297 | 0.335 | 1059 | 76 | 166 | 76 | 0.02 | 0.529 | 0.883 | 0.339 |
+| GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | 411 | 0.325 | 0.253 | 0.312 | 0.386 | 1059 | 140 | 220 | 140 | 0.03 | 0.540 | 0.878 | 0.214 |
+| GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | 411 | 0.358 | 0.292 | 0.363 | 0.434 | 1059 | 273 | 470 | 273 | 0.06 | 0.558 | 0.864 | 0.179 |
+| GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | 411 | 0.329 | 0.255 | 0.323 | 0.394 | 1059 | 414 | 748 | 414 | 0.09 | 0.543 | 0.876 | 0.102 |
 
 Jev Choice's own nothing-relevant signals (fiqa):
 
@@ -174,6 +198,12 @@ Position bias (fiqa): the same 30 passages sent in reverse order to Jev Choice. 
 | Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | 320 | 0.319 | 0.163 | 0.371 | 0.279 | 820 | 245 | 313 | 245 | 0.06 | 0.539 | 0.872 | 0.333* |
 | Qwen2.5-1.5B RLCD, one passage per prompt (self-hosted) | 320 | 0.572 | 0.338 | 0.697 | 0.516 | 820 | 690 | 1551 | 690 | 0.19 | 0.560 | 0.844 | 0.205 |
 | Qwen2.5-1.5B RLCD, 30 yes/no keys, passages reversed | 320 | 0.433 | 0.200 | 0.502 | 0.364 | 500 | 196 | 254 | 196 | 0.04 | — | — | 0.339* |
+| Laya 421M yes/no per pair (self-hosted) | 320 | 0.564 | 0.353 | 0.664 | 0.513 | 820 | 107 | 235 | 107 | 0.02 | 0.584 | 0.825 | 0.265 |
+| Laya 421M 4-level rubric per pair (self-hosted) | 320 | 0.578 | 0.381 | 0.687 | 0.535 | 820 | 115 | 246 | 115 | 0.02 | 0.587 | 0.806 | 0.413* |
+| Laya multilingual 322M yes/no per pair (self-hosted) | 320 | 0.524 | 0.331 | 0.632 | 0.476 | 820 | 47 | 132 | 47 | 0.01 | 0.581 | 0.841 | 0.285 |
+| GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | 320 | 0.520 | 0.256 | 0.642 | 0.451 | 820 | 82 | 138 | 82 | 0.02 | 0.541 | 0.866 | 0.255 |
+| GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | 320 | 0.551 | 0.331 | 0.633 | 0.497 | 820 | 157 | 290 | 157 | 0.03 | 0.562 | 0.856 | 0.285 |
+| GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | 320 | 0.556 | 0.341 | 0.667 | 0.501 | 820 | 235 | 451 | 235 | 0.05 | 0.566 | 0.847 | 0.232 |
 
 Jev Choice's own nothing-relevant signals (nq):
 
@@ -225,6 +255,12 @@ Position bias (nq): the same 30 passages sent in reverse order to Jev Choice. Sa
 | Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | 239 | 0.282 | 0.381 | 0.091 | 0.509 | 561 | 621 | 708 | 621 | 0.14 | 0.525 | 0.933 | 0.312* |
 | Qwen2.5-1.5B RLCD, one passage per prompt (self-hosted) | 239 | 0.360 | 0.452 | 0.129 | 0.587 | 561 | 750 | 1369 | 750 | 0.23 | 0.600 | 0.832 | 0.125 |
 | Qwen2.5-1.5B RLCD, 30 yes/no keys, passages reversed | 239 | 0.298 | 0.326 | 0.089 | 0.468 | 323 | 547 | 632 | 547 | 0.11 | — | — | 0.138* |
+| Laya 421M yes/no per pair (self-hosted) | 239 | 0.386 | 0.494 | 0.155 | 0.632 | 561 | 144 | 273 | 144 | 0.03 | 0.641 | 0.735 | 0.051 |
+| Laya 421M 4-level rubric per pair (self-hosted) | 239 | 0.402 | 0.527 | 0.154 | 0.649 | 561 | 144 | 275 | 144 | 0.03 | 0.644 | 0.765 | 0.174* |
+| Laya multilingual 322M yes/no per pair (self-hosted) | 239 | 0.337 | 0.414 | 0.116 | 0.555 | 561 | 81 | 169 | 81 | 0.02 | 0.584 | 0.836 | 0.093 |
+| GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | 239 | 0.394 | 0.506 | 0.138 | 0.630 | 561 | 150 | 225 | 150 | 0.03 | 0.630 | 0.761 | 0.187 |
+| GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | 239 | 0.307 | 0.310 | 0.094 | 0.477 | 561 | 288 | 478 | 288 | 0.06 | 0.561 | 0.853 | 0.306 |
+| GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | 239 | 0.347 | 0.385 | 0.125 | 0.546 | 561 | 467 | 822 | 467 | 0.10 | 0.594 | 0.866 | 0.192 |
 
 Jev Choice's own nothing-relevant signals (nfcorpus):
 
@@ -276,6 +312,12 @@ Position bias (nfcorpus): the same 30 passages sent in reverse order to Jev Choi
 | Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | 50 | 0.609 | 0.820 | 0.010 | 0.895 | 93 | 453 | 591 | 453 | 0.10 | 0.697 | 0.721 | 0.124* |
 | Qwen2.5-1.5B RLCD, one passage per prompt (self-hosted) | 50 | 0.707 | 0.880 | 0.011 | 0.919 | 93 | 722 | 1329 | 722 | 0.18 | 0.646 | 0.698 | 0.260 |
 | Qwen2.5-1.5B RLCD, 30 yes/no keys, passages reversed | 50 | 0.657 | 0.840 | 0.010 | 0.904 | 50 | 386 | 532 | 386 | 0.08 | — | — | 0.243* |
+| Laya 421M yes/no per pair (self-hosted) | 50 | 0.693 | 0.860 | 0.011 | 0.916 | 93 | 143 | 270 | 143 | 0.03 | 0.725 | 0.605 | 0.077 |
+| Laya 421M 4-level rubric per pair (self-hosted) | 50 | 0.699 | 0.820 | 0.011 | 0.896 | 93 | 143 | 273 | 143 | 0.03 | 0.756 | 0.674 | 0.068* |
+| Laya multilingual 322M yes/no per pair (self-hosted) | 50 | 0.654 | 0.800 | 0.010 | 0.883 | 93 | 71 | 143 | 71 | 0.02 | 0.585 | 0.744 | 0.123 |
+| GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | 50 | 0.650 | 0.800 | 0.010 | 0.876 | 93 | 134 | 201 | 134 | 0.03 | 0.601 | 0.860 | 0.327 |
+| GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | 50 | 0.697 | 0.780 | 0.010 | 0.865 | 93 | 261 | 441 | 261 | 0.05 | 0.673 | 0.698 | 0.279 |
+| GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | 50 | 0.671 | 0.800 | 0.010 | 0.886 | 93 | 404 | 705 | 404 | 0.08 | 0.665 | 0.651 | 0.278 |
 
 Jev Choice's own nothing-relevant signals (trec-covid):
 
@@ -327,6 +369,12 @@ Position bias (trec-covid): the same 30 passages sent in reverse order to Jev Ch
 | Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | 39 | 0.161 | 0.179 | 0.130 | 0.261 | 142 | 247 | 283 | 247 | 0.05 | 0.491 | 0.897 | 0.206* |
 | Qwen2.5-1.5B RLCD, one passage per prompt (self-hosted) | 39 | 0.217 | 0.205 | 0.183 | 0.318 | 142 | 734 | 1342 | 734 | 0.18 | 0.530 | 0.872 | 0.219 |
 | Qwen2.5-1.5B RLCD, 30 yes/no keys, passages reversed | 39 | 0.199 | 0.154 | 0.142 | 0.310 | 103 | 191 | 226 | 191 | 0.04 | — | — | 0.201* |
+| Laya 421M yes/no per pair (self-hosted) | 39 | 0.240 | 0.179 | 0.194 | 0.330 | 142 | 130 | 270 | 130 | 0.02 | 0.545 | 0.872 | 0.409 |
+| Laya 421M 4-level rubric per pair (self-hosted) | 39 | 0.207 | 0.154 | 0.176 | 0.281 | 142 | 139 | 274 | 139 | 0.03 | 0.528 | 0.846 | 0.463* |
+| Laya multilingual 322M yes/no per pair (self-hosted) | 39 | 0.284 | 0.333 | 0.242 | 0.433 | 142 | 55 | 152 | 55 | 0.01 | 0.553 | 0.821 | 0.562 |
+| GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | 39 | 0.128 | 0.128 | 0.085 | 0.205 | 142 | 77 | 201 | 77 | 0.02 | 0.514 | 0.897 | 0.541 |
+| GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | 39 | 0.184 | 0.231 | 0.131 | 0.287 | 142 | 150 | 414 | 150 | 0.04 | 0.536 | 0.897 | 0.585 |
+| GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | 39 | 0.227 | 0.256 | 0.167 | 0.350 | 142 | 221 | 690 | 221 | 0.06 | 0.527 | 0.846 | 0.360 |
 
 Jev Choice's own nothing-relevant signals (bright-biology):
 
@@ -378,6 +426,12 @@ Position bias (bright-biology): the same 30 passages sent in reverse order to Je
 | Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | 38 | 0.246 | 0.184 | 0.173 | 0.297 | 141 | 357 | 636 | 357 | 0.08 | 0.501 | 0.974 | 0.153* |
 | Qwen2.5-1.5B RLCD, one passage per prompt (self-hosted) | 38 | 0.233 | 0.184 | 0.130 | 0.274 | 141 | 825 | 1352 | 825 | 0.19 | 0.511 | 0.921 | 0.179 |
 | Qwen2.5-1.5B RLCD, 30 yes/no keys, passages reversed | 38 | 0.213 | 0.158 | 0.136 | 0.261 | 103 | 295 | 561 | 295 | 0.07 | — | — | 0.130* |
+| Laya 421M yes/no per pair (self-hosted) | 38 | 0.307 | 0.211 | 0.295 | 0.340 | 141 | 144 | 272 | 144 | 0.03 | 0.533 | 0.868 | 0.398 |
+| Laya 421M 4-level rubric per pair (self-hosted) | 38 | 0.350 | 0.237 | 0.294 | 0.411 | 141 | 144 | 274 | 144 | 0.03 | 0.536 | 0.842 | 0.433* |
+| Laya multilingual 322M yes/no per pair (self-hosted) | 38 | 0.242 | 0.158 | 0.156 | 0.296 | 141 | 134 | 261 | 134 | 0.03 | 0.520 | 0.868 | 0.510 |
+| GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | 38 | 0.183 | 0.105 | 0.174 | 0.199 | 141 | 234 | 454 | 234 | 0.05 | 0.495 | 0.895 | 0.528 |
+| GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | 38 | 0.213 | 0.158 | 0.191 | 0.303 | 141 | 460 | 941 | 460 | 0.10 | 0.516 | 0.895 | 0.585 |
+| GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | 38 | 0.246 | 0.211 | 0.153 | 0.299 | 141 | 744 | 1815 | 744 | 0.16 | 0.507 | 0.895 | 0.325 |
 
 Jev Choice's own nothing-relevant signals (bright-economics):
 
@@ -428,6 +482,12 @@ Position bias (bright-economics): the same 30 passages sent in reverse order to 
 | Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | 57 | 0.114 | 0.088 | 0.081 | 0.165 | 173 | 225 | 297 | 225 | 0.05 | 0.465 | 0.930 | 0.177 |
 | Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | 57 | 0.117 | 0.035 | 0.076 | 0.150 | 173 | 275 | 353 | 275 | 0.06 | 0.544 | 0.895 | 0.117* |
 | Qwen2.5-1.5B RLCD, one passage per prompt (self-hosted) | 57 | 0.268 | 0.193 | 0.225 | 0.355 | 173 | 715 | 1353 | 715 | 0.18 | 0.518 | 0.877 | 0.149 |
+| Laya 421M yes/no per pair (self-hosted) | 57 | 0.290 | 0.193 | 0.278 | 0.363 | 173 | 143 | 269 | 143 | 0.03 | 0.526 | 0.895 | 0.278 |
+| Laya 421M 4-level rubric per pair (self-hosted) | 57 | 0.247 | 0.158 | 0.213 | 0.309 | 173 | 143 | 270 | 143 | 0.03 | 0.526 | 0.825 | 0.380* |
+| Laya multilingual 322M yes/no per pair (self-hosted) | 57 | 0.289 | 0.281 | 0.263 | 0.396 | 173 | 88 | 231 | 88 | 0.02 | 0.525 | 0.842 | 0.445 |
+| GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | 57 | 0.288 | 0.193 | 0.251 | 0.362 | 173 | 127 | 300 | 127 | 0.03 | 0.524 | 0.895 | 0.157 |
+| GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | 57 | 0.228 | 0.193 | 0.211 | 0.321 | 173 | 257 | 620 | 257 | 0.06 | 0.520 | 0.860 | 0.206 |
+| GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | 57 | 0.350 | 0.368 | 0.319 | 0.506 | 173 | 399 | 954 | 399 | 0.09 | 0.566 | 0.842 | 0.082 |
 
 Jev Choice's own nothing-relevant signals (bright-earth_science):
 
@@ -478,6 +538,12 @@ Position bias (bright-earth_science): the same 30 passages sent in reverse order
 | Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | 29 | 0.229 | 0.241 | 0.111 | 0.317 | 130 | 264 | 436 | 264 | 0.06 | 0.598 | 0.793 | 0.135 |
 | Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | 29 | 0.173 | 0.138 | 0.116 | 0.234 | 130 | 320 | 498 | 320 | 0.07 | 0.535 | 0.793 | 0.207* |
 | Qwen2.5-1.5B RLCD, one passage per prompt (self-hosted) | 29 | 0.310 | 0.138 | 0.331 | 0.344 | 130 | 761 | 1504 | 761 | 0.19 | 0.545 | 0.897 | 0.141 |
+| Laya 421M yes/no per pair (self-hosted) | 29 | 0.392 | 0.276 | 0.368 | 0.475 | 130 | 144 | 272 | 144 | 0.03 | 0.520 | 0.828 | 0.295 |
+| Laya 421M 4-level rubric per pair (self-hosted) | 29 | 0.378 | 0.276 | 0.314 | 0.454 | 130 | 144 | 286 | 144 | 0.03 | 0.555 | 0.793 | 0.367* |
+| Laya multilingual 322M yes/no per pair (self-hosted) | 29 | 0.372 | 0.241 | 0.333 | 0.431 | 130 | 116 | 198 | 116 | 0.02 | 0.524 | 0.897 | 0.430 |
+| GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | 29 | 0.228 | 0.172 | 0.255 | 0.301 | 130 | 198 | 333 | 198 | 0.04 | 0.514 | 0.897 | 0.319 |
+| GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | 29 | 0.203 | 0.138 | 0.195 | 0.257 | 130 | 404 | 687 | 404 | 0.08 | 0.517 | 0.828 | 0.395 |
+| GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | 29 | 0.312 | 0.241 | 0.261 | 0.369 | 130 | 643 | 1174 | 643 | 0.13 | 0.532 | 0.828 | 0.254 |
 
 Jev Choice's own nothing-relevant signals (bright-psychology):
 
@@ -528,6 +594,12 @@ Position bias (bright-psychology): the same 30 passages sent in reverse order to
 | Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | 35 | 0.145 | 0.057 | 0.110 | 0.165 | 136 | 262 | 718 | 262 | 0.10 | 0.620 | 0.629 | 0.153 |
 | Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | 35 | 0.123 | 0.086 | 0.069 | 0.159 | 136 | 321 | 1333 | 321 | 0.12 | 0.558 | 0.857 | 0.142* |
 | Qwen2.5-1.5B RLCD, one passage per prompt (self-hosted) | 35 | 0.298 | 0.257 | 0.289 | 0.397 | 136 | 1149 | 3070 | 1149 | 0.25 | 0.522 | 0.886 | 0.134 |
+| Laya 421M yes/no per pair (self-hosted) | 35 | 0.202 | 0.114 | 0.178 | 0.254 | 136 | 144 | 273 | 144 | 0.03 | 0.516 | 0.914 | 0.487 |
+| Laya 421M 4-level rubric per pair (self-hosted) | 35 | 0.227 | 0.114 | 0.210 | 0.292 | 136 | 144 | 275 | 144 | 0.03 | 0.498 | 0.914 | 0.516* |
+| Laya multilingual 322M yes/no per pair (self-hosted) | 35 | 0.205 | 0.143 | 0.182 | 0.257 | 136 | 149 | 264 | 149 | 0.03 | 0.519 | 0.914 | 0.566 |
+| GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | 35 | 0.130 | 0.057 | 0.127 | 0.167 | 136 | 283 | 7016 | 283 | 0.20 | 0.501 | 0.943 | 0.272 |
+| GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | 35 | 0.229 | 0.229 | 0.191 | 0.349 | 136 | 595 | 11237 | 595 | 0.37 | 0.509 | 0.914 | 0.189 |
+| GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | 35 | 0.208 | 0.200 | 0.131 | 0.287 | 135 | 992 | 18039 | 992 | 0.49 | 0.502 | 0.914 | 0.116 |
 
 Jev Choice's own nothing-relevant signals (bright-robotics):
 
@@ -578,6 +650,12 @@ Position bias (bright-robotics): the same 30 passages sent in reverse order to J
 | Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | 62 | 0.088 | 0.048 | 0.067 | 0.136 | 179 | 724 | 2527 | 724 | 0.20 | 0.460 | 0.919 | 0.271 |
 | Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | 62 | 0.126 | 0.113 | 0.080 | 0.189 | 179 | 785 | 2871 | 785 | 0.22 | 0.543 | 0.774 | 0.184* |
 | Qwen2.5-1.5B RLCD, one passage per prompt (self-hosted) | 62 | 0.194 | 0.129 | 0.127 | 0.245 | 179 | 1132 | 1548 | 1132 | 0.24 | 0.511 | 0.903 | 0.198 |
+| Laya 421M yes/no per pair (self-hosted) | 62 | 0.164 | 0.065 | 0.124 | 0.202 | 179 | 144 | 275 | 144 | 0.03 | 0.492 | 0.903 | 0.510 |
+| Laya 421M 4-level rubric per pair (self-hosted) | 62 | 0.149 | 0.097 | 0.113 | 0.196 | 179 | 144 | 276 | 144 | 0.03 | 0.495 | 0.903 | 0.523* |
+| Laya multilingual 322M yes/no per pair (self-hosted) | 62 | 0.172 | 0.097 | 0.117 | 0.239 | 179 | 150 | 273 | 150 | 0.03 | 0.496 | 0.903 | 0.587 |
+| GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | 62 | 0.170 | 0.097 | 0.100 | 0.242 | 179 | 412 | 1170 | 412 | 0.11 | 0.517 | 0.887 | 0.325 |
+| GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | 62 | 0.192 | 0.097 | 0.123 | 0.265 | 179 | 795 | 2288 | 795 | 0.21 | 0.507 | 0.903 | 0.171 |
+| GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | 62 | 0.187 | 0.145 | 0.124 | 0.285 | 179 | 1368 | 3212 | 1368 | 0.35 | 0.509 | 0.903 | 0.100 |
 
 Jev Choice's own nothing-relevant signals (bright-stackoverflow):
 
@@ -628,6 +706,12 @@ Position bias (bright-stackoverflow): the same 30 passages sent in reverse order
 | Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | 47 | 0.131 | 0.043 | 0.125 | 0.195 | 155 | 217 | 335 | 217 | 0.05 | 0.555 | 0.872 | 0.168 |
 | Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | 47 | 0.206 | 0.170 | 0.159 | 0.299 | 155 | 269 | 393 | 269 | 0.06 | 0.520 | 0.936 | 0.155* |
 | Qwen2.5-1.5B RLCD, one passage per prompt (self-hosted) | 47 | 0.164 | 0.128 | 0.145 | 0.231 | 155 | 726 | 1343 | 726 | 0.18 | 0.520 | 0.872 | 0.188 |
+| Laya 421M yes/no per pair (self-hosted) | 47 | 0.267 | 0.128 | 0.234 | 0.336 | 155 | 144 | 272 | 144 | 0.03 | 0.519 | 0.851 | 0.314 |
+| Laya 421M 4-level rubric per pair (self-hosted) | 47 | 0.266 | 0.191 | 0.245 | 0.367 | 155 | 144 | 272 | 144 | 0.03 | 0.537 | 0.872 | 0.426* |
+| Laya multilingual 322M yes/no per pair (self-hosted) | 47 | 0.225 | 0.191 | 0.202 | 0.305 | 155 | 109 | 235 | 109 | 0.02 | 0.520 | 0.894 | 0.434 |
+| GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | 47 | 0.149 | 0.085 | 0.129 | 0.178 | 155 | 191 | 420 | 191 | 0.04 | 0.509 | 0.872 | 0.547 |
+| GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | 47 | 0.149 | 0.149 | 0.104 | 0.207 | 155 | 372 | 877 | 372 | 0.08 | 0.513 | 0.894 | 0.520 |
+| GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | 47 | 0.189 | 0.128 | 0.175 | 0.232 | 155 | 559 | 1429 | 559 | 0.12 | 0.519 | 0.851 | 0.323 |
 
 Jev Choice's own nothing-relevant signals (bright-sustainable_living):
 
@@ -679,6 +763,12 @@ Position bias (bright-sustainable_living): the same 30 passages sent in reverse 
 | Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | 256 | 0.445 | 0.199 | 0.559 | 0.353 | 556 | 436 | 645 | 436 | 0.10 | 0.521 | 0.887 | 0.354* |
 | Qwen2.5-1.5B RLCD, one passage per prompt (self-hosted) | 256 | 0.706 | 0.465 | 0.844 | 0.629 | 556 | 797 | 1384 | 797 | 0.19 | 0.572 | 0.844 | 0.183 |
 | Qwen2.5-1.5B RLCD, 30 yes/no keys, passages reversed | 256 | 0.431 | 0.172 | 0.523 | 0.328 | 300 | 367 | 563 | 367 | 0.08 | — | — | 0.395* |
+| Laya 421M yes/no per pair (self-hosted) | 256 | 0.585 | 0.348 | 0.703 | 0.501 | 556 | 144 | 275 | 144 | 0.03 | 0.555 | 0.812 | 0.504 |
+| Laya 421M 4-level rubric per pair (self-hosted) | 256 | 0.620 | 0.387 | 0.738 | 0.541 | 556 | 144 | 275 | 144 | 0.03 | 0.575 | 0.801 | 0.558* |
+| Laya multilingual 322M yes/no per pair (self-hosted) | 256 | 0.288 | 0.117 | 0.379 | 0.221 | 556 | 150 | 268 | 150 | 0.03 | 0.513 | 0.891 | 0.609 |
+| GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | 256 | 0.473 | 0.273 | 0.559 | 0.397 | 556 | 224 | 570 | 224 | 0.06 | 0.561 | 0.863 | 0.211 |
+| GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | 256 | 0.550 | 0.355 | 0.629 | 0.483 | 556 | 453 | 1265 | 453 | 0.12 | 0.570 | 0.852 | 0.234 |
+| GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | 256 | 0.520 | 0.320 | 0.598 | 0.443 | 556 | 781 | 2363 | 781 | 0.20 | 0.556 | 0.875 | 0.058 |
 
 Jev Choice's own nothing-relevant signals (csn-python):
 
@@ -726,6 +816,12 @@ Position bias (csn-python): the same 30 passages sent in reverse order to Jev Ch
 | Jev tournament (6 groups, then final) | 152 | 0.689 | 0.651 | 0.689 | 0.774 | 842 | 281 | 461 | 570 | 0.26 | 0.673 | 0.691 | — |
 | Jev cascade (batch prune, then 8 pairs) | 152 | 0.660 | 0.579 | 0.718 | 0.707 | 3789 | 285 | 381 | 2656 | 0.44 | 0.667 | 0.770 | — |
 | Jev one Choice, passages reversed | 152 | 0.675 | 0.664 | 0.695 | 0.770 | 269 | 296 | 545 | 296 | 0.19 | — | — | 0.025* |
+| Laya 421M yes/no per pair (self-hosted) | 152 | 0.474 | 0.336 | 0.496 | 0.485 | 421 | 141 | 268 | 141 | 0.03 | 0.571 | 0.816 | 0.254 |
+| Laya 421M 4-level rubric per pair (self-hosted) | 152 | 0.443 | 0.309 | 0.449 | 0.455 | 421 | 142 | 269 | 142 | 0.03 | 0.587 | 0.836 | 0.375* |
+| Laya multilingual 322M yes/no per pair (self-hosted) | 152 | 0.531 | 0.434 | 0.542 | 0.561 | 421 | 49 | 126 | 49 | 0.01 | 0.609 | 0.829 | 0.244 |
+| GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | 152 | 0.328 | 0.164 | 0.366 | 0.316 | 421 | 110 | 198 | 110 | 0.02 | 0.512 | 0.888 | 0.608 |
+| GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | 152 | 0.469 | 0.336 | 0.453 | 0.489 | 421 | 219 | 416 | 219 | 0.05 | 0.549 | 0.836 | 0.397 |
+| GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | 152 | 0.419 | 0.224 | 0.460 | 0.401 | 421 | 262 | 511 | 262 | 0.06 | 0.547 | 0.842 | 0.565 |
 
 Jev Choice's own nothing-relevant signals (miracl-fr):
 
@@ -776,6 +872,12 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | scifact | 564 | gpu_ms=353721.67 | 0.0727 |
 | Qwen2.5-1.5B RLCD, one passage per prompt (self-hosted) | scifact | 564 | gpu_ms=601888.55 | 0.1237 |
 | Qwen2.5-1.5B RLCD, 30 yes/no keys, passages reversed | scifact | 300 | gpu_ms=188155.14 | 0.0387 |
+| Laya 421M yes/no per pair (self-hosted) | scifact | 564 | gpu_ms=112301.45 | 0.0210 |
+| Laya 421M 4-level rubric per pair (self-hosted) | scifact | 564 | gpu_ms=100081.53 | 0.0186 |
+| Laya multilingual 322M yes/no per pair (self-hosted) | scifact | 564 | gpu_ms=56169.95 | 0.0104 |
+| GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | scifact | 564 | gpu_ms=116476.24 | 0.0223 |
+| GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | scifact | 564 | gpu_ms=186707.56 | 0.0353 |
+| GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | scifact | 564 | gpu_ms=308132.68 | 0.0583 |
 | Cohere Rerank 4 Pro | fiqa | 1059 | search_units=1059 | 2.6475 |
 | Cohere Rerank 4 Fast | fiqa | 1059 | search_units=1059 | 2.1180 |
 | ZeroEntropy zerank-2 | fiqa | 1059 | total_tokens=7564780, total_bytes=37031485, inference_latency_s=437.91 | 0.1891 |
@@ -793,6 +895,12 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | fiqa | 1059 | gpu_ms=451262.72 | 0.0928 |
 | Qwen2.5-1.5B RLCD, one passage per prompt (self-hosted) | fiqa | 1059 | gpu_ms=1004501.36 | 0.2065 |
 | Qwen2.5-1.5B RLCD, 30 yes/no keys, passages reversed | fiqa | 648 | gpu_ms=221002.33 | 0.0454 |
+| Laya 421M yes/no per pair (self-hosted) | fiqa | 1059 | gpu_ms=185610.85 | 0.0346 |
+| Laya 421M 4-level rubric per pair (self-hosted) | fiqa | 1059 | gpu_ms=187708.88 | 0.0350 |
+| Laya multilingual 322M yes/no per pair (self-hosted) | fiqa | 1059 | gpu_ms=99967.5 | 0.0186 |
+| GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | fiqa | 1059 | gpu_ms=159693.33 | 0.0305 |
+| GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | fiqa | 1059 | gpu_ms=319595.02 | 0.0606 |
+| GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | fiqa | 1059 | gpu_ms=494756.92 | 0.0936 |
 | Cohere Rerank 4 Pro | nq | 820 | search_units=820 | 2.0500 |
 | Cohere Rerank 4 Fast | nq | 820 | search_units=820 | 1.6400 |
 | ZeroEntropy zerank-2 | nq | 820 | total_tokens=3291835, total_bytes=16636101, inference_latency_s=364.15 | 0.0823 |
@@ -810,6 +918,12 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | nq | 820 | gpu_ms=228697.65 | 0.0470 |
 | Qwen2.5-1.5B RLCD, one passage per prompt (self-hosted) | nq | 820 | gpu_ms=763841.26 | 0.1570 |
 | Qwen2.5-1.5B RLCD, 30 yes/no keys, passages reversed | nq | 500 | gpu_ms=98600.73 | 0.0203 |
+| Laya 421M yes/no per pair (self-hosted) | nq | 820 | gpu_ms=102135.58 | 0.0190 |
+| Laya 421M 4-level rubric per pair (self-hosted) | nq | 820 | gpu_ms=109607.12 | 0.0203 |
+| Laya multilingual 322M yes/no per pair (self-hosted) | nq | 820 | gpu_ms=49902.4 | 0.0092 |
+| GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | nq | 820 | gpu_ms=71065.33 | 0.0136 |
+| GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | nq | 820 | gpu_ms=141128.73 | 0.0268 |
+| GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | nq | 820 | gpu_ms=211671.81 | 0.0403 |
 | Cohere Rerank 4 Pro | nfcorpus | 561 | search_units=561 | 1.4025 |
 | Cohere Rerank 4 Fast | nfcorpus | 561 | search_units=561 | 1.1220 |
 | ZeroEntropy zerank-2 | nfcorpus | 561 | total_tokens=6094994, total_bytes=29072565, inference_latency_s=278.06 | 0.1524 |
@@ -827,6 +941,12 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | nfcorpus | 561 | gpu_ms=367378.02 | 0.0755 |
 | Qwen2.5-1.5B RLCD, one passage per prompt (self-hosted) | nfcorpus | 561 | gpu_ms=581615.49 | 0.1196 |
 | Qwen2.5-1.5B RLCD, 30 yes/no keys, passages reversed | nfcorpus | 323 | gpu_ms=175817.7 | 0.0361 |
+| Laya 421M yes/no per pair (self-hosted) | nfcorpus | 561 | gpu_ms=99786.15 | 0.0185 |
+| Laya 421M 4-level rubric per pair (self-hosted) | nfcorpus | 561 | gpu_ms=100084.9 | 0.0186 |
+| Laya multilingual 322M yes/no per pair (self-hosted) | nfcorpus | 561 | gpu_ms=56314.37 | 0.0105 |
+| GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | nfcorpus | 561 | gpu_ms=89135.91 | 0.0170 |
+| GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | nfcorpus | 561 | gpu_ms=176741.69 | 0.0334 |
+| GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | nfcorpus | 561 | gpu_ms=291808.04 | 0.0551 |
 | Cohere Rerank 4 Pro | trec-covid | 93 | search_units=93 | 0.2325 |
 | Cohere Rerank 4 Fast | trec-covid | 93 | search_units=93 | 0.1860 |
 | ZeroEntropy zerank-2 | trec-covid | 93 | total_tokens=757658, total_bytes=3879586, inference_latency_s=42.62 | 0.0189 |
@@ -844,6 +964,12 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | trec-covid | 93 | gpu_ms=42676.6 | 0.0088 |
 | Qwen2.5-1.5B RLCD, one passage per prompt (self-hosted) | trec-covid | 93 | gpu_ms=82926.41 | 0.0170 |
 | Qwen2.5-1.5B RLCD, 30 yes/no keys, passages reversed | trec-covid | 50 | gpu_ms=19894.75 | 0.0041 |
+| Laya 421M yes/no per pair (self-hosted) | trec-covid | 93 | gpu_ms=16035.42 | 0.0029 |
+| Laya 421M 4-level rubric per pair (self-hosted) | trec-covid | 93 | gpu_ms=16323.95 | 0.0029 |
+| Laya multilingual 322M yes/no per pair (self-hosted) | trec-covid | 93 | gpu_ms=7957.38 | 0.0014 |
+| GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | trec-covid | 93 | gpu_ms=12820.12 | 0.0024 |
+| GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | trec-covid | 93 | gpu_ms=25919.9 | 0.0048 |
+| GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | trec-covid | 93 | gpu_ms=41042.46 | 0.0075 |
 | Cohere Rerank 4 Pro | bright-biology | 142 | search_units=142 | 0.3550 |
 | Cohere Rerank 4 Fast | bright-biology | 142 | search_units=142 | 0.2840 |
 | ZeroEntropy zerank-2 | bright-biology | 142 | total_tokens=980428, total_bytes=4909820, inference_latency_s=55.62 | 0.0245 |
@@ -861,6 +987,12 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | bright-biology | 142 | gpu_ms=34884.69 | 0.0072 |
 | Qwen2.5-1.5B RLCD, one passage per prompt (self-hosted) | bright-biology | 142 | gpu_ms=125021.61 | 0.0257 |
 | Qwen2.5-1.5B RLCD, 30 yes/no keys, passages reversed | bright-biology | 103 | gpu_ms=19572.54 | 0.0040 |
+| Laya 421M yes/no per pair (self-hosted) | bright-biology | 142 | gpu_ms=18700.56 | 0.0034 |
+| Laya 421M 4-level rubric per pair (self-hosted) | bright-biology | 142 | gpu_ms=19819.88 | 0.0036 |
+| Laya multilingual 322M yes/no per pair (self-hosted) | bright-biology | 142 | gpu_ms=9538.78 | 0.0018 |
+| GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | bright-biology | 142 | gpu_ms=14300.84 | 0.0027 |
+| GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | bright-biology | 142 | gpu_ms=28592.28 | 0.0054 |
+| GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | bright-biology | 142 | gpu_ms=45385.54 | 0.0086 |
 | Cohere Rerank 4 Pro | bright-economics | 141 | search_units=141 | 0.3525 |
 | Cohere Rerank 4 Fast | bright-economics | 141 | search_units=141 | 0.2820 |
 | ZeroEntropy zerank-2 | bright-economics | 141 | total_tokens=1585926, total_bytes=7216913, inference_latency_s=73.34 | 0.0396 |
@@ -878,6 +1010,12 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | bright-economics | 141 | gpu_ms=54946.67 | 0.0113 |
 | Qwen2.5-1.5B RLCD, one passage per prompt (self-hosted) | bright-economics | 141 | gpu_ms=130605.03 | 0.0268 |
 | Qwen2.5-1.5B RLCD, 30 yes/no keys, passages reversed | bright-economics | 103 | gpu_ms=33628.81 | 0.0069 |
+| Laya 421M yes/no per pair (self-hosted) | bright-economics | 141 | gpu_ms=24270.11 | 0.0046 |
+| Laya 421M 4-level rubric per pair (self-hosted) | bright-economics | 141 | gpu_ms=24322.55 | 0.0046 |
+| Laya multilingual 322M yes/no per pair (self-hosted) | bright-economics | 141 | gpu_ms=20056.04 | 0.0038 |
+| GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | bright-economics | 141 | gpu_ms=36113.51 | 0.0070 |
+| GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | bright-economics | 141 | gpu_ms=71410.13 | 0.0137 |
+| GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | bright-economics | 141 | gpu_ms=118635.19 | 0.0226 |
 | Cohere Rerank 4 Pro | bright-earth_science | 173 | search_units=173 | 0.4325 |
 | Cohere Rerank 4 Fast | bright-earth_science | 173 | search_units=173 | 0.3460 |
 | ZeroEntropy zerank-2 | bright-earth_science | 173 | total_tokens=1288797, total_bytes=6151682, inference_latency_s=59.79 | 0.0322 |
@@ -894,6 +1032,12 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | bright-earth_science | 173 | gpu_ms=40337.71 | 0.0083 |
 | Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | bright-earth_science | 173 | gpu_ms=49276.72 | 0.0101 |
 | Qwen2.5-1.5B RLCD, one passage per prompt (self-hosted) | bright-earth_science | 173 | gpu_ms=151592.61 | 0.0312 |
+| Laya 421M yes/no per pair (self-hosted) | bright-earth_science | 173 | gpu_ms=26642.94 | 0.0049 |
+| Laya 421M 4-level rubric per pair (self-hosted) | bright-earth_science | 173 | gpu_ms=27126.01 | 0.0050 |
+| Laya multilingual 322M yes/no per pair (self-hosted) | bright-earth_science | 173 | gpu_ms=17682.35 | 0.0033 |
+| GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | bright-earth_science | 173 | gpu_ms=23883.54 | 0.0046 |
+| GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | bright-earth_science | 173 | gpu_ms=47807.39 | 0.0092 |
+| GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | bright-earth_science | 173 | gpu_ms=76033.12 | 0.0146 |
 | Cohere Rerank 4 Pro | bright-psychology | 130 | search_units=130 | 0.3250 |
 | Cohere Rerank 4 Fast | bright-psychology | 130 | search_units=130 | 0.2600 |
 | ZeroEntropy zerank-2 | bright-psychology | 130 | total_tokens=1202021, total_bytes=5843241, inference_latency_s=58.89 | 0.0301 |
@@ -910,6 +1054,12 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | bright-psychology | 130 | gpu_ms=35882.97 | 0.0074 |
 | Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | bright-psychology | 130 | gpu_ms=42969.35 | 0.0088 |
 | Qwen2.5-1.5B RLCD, one passage per prompt (self-hosted) | bright-psychology | 130 | gpu_ms=121439.98 | 0.0250 |
+| Laya 421M yes/no per pair (self-hosted) | bright-psychology | 130 | gpu_ms=22340.28 | 0.0042 |
+| Laya 421M 4-level rubric per pair (self-hosted) | bright-psychology | 130 | gpu_ms=22509.41 | 0.0042 |
+| Laya multilingual 322M yes/no per pair (self-hosted) | bright-psychology | 130 | gpu_ms=15882.78 | 0.0030 |
+| GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | bright-psychology | 130 | gpu_ms=26422.61 | 0.0051 |
+| GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | bright-psychology | 130 | gpu_ms=53665.76 | 0.0103 |
+| GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | bright-psychology | 130 | gpu_ms=88321.08 | 0.0170 |
 | Cohere Rerank 4 Pro | bright-robotics | 136 | search_units=170 | 0.4250 |
 | Cohere Rerank 4 Fast | bright-robotics | 136 | search_units=170 | 0.3400 |
 | ZeroEntropy zerank-2 | bright-robotics | 136 | total_tokens=1875936, total_bytes=7735933, inference_latency_s=61.73 | 0.0469 |
@@ -926,6 +1076,12 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | bright-robotics | 136 | gpu_ms=63674.35 | 0.0131 |
 | Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | bright-robotics | 136 | gpu_ms=73474.49 | 0.0151 |
 | Qwen2.5-1.5B RLCD, one passage per prompt (self-hosted) | bright-robotics | 136 | gpu_ms=173728.24 | 0.0357 |
+| Laya 421M yes/no per pair (self-hosted) | bright-robotics | 136 | gpu_ms=23289.78 | 0.0044 |
+| Laya 421M 4-level rubric per pair (self-hosted) | bright-robotics | 136 | gpu_ms=23401.49 | 0.0044 |
+| Laya multilingual 322M yes/no per pair (self-hosted) | bright-robotics | 136 | gpu_ms=21236.98 | 0.0040 |
+| GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | bright-robotics | 136 | gpu_ms=145567.7 | 0.0296 |
+| GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | bright-robotics | 136 | gpu_ms=269913.0 | 0.0548 |
+| GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | bright-robotics | 135 | gpu_ms=389945.1 | 0.0783 |
 | Cohere Rerank 4 Pro | bright-stackoverflow | 179 | search_units=185 | 0.4625 |
 | Cohere Rerank 4 Fast | bright-stackoverflow | 179 | search_units=185 | 0.3700 |
 | ZeroEntropy zerank-2 | bright-stackoverflow | 179 | total_tokens=3861511, total_bytes=15232103, inference_latency_s=103.36 | 0.0965 |
@@ -942,6 +1098,12 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | bright-stackoverflow | 179 | gpu_ms=163157.89 | 0.0335 |
 | Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | bright-stackoverflow | 179 | gpu_ms=181111.88 | 0.0372 |
 | Qwen2.5-1.5B RLCD, one passage per prompt (self-hosted) | bright-stackoverflow | 179 | gpu_ms=203017.1 | 0.0417 |
+| Laya 421M yes/no per pair (self-hosted) | bright-stackoverflow | 179 | gpu_ms=31770.2 | 0.0059 |
+| Laya 421M 4-level rubric per pair (self-hosted) | bright-stackoverflow | 179 | gpu_ms=31807.61 | 0.0059 |
+| Laya multilingual 322M yes/no per pair (self-hosted) | bright-stackoverflow | 179 | gpu_ms=32698.76 | 0.0061 |
+| GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | bright-stackoverflow | 179 | gpu_ms=97427.4 | 0.0182 |
+| GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | bright-stackoverflow | 179 | gpu_ms=191140.57 | 0.0354 |
+| GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | bright-stackoverflow | 179 | gpu_ms=301940.78 | 0.0581 |
 | Cohere Rerank 4 Pro | bright-sustainable_living | 155 | search_units=155 | 0.3875 |
 | Cohere Rerank 4 Fast | bright-sustainable_living | 155 | search_units=155 | 0.3100 |
 | ZeroEntropy zerank-2 | bright-sustainable_living | 155 | total_tokens=1300737, total_bytes=6287815, inference_latency_s=61.16 | 0.0325 |
@@ -958,6 +1120,12 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted) | bright-sustainable_living | 155 | gpu_ms=35444.53 | 0.0073 |
 | Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | bright-sustainable_living | 155 | gpu_ms=43736.94 | 0.0090 |
 | Qwen2.5-1.5B RLCD, one passage per prompt (self-hosted) | bright-sustainable_living | 155 | gpu_ms=136264.39 | 0.0280 |
+| Laya 421M yes/no per pair (self-hosted) | bright-sustainable_living | 155 | gpu_ms=26274.63 | 0.0049 |
+| Laya 421M 4-level rubric per pair (self-hosted) | bright-sustainable_living | 155 | gpu_ms=26442.67 | 0.0049 |
+| Laya multilingual 322M yes/no per pair (self-hosted) | bright-sustainable_living | 155 | gpu_ms=18174.49 | 0.0034 |
+| GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | bright-sustainable_living | 155 | gpu_ms=36080.68 | 0.0067 |
+| GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | bright-sustainable_living | 155 | gpu_ms=70333.34 | 0.0129 |
+| GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | bright-sustainable_living | 155 | gpu_ms=99351.66 | 0.0188 |
 | Cohere Rerank 4 Pro | csn-python | 556 | search_units=572 | 1.4300 |
 | Cohere Rerank 4 Fast | csn-python | 556 | search_units=572 | 1.1440 |
 | ZeroEntropy zerank-2 | csn-python | 556 | total_tokens=5884101, total_bytes=27796530, inference_latency_s=340.97 | 0.1471 |
@@ -975,6 +1143,12 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted) | csn-python | 556 | gpu_ms=268217.67 | 0.0551 |
 | Qwen2.5-1.5B RLCD, one passage per prompt (self-hosted) | csn-python | 556 | gpu_ms=530989.78 | 0.1091 |
 | Qwen2.5-1.5B RLCD, 30 yes/no keys, passages reversed | csn-python | 300 | gpu_ms=114924.44 | 0.0236 |
+| Laya 421M yes/no per pair (self-hosted) | csn-python | 556 | gpu_ms=98533.63 | 0.0183 |
+| Laya 421M 4-level rubric per pair (self-hosted) | csn-python | 556 | gpu_ms=99088.7 | 0.0184 |
+| Laya multilingual 322M yes/no per pair (self-hosted) | csn-python | 556 | gpu_ms=101081.95 | 0.0189 |
+| GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | csn-python | 556 | gpu_ms=166761.17 | 0.0321 |
+| GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | csn-python | 556 | gpu_ms=339625.34 | 0.0651 |
+| GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | csn-python | 556 | gpu_ms=585985.79 | 0.1114 |
 | Cohere Rerank 4 Pro | miracl-fr | 421 | search_units=421 | 1.0525 |
 | Cohere Rerank 4 Fast | miracl-fr | 421 | search_units=421 | 0.8420 |
 | ZeroEntropy zerank-2 | miracl-fr | 421 | total_tokens=1873503, total_bytes=8134231, inference_latency_s=135.22 | 0.0468 |
@@ -988,3 +1162,9 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | Jev tournament (6 groups, then final) | miracl-fr | 842 | input_tokens=2613814, output_tokens=213554 | 0.1098 |
 | Jev cascade (batch prune, then 8 pairs) | miracl-fr | 3789 | input_tokens=4384198, output_tokens=303120 | 0.1841 |
 | Jev one Choice, passages reversed | miracl-fr | 269 | input_tokens=1221067, output_tokens=84109 | 0.0513 |
+| Laya 421M yes/no per pair (self-hosted) | miracl-fr | 421 | gpu_ms=61238.86 | 0.0114 |
+| Laya 421M 4-level rubric per pair (self-hosted) | miracl-fr | 421 | gpu_ms=63864.02 | 0.0119 |
+| Laya multilingual 322M yes/no per pair (self-hosted) | miracl-fr | 421 | gpu_ms=25890.66 | 0.0048 |
+| GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | miracl-fr | 421 | gpu_ms=49544.36 | 0.0095 |
+| GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | miracl-fr | 421 | gpu_ms=98925.92 | 0.0188 |
+| GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | miracl-fr | 421 | gpu_ms=119339.55 | 0.0227 |

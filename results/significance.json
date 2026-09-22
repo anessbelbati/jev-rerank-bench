@@ -680,7 +680,13 @@
     "jev-cascade": 0.6738662379430074,
     "qwen-rlcd-batch": 0.25506357152518827,
     "qwen-rlcd-rubric": 0.3400117498419044,
-    "qwen-rlcd-pair": 0.47108378199994794
+    "qwen-rlcd-pair": 0.47108378199994794,
+    "laya-noul-pair": 0.47060464172733074,
+    "laya-score-pair": 0.48293111889212237,
+    "laya-multi-noul-pair": 0.376191470048025,
+    "gliner25-small-pair": 0.3993365244720682,
+    "gliner25-base-pair": 0.41856090169975113,
+    "gliner25-multi-pair": 0.4161988986590974
    },
    "vs_best": {
     "bm25": {
@@ -847,6 +853,72 @@
      ],
      "p": 0.0,
      "real": true
+    },
+    "laya-noul-pair": {
+     "a": "jev-score-batch",
+     "b": "laya-noul-pair",
+     "diff": 0.22153431245180377,
+     "ci95": [
+      0.20122689210428732,
+      0.24233526624791368
+     ],
+     "p": 0.0,
+     "real": true
+    },
+    "laya-score-pair": {
+     "a": "jev-score-batch",
+     "b": "laya-score-pair",
+     "diff": 0.20920783528701214,
+     "ci95": [
+      0.18946863458355712,
+      0.22970962871926276
+     ],
+     "p": 0.0,
+     "real": true
+    },
+    "laya-multi-noul-pair": {
+     "a": "jev-score-batch",
+     "b": "laya-multi-noul-pair",
+     "diff": 0.3159474841311095,
+     "ci95": [
+      0.291770239178023,
+      0.3393242475585462
+     ],
+     "p": 0.0,
+     "real": true
+    },
+    "gliner25-small-pair": {
+     "a": "jev-score-batch",
+     "b": "gliner25-small-pair",
+     "diff": 0.2928024297070663,
+     "ci95": [
+      0.2694056407134331,
+      0.3158720953721792
+     ],
+     "p": 0.0,
+     "real": true
+    },
+    "gliner25-base-pair": {
+     "a": "jev-score-batch",
+     "b": "gliner25-base-pair",
+     "diff": 0.2735780524793834,
+     "ci95": [
+      0.25129170461930683,
+      0.2958099651414217
+     ],
+     "p": 0.0,
+     "real": true
+    },
+    "gliner25-multi-pair": {
+     "a": "jev-score-batch",
+     "b": "gliner25-multi-pair",
+     "diff": 0.2759400555200371,
+     "ci95": [
+      0.2534954382445762,
+      0.2982670343466545
+     ],
+     "p": 0.0,
+     "real": true
     }
    }
   },
@@ -868,7 +940,13 @@
     "jev-cascade": 0.6947190809040311,
     "qwen-rlcd-batch": 0.22004848951823935,
     "qwen-rlcd-rubric": 0.2962103996329274,
-    "qwen-rlcd-pair": 0.4004517485540957
+    "qwen-rlcd-pair": 0.4004517485540957,
+    "laya-noul-pair": 0.39272405348397205,
+    "laya-score-pair": 0.40218464955565153,
+    "laya-multi-noul-pair": 0.31473936971728345,
+    "gliner25-small-pair": 0.33339628361935797,
+    "gliner25-base-pair": 0.3468948462094007,
+    "gliner25-multi-pair": 0.35417965979996424
    },
    "vs_best": {
     "bm25": {
@@ -1035,6 +1113,72 @@
      ],
      "p": 0.0,
      "real": true
+    },
+    "laya-noul-pair": {
+     "a": "jev-choice",
+     "b": "laya-noul-pair",
+     "diff": 0.3646236883209612,
+     "ci95": [
+      0.32588119418846173,
+      0.4036348064912157
+     ],
+     "p": 0.0,
+     "real": true
+    },
+    "laya-score-pair": {
+     "a": "jev-choice",
+     "b": "laya-score-pair",
+     "diff": 0.3551630922492817,
+     "ci95": [
+      0.3127673580389355,
+      0.3957730611241207
+     ],
+     "p": 0.0,
+     "real": true
+    },
+    "laya-multi-noul-pair": {
+     "a": "jev-choice",
+     "b": "laya-multi-noul-pair",
+     "diff": 0.4426083720876498,
+     "ci95": [
+      0.40220963037180846,
+      0.48277345395470106
+     ],
+     "p": 0.0,
+     "real": true
+    },
+    "gliner25-small-pair": {
+     "a": "jev-choice",
+     "b": "gliner25-small-pair",
+     "diff": 0.4239514581855753,
+     "ci95": [
+      0.383568727164005,
+      0.46378708877551705
+     ],
+     "p": 0.0,
+     "real": true
+    },
+    "gliner25-base-pair": {
+     "a": "jev-choice",
+     "b": "gliner25-base-pair",
+     "diff": 0.41045289559553255,
+     "ci95": [
+      0.37083625783046137,
+      0.44993991810914347
+     ],
+     "p": 0.0,
+     "real": true
+    },
+    "gliner25-multi-pair": {
+     "a": "jev-choice",
+     "b": "gliner25-multi-pair",
+     "diff": 0.403168082004969,
+     "ci95": [
+      0.3650966842199018,
+      0.4414480734870246
+     ],
+     "p": 0.0,
+     "real": true
     }
    }
   }
@@ -1161,6 +1305,39 @@
     ],
     "p": 0.0,
     "real": true
+   },
+   "laya-score-pair|bm25": {
+    "a": "laya-score-pair",
+    "b": "bm25",
+    "diff": -0.0031328940263686267,
+    "ci95": [
+     -0.02253777745940239,
+     0.01620241203383295
+    ],
+    "p": 0.7592,
+    "real": false
+   },
+   "laya-noul-pair|bm25": {
+    "a": "laya-noul-pair",
+    "b": "bm25",
+    "diff": -0.015459371191160254,
+    "ci95": [
+     -0.0373852236622798,
+     0.005624365175875779
+    ],
+    "p": 0.1542,
+    "real": false
+   },
+   "jev-noul-pair|laya-noul-pair": {
+    "a": "jev-noul-pair",
+    "b": "laya-noul-pair",
+    "diff": 0.1997365006653219,
+    "ci95": [
+     0.17915942826737097,
+     0.22051097089198957
+    ],
+    "p": 0.0,
+    "real": true
    }
   },
   "top1": {
@@ -1284,6 +1461,39 @@
     ],
     "p": 0.0,
     "real": true
+   },
+   "laya-score-pair|bm25": {
+    "a": "laya-score-pair",
+    "b": "bm25",
+    "diff": -0.051285626165045506,
+    "ci95": [
+     -0.09110989529836608,
+     -0.011697851781208789
+    ],
+    "p": 0.0102,
+    "real": true
+   },
+   "laya-noul-pair|bm25": {
+    "a": "laya-noul-pair",
+    "b": "bm25",
+    "diff": -0.06074622223672499,
+    "ci95": [
+     -0.10109851329789993,
+     -0.021635226874395026
+    ],
+    "p": 0.0018,
+    "real": true
+   },
+   "jev-noul-pair|laya-noul-pair": {
+    "a": "jev-noul-pair",
+    "b": "laya-noul-pair",
+    "diff": 0.30654990155328005,
+    "ci95": [
+     0.26954965849801643,
+     0.3446414675526801
+    ],
+    "p": 0.0,
+    "real": true
    }
   }
  },
@@ -1316,7 +1526,13 @@
     "jev-cascade": 0.47603667470001226,
     "qwen-rlcd-batch": 0.1572880876089171,
     "qwen-rlcd-rubric": 0.16451641210342433,
-    "qwen-rlcd-pair": 0.24068840137221528
+    "qwen-rlcd-pair": 0.24068840137221528,
+    "laya-noul-pair": 0.26605629735893754,
+    "laya-score-pair": 0.260577230899082,
+    "laya-multi-noul-pair": 0.2554536527726481,
+    "gliner25-small-pair": 0.18213547759617646,
+    "gliner25-base-pair": 0.1996214366983704,
+    "gliner25-multi-pair": 0.24548021337314033
    },
    "vs_best": {
     "bm25": {
@@ -1483,6 +1699,72 @@
      ],
      "p": 0.0,
      "real": true
+    },
+    "laya-noul-pair": {
+     "a": "jev-score-batch",
+     "b": "laya-noul-pair",
+     "diff": 0.22721380289240506,
+     "ci95": [
+      0.19660860020202403,
+      0.25849079637533673
+     ],
+     "p": 0.0,
+     "real": true
+    },
+    "laya-score-pair": {
+     "a": "jev-score-batch",
+     "b": "laya-score-pair",
+     "diff": 0.23269286935226058,
+     "ci95": [
+      0.2009644107013328,
+      0.2645047941423119
+     ],
+     "p": 0.0,
+     "real": true
+    },
+    "laya-multi-noul-pair": {
+     "a": "jev-score-batch",
+     "b": "laya-multi-noul-pair",
+     "diff": 0.23781644747869451,
+     "ci95": [
+      0.2003950156423579,
+      0.2750866471391025
+     ],
+     "p": 0.0,
+     "real": true
+    },
+    "gliner25-small-pair": {
+     "a": "jev-score-batch",
+     "b": "gliner25-small-pair",
+     "diff": 0.3111346226551661,
+     "ci95": [
+      0.2742284808559918,
+      0.3483356916799681
+     ],
+     "p": 0.0,
+     "real": true
+    },
+    "gliner25-base-pair": {
+     "a": "jev-score-batch",
+     "b": "gliner25-base-pair",
+     "diff": 0.2936486635529722,
+     "ci95": [
+      0.2580570943529042,
+      0.3286675908196217
+     ],
+     "p": 0.0,
+     "real": true
+    },
+    "gliner25-multi-pair": {
+     "a": "jev-score-batch",
+     "b": "gliner25-multi-pair",
+     "diff": 0.24778988687820228,
+     "ci95": [
+      0.21019639222604408,
+      0.28522394770626897
+     ],
+     "p": 0.0,
+     "real": true
     }
    },
    "jev_vs_other": {
@@ -1525,7 +1807,13 @@
     "jev-cascade": 0.548586831720814,
     "qwen-rlcd-batch": 0.12002924228102348,
     "qwen-rlcd-rubric": 0.1293638195803082,
-    "qwen-rlcd-pair": 0.17629813024893748
+    "qwen-rlcd-pair": 0.17629813024893748,
+    "laya-noul-pair": 0.1664742054526541,
+    "laya-score-pair": 0.17528490492188048,
+    "laya-multi-noul-pair": 0.20634711900198408,
+    "gliner25-small-pair": 0.11969828128766169,
+    "gliner25-base-pair": 0.17055132150957533,
+    "gliner25-multi-pair": 0.22136539999525748
    },
    "vs_best": {
     "bm25": {
@@ -1689,6 +1977,72 @@
      "ci95": [
       0.3587628833579523,
       0.4815287417817864
+     ],
+     "p": 0.0,
+     "real": true
+    },
+    "laya-noul-pair": {
+     "a": "deepseek-json",
+     "b": "laya-noul-pair",
+     "diff": 0.43066012354165395,
+     "ci95": [
+      0.36700131736129055,
+      0.49361132812449965
+     ],
+     "p": 0.0,
+     "real": true
+    },
+    "laya-score-pair": {
+     "a": "deepseek-json",
+     "b": "laya-score-pair",
+     "diff": 0.4218494240724276,
+     "ci95": [
+      0.3561476192306503,
+      0.48660125474139526
+     ],
+     "p": 0.0,
+     "real": true
+    },
+    "laya-multi-noul-pair": {
+     "a": "deepseek-json",
+     "b": "laya-multi-noul-pair",
+     "diff": 0.39078720999232397,
+     "ci95": [
+      0.3270127080603838,
+      0.4536101196423648
+     ],
+     "p": 0.0,
+     "real": true
+    },
+    "gliner25-small-pair": {
+     "a": "deepseek-json",
+     "b": "gliner25-small-pair",
+     "diff": 0.4774360477066464,
+     "ci95": [
+      0.4161055999517059,
+      0.5369100927015714
+     ],
+     "p": 0.0,
+     "real": true
+    },
+    "gliner25-base-pair": {
+     "a": "deepseek-json",
+     "b": "gliner25-base-pair",
+     "diff": 0.42658300748473277,
+     "ci95": [
+      0.3622797325849697,
+      0.48890938618396634
+     ],
+     "p": 0.0,
+     "real": true
+    },
+    "gliner25-multi-pair": {
+     "a": "deepseek-json",
+     "b": "gliner25-multi-pair",
+     "diff": 0.37576892899905057,
+     "ci95": [
+      0.3110895120842077,
+      0.4401900703763467
      ],
      "p": 0.0,
      "real": true

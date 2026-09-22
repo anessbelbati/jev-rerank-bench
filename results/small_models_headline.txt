@@ -1,0 +1,67 @@
+RERANKING, English datasets, every dataset weighted equally (8 datasets). nDCG@10 = ranking quality, 1.0 is perfect.
+model                                                       nDCG@10 ties vs model top pick right tell nothing-relevant calib. error  ms/list $ per 1k lists
+Jev 4-level rubric, 30 in one call                            0.692         0.691          74.1%                 0.754        0.198      422           0.45
+Cohere Rerank 4 Pro                                           0.691         0.692          72.6%                 0.779        0.374      844           2.51
+Jev 30 yes/no in one call                                     0.685         0.683          71.9%                 0.747        0.098      396           0.41
+Jev one Choice + none                                         0.684         0.666          75.7%                 0.718        0.109      338           0.33
+Cohere Rerank 4 Fast                                          0.684         0.685          71.5%                 0.752        0.312      726           2.01
+ZeroEntropy zerank-2                                          0.682         0.683          71.9%                 0.736        0.214     1844           0.22
+DeepSeek V4.1 Flash JSON, 30 in one call                      0.682         0.649          72.9%                 0.750        0.080     2212           1.13
+Jev one Choice, passages reversed                             0.680         0.663          73.5%                     —        0.108      349           0.33
+Jev cascade (batch prune, then 8 pairs)                       0.674         0.671          69.5%                 0.732            —     2533           0.63
+Jev yes/no per pair                                           0.670         0.667          69.9%                 0.731        0.097     8193           0.81
+Jev tournament (6 groups, then final)                         0.668         0.664          75.3%                 0.711            —      641           0.43
+DeepSeek V4.1 Flash P(yes) per pair                           0.608         0.482          61.7%                 0.650        0.112    34257           1.38
+Jev 45 duels in one call (top 10)                             0.580         0.580          65.8%                 0.651            —      324           0.21
+BM25 (floor)                                                  0.486         0.487          45.3%                 0.581            —        0           0.00
+Laya 421M 4-level rubric per pair (self-hosted)               0.483         0.474          40.2%                 0.604        0.368      140           0.03
+Qwen2.5-1.5B RLCD, one passage per prompt (self-hosted)       0.471         0.466          40.0%                 0.574        0.184      748           0.20
+Laya 421M yes/no per pair (self-hosted)                       0.471         0.463          39.3%                 0.596        0.280      137           0.03
+GLiNER2.5 base 194M, relevant / not per pair (self-hosted)    0.419         0.417          34.7%                 0.573        0.324      293           0.07
+GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted    0.416         0.416          35.4%                 0.566        0.206      469           0.11
+GLiNER2.5 small 74M, relevant / not per pair (self-hosted)    0.399         0.399          33.3%                 0.560        0.299      152           0.04
+Qwen2.5-1.5B RLCD, 30 yes/no keys, passages reversed          0.386         0.378          30.4%                     —        0.241      354           0.08
+Laya multilingual 322M yes/no per pair (self-hosted)          0.376         0.372          31.5%                 0.550        0.364       87           0.02
+Qwen2.5-1.5B RLCD, 30 rubric keys (self-hosted)               0.340         0.340          29.6%                 0.545        0.281      419           0.09
+Qwen2.5-1.5B RLCD, 30 yes/no keys (self-hosted)               0.255         0.251          22.0%                 0.516        0.240      360           0.08
+
+PER DATASET nDCG@10
+dataset                             bm25    jev-noul jev-score-b  cohere-pro   laya-noul  laya-score laya-multi-    gl-small     gl-base    gl-multi
+scifact                            0.780       0.880       0.889       0.886       0.600       0.627       0.389       0.521       0.488       0.434
+fiqa                               0.396       0.600       0.616       0.670       0.389       0.381       0.292       0.325       0.358       0.329
+nq                                 0.447       0.763       0.807       0.846       0.564       0.578       0.524       0.520       0.551       0.556
+nfcorpus                           0.435       0.482       0.500       0.499       0.386       0.402       0.337       0.394       0.307       0.347
+trec-covid                         0.621       0.764       0.779       0.792       0.693       0.699       0.654       0.650       0.697       0.671
+bright-biology                     0.212       0.421       0.433       0.414       0.240       0.207       0.284       0.128       0.184       0.227
+bright-economics                   0.280       0.487       0.529       0.442       0.307       0.350       0.242       0.183       0.213       0.246
+bright-earth_science               0.261       0.445       0.475       0.492       0.290       0.247       0.289       0.288       0.228       0.350
+bright-psychology                  0.266       0.600       0.652       0.626       0.392       0.378       0.372       0.228       0.203       0.312
+bright-robotics                    0.180       0.479       0.478       0.464       0.202       0.227       0.205       0.130       0.229       0.208
+bright-stackoverflow               0.268       0.363       0.375       0.341       0.164       0.149       0.172       0.170       0.192       0.187
+bright-sustainable_living          0.193       0.487       0.510       0.447       0.267       0.266       0.225       0.149       0.149       0.189
+csn-python                         0.717       0.965       0.983       0.982       0.585       0.620       0.288       0.473       0.550       0.520
+miracl-fr                          0.234       0.663       0.696       0.764       0.474       0.443       0.531       0.328       0.469       0.419
+
+LAYA'S 512-TOKEN WINDOW: passages it had to cut (yes/no mode, lists with the answer present)
+   scifact                        1176 of   9000 =  13.1%
+   fiqa                           1929 of  19440 =   9.9%
+   nq                               40 of  15000 =   0.3%
+   nfcorpus                       1170 of   9690 =  12.1%
+   trec-covid                       54 of   1500 =   3.6%
+   bright-biology                  104 of   3090 =   3.4%
+   bright-economics               1124 of   3090 =  36.4%
+   bright-earth_science            294 of   3480 =   8.4%
+   bright-psychology               705 of   3030 =  23.3%
+   bright-robotics                1416 of   3030 =  46.7%
+   bright-stackoverflow           3121 of   3510 =  88.9%
+   bright-sustainable_living       551 of   3240 =  17.0%
+   csn-python                     4075 of   9000 =  45.3%
+   miracl-fr                       116 of   8070 =   1.4%
+
+SPEED on RTX 4090 rows only, 30 passages of one question, median ms (and failures over all lists)
+   laya-noul-pair               142 ms per 30 passages =   4.7 ms per passage | failed lists 0 of 7896
+   laya-score-pair              143 ms per 30 passages =   4.8 ms per passage | failed lists 0 of 7896
+   laya-multi-noul-pair          73 ms per 30 passages =   2.4 ms per passage | failed lists 0 of 7896
+   gliner25-small-pair          137 ms per 30 passages =   4.6 ms per passage | failed lists 0 of 7896
+   gliner25-base-pair           262 ms per 30 passages =   8.7 ms per passage | failed lists 0 of 7896
+   gliner25-multi-pair          405 ms per 30 passages =  13.5 ms per passage | failed lists 1 of 7896

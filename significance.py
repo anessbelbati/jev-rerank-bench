@@ -84,7 +84,8 @@ def main() -> dict:
                                                                        ("jev-noul-batch", "cohere-pro"), ("jev-score-batch", "zerank-2"),
                                                                        ("jev-choice", "jev-score-batch"), ("cohere-pro", "zerank-2"),
                                                                        ("jev-score-batch", "deepseek-json"), ("jev-score-batch", "jev-noul-pair"),
-                                                                       ("qwen-rlcd-pair", "bm25"), ("qwen-rlcd-batch", "bm25"), ("qwen-rlcd-pair", "qwen-rlcd-batch"))
+                                                                       ("qwen-rlcd-pair", "bm25"), ("qwen-rlcd-batch", "bm25"), ("qwen-rlcd-pair", "qwen-rlcd-batch"),
+                                                                       ("laya-score-pair", "bm25"), ("laya-noul-pair", "bm25"), ("jev-noul-pair", "laya-noul-pair"))
                       if a in boot and b in boot}
         print(f"\n8-dataset average, {met}: best = {best} ({obs[best]:.3f})")
         for m in sorted(models, key=lambda m: -obs[m]):

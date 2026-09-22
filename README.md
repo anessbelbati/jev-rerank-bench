@@ -165,11 +165,38 @@ and the source relevance labels may be incomplete.
 | `jev-choice-reversed` | `jev-latest` | `jev-choice` with the passages sent in reverse order (position-bias check only) |
 | `qwen-rlcd-batch` / `qwen-rlcd-rubric` | Qwen2.5-1.5B-Instruct; Shreyansh Singh's Transformers port of Harsha Gundala's constrained-decoding recipe, self-hosted on RTX 4090s | shared-prompt prefill followed by batched field evaluations using `run_parallel_generation`; boolean score = P(true), rubric score = expected level / 3. Some long code-heavy BRIGHT prompts used six fields at a time after GPU memory failures, recorded in the raw rows; see `rlcd_runner.py` |
 | `qwen-rlcd-pair` | same model and code | one passage per prompt and one boolean key with the same relevance wording; thirty sequential prompts per query using the same inference function; score = P(true), query latency includes all thirty |
+| `laya-noul-pair` / `laya-score-pair` / `laya-multi-noul-pair` | Laya 421M (English) and Laya multilingual 322M, `convaiinnovations/laya`, Apache 2.0, self-hosted on rented RTX 4090s | one passage per prompt (512-token window), Jev's yes/no wording (score = P(true)) or Jev's 4-level rubric (score = expected level); `small_models_runner.py` |
+| `gliner25-small-pair` / `gliner25-base-pair` / `gliner25-multi-pair` | Fastino GLiNER2.5 small 74M / base 194M / multi 0.3B, self-hosted | one passage per prompt, labels `relevant` / `not relevant`; a span and label matcher used outside its design, listed for completeness |
 | `qwen-rlcd-batch-reversed` | same | `qwen-rlcd-batch` with the 30 passages in reverse order (order-sensitivity check, the twin of `jev-choice-reversed`); never in the rankings |
 
 The yes/no variants of Jev, DeepSeek and Qwen get the same wording: *"Does the passage contain the information needed to answer or verify the
 query?"* (`rerankers/__init__.py`). Cohere and ZeroEntropy take the query and the documents.
 
+## Open weights, self-hosted: Laya and GLiNER2.5 (run 2026-09-19, its own block)
+
+Laya (Convai Innovations, 421M, Apache 2.0) is the open-weight model with Jev's question shape: Choice, Score and yes/no answered with
+probabilities. Its window is 512 tokens, so it ran one passage per prompt (the only shape it allows), with Jev's 4-level rubric and with Jev's
+yes/no wording, on rented RTX 4090s; the like-for-like Jev row is "Jev yes/no per pair" (0.670). The three GLiNER2.5 models are span and label
+matchers, not built for this, listed for completeness. Rows copied from the render; never averaged into the headline.
+
+| Open weights, self-hosted (one passage per prompt) | nDCG@10 | worst-case ties | Top pick right | Time per list of 30 | $ per 1,000 |
+|---|---|---|---|---|---|
+| Laya 421M 4-level rubric per pair (self-hosted) | 0.483 | 0.474 | 40% | 140 ms | 0.03 |
+| Laya 421M yes/no per pair (self-hosted) | 0.471 | 0.463 | 39% | 137 ms | 0.03 |
+| Laya multilingual 322M yes/no per pair (self-hosted) | 0.376 | 0.372 | 31% | 87 ms | 0.02 |
+| GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | 0.419 | 0.417 | 35% | 293 ms | 0.07 |
+| GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | 0.416 | 0.416 | 35% | 469 ms | 0.11 |
+| GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | 0.399 | 0.399 | 33% | 152 ms | 0.04 |
+| BM25 (floor) | 0.486 | 0.487 | 45% | 0 ms | 0.00 |
+
+- Laya rubric vs BM25: gap -0.3 points, range -2.3 to +1.6, within noise. NevIR pairs right: 36% (Jev rubric 71%).
+- Laya's 512-token window cut 0.3% of passages on Natural Questions and 88.9% on BRIGHT StackOverflow (the cut counts are in
+  `results/small_models_headline.txt`).
+- GLiNER2.5 multi could not process 1 of 7,896 lists on a 24 GB card (a 19,341-character question); it is stored as failed, not scored.
+  GLiNER ran out of GPU memory on 139 code-heavy lists at 30 passages per batch; they were redone in batches of 6 or 1 (same scores, slower).
+- torch 2.4's fused attention gave NaN scores for Laya on mixed-length batches; fixed by zeroing NaNs at padded positions after each layer;
+  batched scores match the library's own predict() within 0.004 (English) and 0.012 (multilingual). Libraries: laya 0.3.3, gliner2 2.0.0.
+- Runner: `small_models_runner.py` (same cache rows as `run.py`, GPU seconds × the pod's hourly price).
 ## Fairness rules
 
 - Same candidate lists and truncation, with the duel and NevIR exceptions documented above; shared wording for the yes/no variants.
@@ -214,6 +241,7 @@ cache/<model>/         <dataset>.<variant>.jsonl.gz  saved ranking responses, sc
 eval.py                metrics, nothing-relevant test, calibration, charts  ->  results/
 significance.py  nevir_eval.py  rlcd_check.py  network.py  batching.py  determinism.py  coldstart.py
 rlcd_runner.py         the self-hosted Qwen RLCD recipe, run on a GPU pod, writing the same cache rows
+small_models_runner.py the self-hosted Laya / GLiNER2.5 runs (one passage per prompt), same cache rows
 blog.py                renders an earlier experiment write-up from results/*.json
 scripts/readme_header.py  draws the README header from saved scores and the website fonts
 ```
@@ -257,6 +285,7 @@ Regeneration reads local records and makes no paid model calls.
 | ZeroEntropy zerank-2 | $0.025 per million tokens | zeroentropy.dev/pricing | 2026-09-16 |
 | DeepSeek V4.1 Flash | $0.15 / $0.60 per million in / out; reported `usage.cost` per call from OpenRouter | OpenRouter response | 2026-09-16 |
 | Qwen2.5-1.5B RLCD (self-hosted) | GPU seconds of each call × $0.74 per hour (RunPod secure-cloud RTX 4090 list price); pod setup time not included | runpod.io pricing | 2026-09-16 |
+| Laya, GLiNER2.5 (self-hosted) | GPU seconds of each call × $0.74 per hour (RunPod secure-cloud RTX 4090 list price); pod setup time not included | runpod.io pricing | 2026-09-19 |
 
 Usage totals per run (tokens, search units) are in `results/summary.md` so the cost can be checked against the vendor
 dashboards.

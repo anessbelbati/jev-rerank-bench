@@ -2,6 +2,8 @@
 
 # jev-rerank-bench
 
+**The write-up:** [Jev vs Cohere Rerank 4 Pro vs zerank-2: reranker benchmark](https://anessbelbati.com/blog/i-gave-jev-a-rerankers-job) walks through the results, the negation test and the Qwen follow-up.
+
 I gave [TypeSafe's Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev) thirty search results and asked
 it which ones were useful. Then I gave Cohere and ZeroEntropy the same passages. This repository contains the experiments, saved responses and scoring code.
 

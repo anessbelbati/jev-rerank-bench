@@ -294,8 +294,10 @@ time per card, over all 14 datasets and NevIR, one passage per prompt. Their row
   in flight, the second waits its turn); decider packs up to 32 into one forward pass, which is why its time per list is
   long and its cost low.
 - Not run: SemIf (github.com/TheoLeeCJ/SemIf-OpenJev) has no server, only a command-line scorer with its own input
-  format. djev (github.com/Davipar/djev-dev) takes the same request at `/v1/request`, not `/v1/systemone`; it needs an
-  NVIDIA B200 (RunPod $6.79 an hour, none free on 2026-09-24), and its hosted service is paused.
+  format. djev (github.com/Davipar/djev-dev) was not run for lack of time; anyone who wants it in the table is welcome
+  to run it and open a pull request ([Test your own model](#test-your-own-model)). Two notes for whoever does: its
+  server takes the same request format at `/v1/request`, not `/v1/systemone`, so `rerankers/systemone.py` needs that
+  path; and its docs recommend one NVIDIA B200 (the model's weights alone are about 52 GB).
 - Time and cost: GPU wall time of each call; the dollar figure divides the card's $0.27 an hour by the requests in flight
   on it (1, 2 or 32, see Prices used). RunPod's bill for the whole step, setup, idle and a failed first attempt included:
   $10.07 (the five A5000 pods $9.71; four community-cloud pods and a test pod whose hosts' GPU drivers failed, $0.36).

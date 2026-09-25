@@ -30,8 +30,16 @@ Ranking numbers are over queries whose BM25 top-30 contains at least one relevan
 | GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | 8 | 0.399 | 0.333 | 152 | 152 | 0.04 | 0.560 | 0.863 | 0.299 |
 | GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | 8 | 0.419 | 0.347 | 293 | 293 | 0.07 | 0.573 | 0.841 | 0.324 |
 | GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | 8 | 0.416 | 0.354 | 469 | 469 | 0.11 | 0.566 | 0.839 | 0.206 |
-| Open-Jev 2B yes/no per pair (self-hosted) | 8 | 0.544 | 0.517 | 408 | 12348 | 0.63 | 0.646 | 0.737 | 0.111 |
-| Open-Jev 9B yes/no per pair (self-hosted) | 8 | 0.600 | 0.593 | 627 | 19101 | 3.16 | 0.677 | 0.672 | 0.102 |
+| Open-Jev 2B yes/no per pair (self-hosted) | 8 | 0.544 | 0.517 | 408 | 12348 | 0.31 | 0.646 | 0.737 | 0.111 |
+| Open-Jev 9B yes/no per pair (self-hosted) | 8 | 0.600 | 0.593 | 627 | 19101 | 1.58 | 0.677 | 0.672 | 0.102 |
+| Qwen3-Reranker-4B (self-hosted) | 8 | 0.660 | 0.673 | 2232 | 2232 | 0.18 | 0.754 | 0.556 | — |
+| bge-reranker-v2-m3 (self-hosted) | 8 | 0.588 | 0.581 | 896 | 896 | 0.07 | 0.668 | 0.735 | — |
+| mxbai-rerank-base-v2 (self-hosted) | 8 | 0.642 | 0.656 | 1222 | 1222 | 0.10 | 0.707 | 0.674 | — |
+| Qwen3.5-4B yes/no per pair (self-hosted) | 8 | 0.628 | 0.631 | 2255 | 2255 | 0.18 | 0.706 | 0.637 | 0.100 |
+| tev1-4B relevant / not per pair (self-hosted) | 8 | 0.637 | 0.646 | 2607 | 2607 | 0.20 | 0.705 | 0.638 | 0.126 |
+| reflex 4B yes/no per pair (self-hosted) | 8 | 0.622 | 0.600 | 337 | 10088 | 0.38 | 0.693 | 0.660 | 0.116 |
+| Winnow-12B Q8 yes/no per pair (self-hosted) | 8 | 0.634 | 0.635 | 425 | 12827 | 0.49 | 0.704 | 0.644 | 0.118 |
+| decider-2b v11 yes/no per pair (self-hosted) | 8 | 0.587 | 0.553 | 1089 | 33813 | 0.08 | 0.667 | 0.712 | 0.219 |
 
 ## All datasets including French
 
@@ -61,8 +69,16 @@ Ranking numbers are over queries whose BM25 top-30 contains at least one relevan
 | GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | 14 | 0.320 | 0.245 | 181 | 181 | 0.05 | 0.540 | 0.877 | 0.330 |
 | GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | 14 | 0.344 | 0.280 | 356 | 356 | 0.10 | 0.550 | 0.854 | 0.320 |
 | GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | 14 | 0.357 | 0.296 | 569 | 569 | 0.15 | 0.550 | 0.850 | 0.220 |
-| Open-Jev 2B yes/no per pair (self-hosted) | 14 | 0.453 | 0.423 | 419 | 12636 | 0.71 | 0.613 | 0.780 | 0.102 |
-| Open-Jev 9B yes/no per pair (self-hosted) | 14 | 0.533 | 0.529 | 625 | 18951 | 3.50 | 0.650 | 0.723 | 0.085 |
+| Open-Jev 2B yes/no per pair (self-hosted) | 14 | 0.453 | 0.423 | 419 | 12636 | 0.36 | 0.613 | 0.780 | 0.102 |
+| Open-Jev 9B yes/no per pair (self-hosted) | 14 | 0.533 | 0.529 | 625 | 18951 | 1.75 | 0.650 | 0.723 | 0.085 |
+| Qwen3-Reranker-4B (self-hosted) | 14 | 0.584 | 0.596 | 2462 | 2462 | 0.21 | 0.706 | 0.622 | — |
+| bge-reranker-v2-m3 (self-hosted) | 14 | 0.502 | 0.481 | 1015 | 1015 | 0.09 | 0.630 | 0.771 | — |
+| mxbai-rerank-base-v2 (self-hosted) | 14 | 0.552 | 0.542 | 1338 | 1338 | 0.11 | 0.657 | 0.736 | — |
+| Qwen3.5-4B yes/no per pair (self-hosted) | 14 | 0.555 | 0.567 | 2372 | 2372 | 0.20 | 0.678 | 0.697 | 0.089 |
+| tev1-4B relevant / not per pair (self-hosted) | 14 | 0.562 | 0.576 | 2749 | 2749 | 0.23 | 0.671 | 0.700 | 0.115 |
+| reflex 4B yes/no per pair (self-hosted) | 14 | 0.546 | 0.531 | 343 | 10212 | 0.40 | 0.666 | 0.716 | 0.092 |
+| Winnow-12B Q8 yes/no per pair (self-hosted) | 14 | 0.566 | 0.576 | 466 | 14101 | 0.57 | 0.678 | 0.686 | 0.108 |
+| decider-2b v11 yes/no per pair (self-hosted) | 14 | 0.545 | 0.532 | 1252 | 38560 | 0.09 | 0.656 | 0.736 | 0.196 |
 
 ## scifact
 
@@ -94,8 +110,16 @@ Ranking numbers are over queries whose BM25 top-30 contains at least one relevan
 | GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | 264 | 0.521 | 0.345 | 0.579 | 0.463 | 564 | 174 | 441 | 174 | 0.05 | 0.595 | 0.883 | 0.130 |
 | GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | 264 | 0.488 | 0.318 | 0.536 | 0.426 | 564 | 304 | 527 | 304 | 0.07 | 0.604 | 0.814 | 0.144 |
 | GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | 264 | 0.434 | 0.265 | 0.471 | 0.369 | 564 | 482 | 934 | 482 | 0.11 | 0.571 | 0.860 | 0.099 |
-| Open-Jev 2B yes/no per pair (self-hosted) | 264 | 0.680 | 0.538 | 0.749 | 0.638 | 16920 | 431 | 479 | 13097 | 0.65 | 0.705 | 0.746 | 0.015 |
-| Open-Jev 9B yes/no per pair (self-hosted) | 264 | 0.709 | 0.606 | 0.768 | 0.680 | 16920 | 917 | 1103 | 28312 | 3.65 | 0.715 | 0.769 | 0.023 |
+| Open-Jev 2B yes/no per pair (self-hosted) | 264 | 0.680 | 0.538 | 0.749 | 0.638 | 16920 | 431 | 479 | 13097 | 0.32 | 0.705 | 0.746 | 0.015 |
+| Open-Jev 9B yes/no per pair (self-hosted) | 264 | 0.709 | 0.606 | 0.768 | 0.680 | 16920 | 917 | 1103 | 28312 | 1.83 | 0.715 | 0.769 | 0.023 |
+| Qwen3-Reranker-4B (self-hosted) | 264 | 0.880 | 0.788 | 0.946 | 0.855 | 564 | 2420 | 3073 | 2420 | 0.19 | 0.815 | 0.538 | — |
+| bge-reranker-v2-m3 (self-hosted) | 264 | 0.840 | 0.735 | 0.893 | 0.811 | 564 | 985 | 1118 | 985 | 0.08 | 0.781 | 0.674 | — |
+| mxbai-rerank-base-v2 (self-hosted) | 264 | 0.874 | 0.784 | 0.929 | 0.851 | 564 | 1323 | 1683 | 1323 | 0.10 | 0.819 | 0.545 | — |
+| Qwen3.5-4B yes/no per pair (self-hosted) | 264 | 0.846 | 0.727 | 0.914 | 0.814 | 564 | 2507 | 3021 | 2507 | 0.19 | 0.768 | 0.602 | 0.020 |
+| tev1-4B relevant / not per pair (self-hosted) | 264 | 0.846 | 0.727 | 0.908 | 0.813 | 564 | 2956 | 3454 | 2956 | 0.23 | 0.781 | 0.610 | 0.025 |
+| reflex 4B yes/no per pair (self-hosted) | 264 | 0.866 | 0.758 | 0.921 | 0.836 | 16920 | 343 | 392 | 10267 | 0.40 | 0.786 | 0.568 | 0.035 |
+| Winnow-12B Q8 yes/no per pair (self-hosted) | 264 | 0.853 | 0.739 | 0.922 | 0.823 | 16920 | 463 | 585 | 13922 | 0.53 | 0.803 | 0.564 | 0.025 |
+| decider-2b v11 yes/no per pair (self-hosted) | 264 | 0.750 | 0.606 | 0.836 | 0.710 | 16920 | 1241 | 2000 | 38713 | 0.09 | 0.701 | 0.773 | 0.243 |
 
 Jev Choice's own nothing-relevant signals (scifact):
 
@@ -153,8 +177,16 @@ Position bias (scifact): the same 30 passages sent in reverse order to Jev Choic
 | GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | 411 | 0.325 | 0.253 | 0.312 | 0.386 | 1059 | 140 | 220 | 140 | 0.03 | 0.540 | 0.878 | 0.214 |
 | GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | 411 | 0.358 | 0.292 | 0.363 | 0.434 | 1059 | 273 | 470 | 273 | 0.06 | 0.558 | 0.864 | 0.179 |
 | GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | 411 | 0.329 | 0.255 | 0.323 | 0.394 | 1059 | 414 | 748 | 414 | 0.09 | 0.543 | 0.876 | 0.102 |
-| Open-Jev 2B yes/no per pair (self-hosted) | 411 | 0.464 | 0.440 | 0.458 | 0.568 | 31770 | 398 | 448 | 12068 | 0.60 | 0.614 | 0.800 | 0.127 |
-| Open-Jev 9B yes/no per pair (self-hosted) | 411 | 0.537 | 0.543 | 0.538 | 0.673 | 31770 | 710 | 1137 | 23187 | 2.91 | 0.656 | 0.672 | 0.041 |
+| Open-Jev 2B yes/no per pair (self-hosted) | 411 | 0.464 | 0.440 | 0.458 | 0.568 | 31770 | 398 | 448 | 12068 | 0.30 | 0.614 | 0.800 | 0.127 |
+| Open-Jev 9B yes/no per pair (self-hosted) | 411 | 0.537 | 0.543 | 0.538 | 0.673 | 31770 | 710 | 1137 | 23187 | 1.46 | 0.656 | 0.672 | 0.041 |
+| Qwen3-Reranker-4B (self-hosted) | 411 | 0.613 | 0.655 | 0.605 | 0.766 | 1059 | 2208 | 2620 | 2208 | 0.17 | 0.751 | 0.601 | — |
+| bge-reranker-v2-m3 (self-hosted) | 411 | 0.578 | 0.630 | 0.570 | 0.734 | 1059 | 849 | 947 | 849 | 0.06 | 0.686 | 0.725 | — |
+| mxbai-rerank-base-v2 (self-hosted) | 411 | 0.593 | 0.635 | 0.583 | 0.743 | 1059 | 1199 | 1407 | 1199 | 0.09 | 0.698 | 0.710 | — |
+| Qwen3.5-4B yes/no per pair (self-hosted) | 411 | 0.521 | 0.513 | 0.517 | 0.649 | 1059 | 2101 | 2364 | 2101 | 0.16 | 0.648 | 0.749 | 0.161 |
+| tev1-4B relevant / not per pair (self-hosted) | 411 | 0.528 | 0.530 | 0.518 | 0.664 | 1059 | 2402 | 2721 | 2402 | 0.18 | 0.652 | 0.725 | 0.261 |
+| reflex 4B yes/no per pair (self-hosted) | 411 | 0.505 | 0.474 | 0.516 | 0.624 | 31770 | 332 | 387 | 9953 | 0.37 | 0.640 | 0.742 | 0.199 |
+| Winnow-12B Q8 yes/no per pair (self-hosted) | 411 | 0.559 | 0.572 | 0.566 | 0.704 | 31770 | 375 | 526 | 11499 | 0.43 | 0.672 | 0.674 | 0.185 |
+| decider-2b v11 yes/no per pair (self-hosted) | 411 | 0.414 | 0.343 | 0.424 | 0.499 | 31770 | 975 | 1501 | 29333 | 0.07 | 0.599 | 0.810 | 0.326 |
 
 Jev Choice's own nothing-relevant signals (fiqa):
 
@@ -212,8 +244,16 @@ Position bias (fiqa): the same 30 passages sent in reverse order to Jev Choice. 
 | GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | 320 | 0.520 | 0.256 | 0.642 | 0.451 | 820 | 82 | 138 | 82 | 0.02 | 0.541 | 0.866 | 0.255 |
 | GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | 320 | 0.551 | 0.331 | 0.633 | 0.497 | 820 | 157 | 290 | 157 | 0.03 | 0.562 | 0.856 | 0.285 |
 | GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | 320 | 0.556 | 0.341 | 0.667 | 0.501 | 820 | 235 | 451 | 235 | 0.05 | 0.566 | 0.847 | 0.232 |
-| Open-Jev 2B yes/no per pair (self-hosted) | 320 | 0.657 | 0.441 | 0.788 | 0.614 | 24600 | 376 | 417 | 11330 | 0.55 | 0.605 | 0.766 | 0.132 |
-| Open-Jev 9B yes/no per pair (self-hosted) | 320 | 0.727 | 0.531 | 0.848 | 0.690 | 24600 | 494 | 941 | 14007 | 2.40 | 0.639 | 0.684 | 0.044 |
+| Open-Jev 2B yes/no per pair (self-hosted) | 320 | 0.657 | 0.441 | 0.788 | 0.614 | 24600 | 376 | 417 | 11330 | 0.27 | 0.605 | 0.766 | 0.132 |
+| Open-Jev 9B yes/no per pair (self-hosted) | 320 | 0.727 | 0.531 | 0.848 | 0.690 | 24600 | 494 | 941 | 14007 | 1.20 | 0.639 | 0.684 | 0.044 |
+| Qwen3-Reranker-4B (self-hosted) | 320 | 0.788 | 0.644 | 0.869 | 0.774 | 820 | 1398 | 2140 | 1398 | 0.11 | 0.722 | 0.634 | — |
+| bge-reranker-v2-m3 (self-hosted) | 320 | 0.801 | 0.681 | 0.872 | 0.794 | 820 | 497 | 851 | 497 | 0.04 | 0.676 | 0.734 | — |
+| mxbai-rerank-base-v2 (self-hosted) | 320 | 0.797 | 0.669 | 0.893 | 0.787 | 820 | 775 | 1163 | 775 | 0.06 | 0.656 | 0.741 | — |
+| Qwen3.5-4B yes/no per pair (self-hosted) | 320 | 0.711 | 0.525 | 0.802 | 0.676 | 820 | 1786 | 1939 | 1786 | 0.14 | 0.655 | 0.738 | 0.115 |
+| tev1-4B relevant / not per pair (self-hosted) | 320 | 0.729 | 0.547 | 0.847 | 0.698 | 820 | 1928 | 2148 | 1928 | 0.15 | 0.642 | 0.753 | 0.155 |
+| reflex 4B yes/no per pair (self-hosted) | 320 | 0.721 | 0.516 | 0.847 | 0.687 | 24600 | 323 | 382 | 9748 | 0.37 | 0.651 | 0.728 | 0.106 |
+| Winnow-12B Q8 yes/no per pair (self-hosted) | 320 | 0.737 | 0.562 | 0.865 | 0.709 | 24600 | 284 | 370 | 8751 | 0.33 | 0.668 | 0.719 | 0.124 |
+| decider-2b v11 yes/no per pair (self-hosted) | 320 | 0.704 | 0.497 | 0.844 | 0.663 | 24600 | 692 | 1010 | 20868 | 0.05 | 0.628 | 0.803 | 0.233 |
 
 Jev Choice's own nothing-relevant signals (nq):
 
@@ -271,8 +311,16 @@ Position bias (nq): the same 30 passages sent in reverse order to Jev Choice. Sa
 | GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | 239 | 0.394 | 0.506 | 0.138 | 0.630 | 561 | 150 | 225 | 150 | 0.03 | 0.630 | 0.761 | 0.187 |
 | GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | 239 | 0.307 | 0.310 | 0.094 | 0.477 | 561 | 288 | 478 | 288 | 0.06 | 0.561 | 0.853 | 0.306 |
 | GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | 239 | 0.347 | 0.385 | 0.125 | 0.546 | 561 | 467 | 822 | 467 | 0.10 | 0.594 | 0.866 | 0.192 |
-| Open-Jev 2B yes/no per pair (self-hosted) | 239 | 0.442 | 0.565 | 0.177 | 0.702 | 16830 | 429 | 475 | 13010 | 0.65 | 0.646 | 0.702 | 0.106 |
-| Open-Jev 9B yes/no per pair (self-hosted) | 239 | 0.429 | 0.544 | 0.176 | 0.675 | 16830 | 647 | 1342 | 18813 | 3.39 | 0.652 | 0.668 | 0.147 |
+| Open-Jev 2B yes/no per pair (self-hosted) | 239 | 0.442 | 0.565 | 0.177 | 0.702 | 16830 | 429 | 475 | 13010 | 0.33 | 0.646 | 0.702 | 0.106 |
+| Open-Jev 9B yes/no per pair (self-hosted) | 239 | 0.429 | 0.544 | 0.176 | 0.675 | 16830 | 647 | 1342 | 18813 | 1.70 | 0.652 | 0.668 | 0.147 |
+| Qwen3-Reranker-4B (self-hosted) | 239 | 0.495 | 0.686 | 0.192 | 0.790 | 561 | 2434 | 2959 | 2434 | 0.19 | 0.723 | 0.613 | — |
+| bge-reranker-v2-m3 (self-hosted) | 239 | 0.459 | 0.623 | 0.183 | 0.745 | 561 | 944 | 1050 | 944 | 0.07 | 0.693 | 0.681 | — |
+| mxbai-rerank-base-v2 (self-hosted) | 239 | 0.487 | 0.703 | 0.192 | 0.798 | 561 | 1334 | 1606 | 1334 | 0.10 | 0.722 | 0.655 | — |
+| Qwen3.5-4B yes/no per pair (self-hosted) | 239 | 0.443 | 0.573 | 0.182 | 0.702 | 561 | 2586 | 2829 | 2586 | 0.19 | 0.655 | 0.676 | 0.111 |
+| tev1-4B relevant / not per pair (self-hosted) | 239 | 0.457 | 0.615 | 0.180 | 0.722 | 561 | 3012 | 3238 | 3012 | 0.22 | 0.686 | 0.634 | 0.143 |
+| reflex 4B yes/no per pair (self-hosted) | 239 | 0.446 | 0.615 | 0.178 | 0.718 | 16830 | 337 | 387 | 10156 | 0.37 | 0.682 | 0.681 | 0.116 |
+| Winnow-12B Q8 yes/no per pair (self-hosted) | 239 | 0.445 | 0.598 | 0.183 | 0.711 | 16830 | 473 | 573 | 14215 | 0.53 | 0.671 | 0.626 | 0.159 |
+| decider-2b v11 yes/no per pair (self-hosted) | 239 | 0.328 | 0.351 | 0.120 | 0.516 | 16830 | 1247 | 2047 | 38480 | 0.09 | 0.557 | 0.853 | 0.294 |
 
 Jev Choice's own nothing-relevant signals (nfcorpus):
 
@@ -330,8 +378,16 @@ Position bias (nfcorpus): the same 30 passages sent in reverse order to Jev Choi
 | GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | 50 | 0.650 | 0.800 | 0.010 | 0.876 | 93 | 134 | 201 | 134 | 0.03 | 0.601 | 0.860 | 0.327 |
 | GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | 50 | 0.697 | 0.780 | 0.010 | 0.865 | 93 | 261 | 441 | 261 | 0.05 | 0.673 | 0.698 | 0.279 |
 | GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | 50 | 0.671 | 0.800 | 0.010 | 0.886 | 93 | 404 | 705 | 404 | 0.08 | 0.665 | 0.651 | 0.278 |
-| Open-Jev 2B yes/no per pair (self-hosted) | 50 | 0.699 | 0.860 | 0.010 | 0.904 | 2790 | 385 | 448 | 11701 | 0.53 | 0.733 | 0.581 | 0.234 |
-| Open-Jev 9B yes/no per pair (self-hosted) | 50 | 0.723 | 0.900 | 0.011 | 0.938 | 2790 | 513 | 1260 | 15255 | 2.85 | 0.719 | 0.581 | 0.413 |
+| Open-Jev 2B yes/no per pair (self-hosted) | 50 | 0.699 | 0.860 | 0.010 | 0.904 | 2790 | 385 | 448 | 11701 | 0.26 | 0.733 | 0.581 | 0.234 |
+| Open-Jev 9B yes/no per pair (self-hosted) | 50 | 0.723 | 0.900 | 0.011 | 0.938 | 2790 | 513 | 1260 | 15255 | 1.43 | 0.719 | 0.581 | 0.413 |
+| Qwen3-Reranker-4B (self-hosted) | 50 | 0.790 | 0.920 | 0.012 | 0.952 | 93 | 2204 | 2663 | 2204 | 0.17 | 0.885 | 0.372 | — |
+| bge-reranker-v2-m3 (self-hosted) | 50 | 0.749 | 0.900 | 0.011 | 0.934 | 93 | 866 | 979 | 866 | 0.06 | 0.745 | 0.628 | — |
+| mxbai-rerank-base-v2 (self-hosted) | 50 | 0.741 | 0.860 | 0.011 | 0.916 | 93 | 1220 | 1489 | 1220 | 0.09 | 0.762 | 0.581 | — |
+| Qwen3.5-4B yes/no per pair (self-hosted) | 50 | 0.725 | 0.900 | 0.011 | 0.934 | 93 | 2179 | 2519 | 2179 | 0.17 | 0.763 | 0.605 | 0.248 |
+| tev1-4B relevant / not per pair (self-hosted) | 50 | 0.756 | 0.900 | 0.011 | 0.945 | 93 | 2537 | 2944 | 2537 | 0.19 | 0.812 | 0.419 | 0.157 |
+| reflex 4B yes/no per pair (self-hosted) | 50 | 0.739 | 0.860 | 0.011 | 0.917 | 2790 | 334 | 389 | 10043 | 0.38 | 0.749 | 0.651 | 0.258 |
+| Winnow-12B Q8 yes/no per pair (self-hosted) | 50 | 0.739 | 0.900 | 0.011 | 0.943 | 2790 | 400 | 514 | 12024 | 0.46 | 0.749 | 0.605 | 0.256 |
+| decider-2b v11 yes/no per pair (self-hosted) | 50 | 0.713 | 0.820 | 0.011 | 0.900 | 2790 | 912 | 1651 | 30943 | 0.07 | 0.742 | 0.535 | 0.145 |
 
 Jev Choice's own nothing-relevant signals (trec-covid):
 
@@ -389,8 +445,16 @@ Position bias (trec-covid): the same 30 passages sent in reverse order to Jev Ch
 | GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | 39 | 0.128 | 0.128 | 0.085 | 0.205 | 142 | 77 | 201 | 77 | 0.02 | 0.514 | 0.897 | 0.541 |
 | GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | 39 | 0.184 | 0.231 | 0.131 | 0.287 | 142 | 150 | 414 | 150 | 0.04 | 0.536 | 0.897 | 0.585 |
 | GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | 39 | 0.227 | 0.256 | 0.167 | 0.350 | 142 | 221 | 690 | 221 | 0.06 | 0.527 | 0.846 | 0.360 |
-| Open-Jev 2B yes/no per pair (self-hosted) | 39 | 0.334 | 0.410 | 0.264 | 0.516 | 4260 | 395 | 449 | 11898 | 0.58 | 0.579 | 0.846 | 0.070 |
-| Open-Jev 9B yes/no per pair (self-hosted) | 39 | 0.359 | 0.410 | 0.284 | 0.553 | 4260 | 515 | 1115 | 15618 | 2.71 | 0.614 | 0.769 | 0.046 |
+| Open-Jev 2B yes/no per pair (self-hosted) | 39 | 0.334 | 0.410 | 0.264 | 0.516 | 4260 | 395 | 449 | 11898 | 0.29 | 0.579 | 0.846 | 0.070 |
+| Open-Jev 9B yes/no per pair (self-hosted) | 39 | 0.359 | 0.410 | 0.284 | 0.553 | 4260 | 515 | 1115 | 15618 | 1.36 | 0.614 | 0.769 | 0.046 |
+| Qwen3-Reranker-4B (self-hosted) | 39 | 0.373 | 0.487 | 0.300 | 0.602 | 142 | 1276 | 2845 | 1276 | 0.12 | 0.623 | 0.769 | — |
+| bge-reranker-v2-m3 (self-hosted) | 39 | 0.249 | 0.308 | 0.201 | 0.408 | 142 | 498 | 1292 | 498 | 0.05 | 0.578 | 0.846 | — |
+| mxbai-rerank-base-v2 (self-hosted) | 39 | 0.384 | 0.487 | 0.314 | 0.607 | 142 | 730 | 1535 | 730 | 0.07 | 0.626 | 0.846 | — |
+| Qwen3.5-4B yes/no per pair (self-hosted) | 39 | 0.398 | 0.487 | 0.320 | 0.611 | 142 | 1900 | 2717 | 1900 | 0.15 | 0.658 | 0.718 | 0.043 |
+| tev1-4B relevant / not per pair (self-hosted) | 39 | 0.410 | 0.564 | 0.318 | 0.658 | 142 | 2140 | 3217 | 2140 | 0.17 | 0.632 | 0.846 | 0.074 |
+| reflex 4B yes/no per pair (self-hosted) | 39 | 0.393 | 0.436 | 0.350 | 0.611 | 4260 | 326 | 390 | 9742 | 0.36 | 0.642 | 0.718 | 0.028 |
+| Winnow-12B Q8 yes/no per pair (self-hosted) | 39 | 0.372 | 0.436 | 0.335 | 0.584 | 4260 | 363 | 506 | 11013 | 0.42 | 0.614 | 0.769 | 0.057 |
+| decider-2b v11 yes/no per pair (self-hosted) | 39 | 0.437 | 0.564 | 0.359 | 0.702 | 4260 | 1006 | 1442 | 30819 | 0.07 | 0.674 | 0.615 | 0.149 |
 
 Jev Choice's own nothing-relevant signals (bright-biology):
 
@@ -448,8 +512,16 @@ Position bias (bright-biology): the same 30 passages sent in reverse order to Je
 | GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | 38 | 0.183 | 0.105 | 0.174 | 0.199 | 141 | 234 | 454 | 234 | 0.05 | 0.495 | 0.895 | 0.528 |
 | GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | 38 | 0.213 | 0.158 | 0.191 | 0.303 | 141 | 460 | 941 | 460 | 0.10 | 0.516 | 0.895 | 0.585 |
 | GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | 38 | 0.246 | 0.211 | 0.153 | 0.299 | 141 | 744 | 1815 | 744 | 0.16 | 0.507 | 0.895 | 0.325 |
-| Open-Jev 2B yes/no per pair (self-hosted) | 38 | 0.213 | 0.158 | 0.125 | 0.249 | 4230 | 423 | 510 | 12742 | 0.64 | 0.544 | 0.842 | 0.107 |
-| Open-Jev 9B yes/no per pair (self-hosted) | 38 | 0.423 | 0.421 | 0.333 | 0.558 | 4230 | 574 | 1400 | 18172 | 3.23 | 0.596 | 0.816 | 0.091 |
+| Open-Jev 2B yes/no per pair (self-hosted) | 38 | 0.213 | 0.158 | 0.125 | 0.249 | 4230 | 423 | 510 | 12742 | 0.32 | 0.544 | 0.842 | 0.107 |
+| Open-Jev 9B yes/no per pair (self-hosted) | 38 | 0.423 | 0.421 | 0.333 | 0.558 | 4230 | 574 | 1400 | 18172 | 1.61 | 0.596 | 0.816 | 0.091 |
+| Qwen3-Reranker-4B (self-hosted) | 38 | 0.366 | 0.263 | 0.307 | 0.426 | 141 | 3230 | 4792 | 3230 | 0.25 | 0.568 | 0.737 | — |
+| bge-reranker-v2-m3 (self-hosted) | 38 | 0.198 | 0.079 | 0.198 | 0.211 | 141 | 1248 | 2096 | 1248 | 0.10 | 0.505 | 0.868 | — |
+| mxbai-rerank-base-v2 (self-hosted) | 38 | 0.287 | 0.184 | 0.202 | 0.313 | 141 | 1754 | 2594 | 1754 | 0.13 | 0.525 | 0.895 | — |
+| Qwen3.5-4B yes/no per pair (self-hosted) | 38 | 0.426 | 0.421 | 0.368 | 0.556 | 141 | 2520 | 4030 | 2520 | 0.21 | 0.625 | 0.684 | 0.071 |
+| tev1-4B relevant / not per pair (self-hosted) | 38 | 0.427 | 0.421 | 0.362 | 0.534 | 141 | 2974 | 4529 | 2974 | 0.24 | 0.590 | 0.789 | 0.071 |
+| reflex 4B yes/no per pair (self-hosted) | 38 | 0.384 | 0.316 | 0.310 | 0.454 | 4230 | 350 | 410 | 10396 | 0.39 | 0.572 | 0.789 | 0.049 |
+| Winnow-12B Q8 yes/no per pair (self-hosted) | 38 | 0.409 | 0.368 | 0.356 | 0.513 | 4230 | 503 | 760 | 15309 | 0.58 | 0.594 | 0.842 | 0.091 |
+| decider-2b v11 yes/no per pair (self-hosted) | 38 | 0.437 | 0.421 | 0.312 | 0.552 | 4230 | 1261 | 2276 | 39491 | 0.10 | 0.611 | 0.816 | 0.134 |
 
 Jev Choice's own nothing-relevant signals (bright-economics):
 
@@ -506,8 +578,16 @@ Position bias (bright-economics): the same 30 passages sent in reverse order to 
 | GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | 57 | 0.288 | 0.193 | 0.251 | 0.362 | 173 | 127 | 300 | 127 | 0.03 | 0.524 | 0.895 | 0.157 |
 | GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | 57 | 0.228 | 0.193 | 0.211 | 0.321 | 173 | 257 | 620 | 257 | 0.06 | 0.520 | 0.860 | 0.206 |
 | GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | 57 | 0.350 | 0.368 | 0.319 | 0.506 | 173 | 399 | 954 | 399 | 0.09 | 0.566 | 0.842 | 0.082 |
-| Open-Jev 2B yes/no per pair (self-hosted) | 57 | 0.352 | 0.351 | 0.304 | 0.497 | 5190 | 401 | 455 | 12064 | 0.58 | 0.595 | 0.860 | 0.031 |
-| Open-Jev 9B yes/no per pair (self-hosted) | 57 | 0.433 | 0.509 | 0.395 | 0.631 | 5190 | 596 | 1131 | 17981 | 3.17 | 0.651 | 0.719 | 0.062 |
+| Open-Jev 2B yes/no per pair (self-hosted) | 57 | 0.352 | 0.351 | 0.304 | 0.497 | 5190 | 401 | 455 | 12064 | 0.29 | 0.595 | 0.860 | 0.031 |
+| Open-Jev 9B yes/no per pair (self-hosted) | 57 | 0.433 | 0.509 | 0.395 | 0.631 | 5190 | 596 | 1131 | 17981 | 1.58 | 0.651 | 0.719 | 0.062 |
+| Qwen3-Reranker-4B (self-hosted) | 57 | 0.395 | 0.421 | 0.342 | 0.570 | 173 | 2120 | 3319 | 2120 | 0.16 | 0.611 | 0.719 | — |
+| bge-reranker-v2-m3 (self-hosted) | 57 | 0.410 | 0.439 | 0.328 | 0.582 | 173 | 801 | 1375 | 801 | 0.06 | 0.578 | 0.772 | — |
+| mxbai-rerank-base-v2 (self-hosted) | 57 | 0.372 | 0.404 | 0.327 | 0.509 | 173 | 1158 | 1757 | 1158 | 0.09 | 0.581 | 0.789 | — |
+| Qwen3.5-4B yes/no per pair (self-hosted) | 57 | 0.442 | 0.509 | 0.338 | 0.650 | 173 | 1958 | 2747 | 1958 | 0.16 | 0.641 | 0.719 | 0.055 |
+| tev1-4B relevant / not per pair (self-hosted) | 57 | 0.436 | 0.579 | 0.350 | 0.680 | 173 | 2320 | 3204 | 2320 | 0.19 | 0.667 | 0.737 | 0.046 |
+| reflex 4B yes/no per pair (self-hosted) | 57 | 0.391 | 0.439 | 0.312 | 0.580 | 5190 | 325 | 376 | 9715 | 0.36 | 0.625 | 0.772 | 0.028 |
+| Winnow-12B Q8 yes/no per pair (self-hosted) | 57 | 0.405 | 0.491 | 0.321 | 0.615 | 5190 | 395 | 557 | 11989 | 0.47 | 0.668 | 0.684 | 0.075 |
+| decider-2b v11 yes/no per pair (self-hosted) | 57 | 0.479 | 0.544 | 0.421 | 0.694 | 5190 | 998 | 1426 | 30398 | 0.07 | 0.645 | 0.754 | 0.110 |
 
 Jev Choice's own nothing-relevant signals (bright-earth_science):
 
@@ -564,8 +644,16 @@ Position bias (bright-earth_science): the same 30 passages sent in reverse order
 | GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | 29 | 0.228 | 0.172 | 0.255 | 0.301 | 130 | 198 | 333 | 198 | 0.04 | 0.514 | 0.897 | 0.319 |
 | GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | 29 | 0.203 | 0.138 | 0.195 | 0.257 | 130 | 404 | 687 | 404 | 0.08 | 0.517 | 0.828 | 0.395 |
 | GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | 29 | 0.312 | 0.241 | 0.261 | 0.369 | 130 | 643 | 1174 | 643 | 0.13 | 0.532 | 0.828 | 0.254 |
-| Open-Jev 2B yes/no per pair (self-hosted) | 29 | 0.477 | 0.552 | 0.483 | 0.666 | 3900 | 418 | 491 | 12717 | 0.63 | 0.651 | 0.690 | 0.047 |
-| Open-Jev 9B yes/no per pair (self-hosted) | 29 | 0.560 | 0.655 | 0.484 | 0.748 | 3900 | 561 | 1261 | 17204 | 3.10 | 0.699 | 0.655 | 0.071 |
+| Open-Jev 2B yes/no per pair (self-hosted) | 29 | 0.477 | 0.552 | 0.483 | 0.666 | 3900 | 418 | 491 | 12717 | 0.31 | 0.651 | 0.690 | 0.047 |
+| Open-Jev 9B yes/no per pair (self-hosted) | 29 | 0.560 | 0.655 | 0.484 | 0.748 | 3900 | 561 | 1261 | 17204 | 1.55 | 0.699 | 0.655 | 0.071 |
+| Qwen3-Reranker-4B (self-hosted) | 29 | 0.562 | 0.655 | 0.529 | 0.724 | 130 | 2799 | 3883 | 2799 | 0.21 | 0.703 | 0.552 | — |
+| bge-reranker-v2-m3 (self-hosted) | 29 | 0.376 | 0.276 | 0.377 | 0.456 | 130 | 1181 | 1614 | 1181 | 0.09 | 0.586 | 0.793 | — |
+| mxbai-rerank-base-v2 (self-hosted) | 29 | 0.543 | 0.483 | 0.544 | 0.652 | 130 | 1512 | 2047 | 1512 | 0.11 | 0.623 | 0.759 | — |
+| Qwen3.5-4B yes/no per pair (self-hosted) | 29 | 0.562 | 0.586 | 0.547 | 0.752 | 130 | 2305 | 3339 | 2305 | 0.18 | 0.690 | 0.724 | 0.046 |
+| tev1-4B relevant / not per pair (self-hosted) | 29 | 0.588 | 0.655 | 0.548 | 0.754 | 130 | 2665 | 3809 | 2665 | 0.21 | 0.672 | 0.655 | 0.040 |
+| reflex 4B yes/no per pair (self-hosted) | 29 | 0.570 | 0.690 | 0.440 | 0.780 | 3900 | 340 | 391 | 10086 | 0.38 | 0.735 | 0.621 | 0.025 |
+| Winnow-12B Q8 yes/no per pair (self-hosted) | 29 | 0.567 | 0.655 | 0.460 | 0.741 | 3900 | 436 | 645 | 13562 | 0.52 | 0.707 | 0.586 | 0.083 |
+| decider-2b v11 yes/no per pair (self-hosted) | 29 | 0.608 | 0.621 | 0.512 | 0.743 | 3900 | 1097 | 1896 | 31839 | 0.08 | 0.708 | 0.621 | 0.116 |
 
 Jev Choice's own nothing-relevant signals (bright-psychology):
 
@@ -622,8 +710,16 @@ Position bias (bright-psychology): the same 30 passages sent in reverse order to
 | GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | 35 | 0.130 | 0.057 | 0.127 | 0.167 | 136 | 283 | 7016 | 283 | 0.20 | 0.501 | 0.943 | 0.272 |
 | GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | 35 | 0.229 | 0.229 | 0.191 | 0.349 | 136 | 595 | 11237 | 595 | 0.37 | 0.509 | 0.914 | 0.189 |
 | GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | 35 | 0.208 | 0.200 | 0.131 | 0.287 | 135 | 992 | 18039 | 992 | 0.49 | 0.502 | 0.914 | 0.116 |
-| Open-Jev 2B yes/no per pair (self-hosted) | 35 | 0.168 | 0.143 | 0.122 | 0.220 | 4080 | 458 | 1162 | 13697 | 1.17 | 0.521 | 0.914 | 0.085 |
-| Open-Jev 9B yes/no per pair (self-hosted) | 35 | 0.325 | 0.286 | 0.332 | 0.430 | 4080 | 643 | 1784 | 19555 | 5.10 | 0.547 | 0.914 | 0.052 |
+| Open-Jev 2B yes/no per pair (self-hosted) | 35 | 0.168 | 0.143 | 0.122 | 0.220 | 4080 | 458 | 1162 | 13697 | 0.58 | 0.521 | 0.914 | 0.085 |
+| Open-Jev 9B yes/no per pair (self-hosted) | 35 | 0.325 | 0.286 | 0.332 | 0.430 | 4080 | 643 | 1784 | 19555 | 2.55 | 0.547 | 0.914 | 0.052 |
+| Qwen3-Reranker-4B (self-hosted) | 35 | 0.445 | 0.457 | 0.371 | 0.578 | 136 | 3296 | 26404 | 3296 | 0.48 | 0.656 | 0.743 | — |
+| bge-reranker-v2-m3 (self-hosted) | 35 | 0.243 | 0.171 | 0.281 | 0.298 | 136 | 1607 | 19108 | 1607 | 0.25 | 0.524 | 0.886 | — |
+| mxbai-rerank-base-v2 (self-hosted) | 35 | 0.347 | 0.343 | 0.336 | 0.482 | 136 | 1761 | 13291 | 1761 | 0.26 | 0.571 | 0.829 | — |
+| Qwen3.5-4B yes/no per pair (self-hosted) | 35 | 0.399 | 0.457 | 0.363 | 0.563 | 136 | 2747 | 19091 | 2747 | 0.36 | 0.634 | 0.857 | 0.060 |
+| tev1-4B relevant / not per pair (self-hosted) | 35 | 0.381 | 0.400 | 0.364 | 0.530 | 136 | 3279 | 20443 | 3279 | 0.42 | 0.585 | 0.886 | 0.163 |
+| reflex 4B yes/no per pair (self-hosted) | 35 | 0.347 | 0.286 | 0.335 | 0.437 | 4080 | 378 | 1043 | 10822 | 0.55 | 0.572 | 0.857 | 0.089 |
+| Winnow-12B Q8 yes/no per pair (self-hosted) | 35 | 0.406 | 0.371 | 0.392 | 0.535 | 4080 | 676 | 3359 | 20091 | 1.13 | 0.615 | 0.857 | 0.090 |
+| decider-2b v11 yes/no per pair (self-hosted) | 35 | 0.417 | 0.457 | 0.400 | 0.578 | 4080 | 2668 | 6158 | 82117 | 0.18 | 0.662 | 0.829 | 0.200 |
 
 Jev Choice's own nothing-relevant signals (bright-robotics):
 
@@ -680,8 +776,16 @@ Position bias (bright-robotics): the same 30 passages sent in reverse order to J
 | GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | 62 | 0.170 | 0.097 | 0.100 | 0.242 | 179 | 412 | 1170 | 412 | 0.11 | 0.517 | 0.887 | 0.325 |
 | GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | 62 | 0.192 | 0.097 | 0.123 | 0.265 | 179 | 795 | 2288 | 795 | 0.21 | 0.507 | 0.903 | 0.171 |
 | GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | 62 | 0.187 | 0.145 | 0.124 | 0.285 | 179 | 1368 | 3212 | 1368 | 0.35 | 0.509 | 0.903 | 0.100 |
-| Open-Jev 2B yes/no per pair (self-hosted) | 62 | 0.224 | 0.145 | 0.159 | 0.293 | 5370 | 600 | 831 | 17970 | 1.19 | 0.517 | 0.903 | 0.058 |
-| Open-Jev 9B yes/no per pair (self-hosted) | 62 | 0.302 | 0.274 | 0.258 | 0.423 | 5370 | 861 | 2377 | 25603 | 5.32 | 0.557 | 0.887 | 0.073 |
+| Open-Jev 2B yes/no per pair (self-hosted) | 62 | 0.224 | 0.145 | 0.159 | 0.293 | 5370 | 600 | 831 | 17970 | 0.59 | 0.517 | 0.903 | 0.058 |
+| Open-Jev 9B yes/no per pair (self-hosted) | 62 | 0.302 | 0.274 | 0.258 | 0.423 | 5370 | 861 | 2377 | 25603 | 2.66 | 0.557 | 0.887 | 0.073 |
+| Qwen3-Reranker-4B (self-hosted) | 62 | 0.334 | 0.290 | 0.296 | 0.468 | 179 | 4144 | 7429 | 4144 | 0.39 | 0.542 | 0.806 | — |
+| bge-reranker-v2-m3 (self-hosted) | 62 | 0.234 | 0.161 | 0.165 | 0.310 | 179 | 1908 | 3488 | 1908 | 0.17 | 0.515 | 0.871 | — |
+| mxbai-rerank-base-v2 (self-hosted) | 62 | 0.296 | 0.226 | 0.259 | 0.377 | 179 | 2238 | 4210 | 2238 | 0.20 | 0.537 | 0.887 | — |
+| Qwen3.5-4B yes/no per pair (self-hosted) | 62 | 0.352 | 0.339 | 0.288 | 0.498 | 179 | 4206 | 7277 | 4206 | 0.36 | 0.591 | 0.839 | 0.060 |
+| tev1-4B relevant / not per pair (self-hosted) | 62 | 0.322 | 0.290 | 0.240 | 0.441 | 179 | 4946 | 8220 | 4946 | 0.42 | 0.585 | 0.839 | 0.067 |
+| reflex 4B yes/no per pair (self-hosted) | 62 | 0.308 | 0.274 | 0.251 | 0.437 | 5370 | 407 | 548 | 12050 | 0.47 | 0.580 | 0.855 | 0.050 |
+| Winnow-12B Q8 yes/no per pair (self-hosted) | 62 | 0.346 | 0.323 | 0.270 | 0.497 | 5370 | 917 | 1322 | 27809 | 1.09 | 0.572 | 0.855 | 0.109 |
+| decider-2b v11 yes/no per pair (self-hosted) | 62 | 0.321 | 0.339 | 0.271 | 0.470 | 5370 | 2341 | 4449 | 73359 | 0.18 | 0.561 | 0.871 | 0.216 |
 
 Jev Choice's own nothing-relevant signals (bright-stackoverflow):
 
@@ -738,8 +842,16 @@ Position bias (bright-stackoverflow): the same 30 passages sent in reverse order
 | GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | 47 | 0.149 | 0.085 | 0.129 | 0.178 | 155 | 191 | 420 | 191 | 0.04 | 0.509 | 0.872 | 0.547 |
 | GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | 47 | 0.149 | 0.149 | 0.104 | 0.207 | 155 | 372 | 877 | 372 | 0.08 | 0.513 | 0.894 | 0.520 |
 | GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | 47 | 0.189 | 0.128 | 0.175 | 0.232 | 155 | 559 | 1429 | 559 | 0.12 | 0.519 | 0.851 | 0.323 |
-| Open-Jev 2B yes/no per pair (self-hosted) | 47 | 0.215 | 0.149 | 0.191 | 0.292 | 4650 | 391 | 473 | 11722 | 0.72 | 0.530 | 0.851 | 0.112 |
-| Open-Jev 9B yes/no per pair (self-hosted) | 47 | 0.413 | 0.426 | 0.354 | 0.599 | 4650 | 541 | 1071 | 16209 | 3.24 | 0.602 | 0.809 | 0.074 |
+| Open-Jev 2B yes/no per pair (self-hosted) | 47 | 0.215 | 0.149 | 0.191 | 0.292 | 4650 | 391 | 473 | 11722 | 0.36 | 0.530 | 0.851 | 0.112 |
+| Open-Jev 9B yes/no per pair (self-hosted) | 47 | 0.413 | 0.426 | 0.354 | 0.599 | 4650 | 541 | 1071 | 16209 | 1.62 | 0.602 | 0.809 | 0.074 |
+| Qwen3-Reranker-4B (self-hosted) | 47 | 0.401 | 0.404 | 0.338 | 0.534 | 155 | 2702 | 3775 | 2702 | 0.20 | 0.570 | 0.851 | — |
+| bge-reranker-v2-m3 (self-hosted) | 47 | 0.323 | 0.340 | 0.308 | 0.444 | 155 | 1049 | 1779 | 1049 | 0.08 | 0.563 | 0.830 | — |
+| mxbai-rerank-base-v2 (self-hosted) | 47 | 0.338 | 0.234 | 0.318 | 0.416 | 155 | 1421 | 2016 | 1421 | 0.11 | 0.563 | 0.872 | — |
+| Qwen3.5-4B yes/no per pair (self-hosted) | 47 | 0.415 | 0.511 | 0.362 | 0.614 | 155 | 2109 | 3287 | 2109 | 0.17 | 0.654 | 0.766 | 0.045 |
+| tev1-4B relevant / not per pair (self-hosted) | 47 | 0.407 | 0.426 | 0.371 | 0.578 | 155 | 2487 | 3771 | 2487 | 0.20 | 0.587 | 0.830 | 0.065 |
+| reflex 4B yes/no per pair (self-hosted) | 47 | 0.451 | 0.447 | 0.401 | 0.601 | 4650 | 328 | 384 | 9843 | 0.37 | 0.627 | 0.830 | 0.030 |
+| Winnow-12B Q8 yes/no per pair (self-hosted) | 47 | 0.463 | 0.532 | 0.404 | 0.690 | 4650 | 410 | 632 | 12452 | 0.48 | 0.623 | 0.787 | 0.075 |
+| decider-2b v11 yes/no per pair (self-hosted) | 47 | 0.487 | 0.553 | 0.381 | 0.669 | 4650 | 1035 | 1842 | 31462 | 0.08 | 0.636 | 0.766 | 0.119 |
 
 Jev Choice's own nothing-relevant signals (bright-sustainable_living):
 
@@ -797,8 +909,16 @@ Position bias (bright-sustainable_living): the same 30 passages sent in reverse 
 | GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | 256 | 0.473 | 0.273 | 0.559 | 0.397 | 556 | 224 | 570 | 224 | 0.06 | 0.561 | 0.863 | 0.211 |
 | GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | 256 | 0.550 | 0.355 | 0.629 | 0.483 | 556 | 453 | 1265 | 453 | 0.12 | 0.570 | 0.852 | 0.234 |
 | GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | 256 | 0.520 | 0.320 | 0.598 | 0.443 | 556 | 781 | 2363 | 781 | 0.20 | 0.556 | 0.875 | 0.058 |
-| Open-Jev 2B yes/no per pair (self-hosted) | 256 | 0.860 | 0.727 | 0.949 | 0.820 | 16680 | 430 | 668 | 12935 | 0.84 | 0.740 | 0.609 | 0.094 |
-| Open-Jev 9B yes/no per pair (self-hosted) | 256 | 0.893 | 0.789 | 0.965 | 0.863 | 16680 | 642 | 1201 | 19444 | 4.10 | 0.822 | 0.414 | 0.010 |
+| Open-Jev 2B yes/no per pair (self-hosted) | 256 | 0.860 | 0.727 | 0.949 | 0.820 | 16680 | 430 | 668 | 12935 | 0.42 | 0.740 | 0.609 | 0.094 |
+| Open-Jev 9B yes/no per pair (self-hosted) | 256 | 0.893 | 0.789 | 0.965 | 0.863 | 16680 | 642 | 1201 | 19444 | 2.05 | 0.822 | 0.414 | 0.010 |
+| Qwen3-Reranker-4B (self-hosted) | 256 | 0.976 | 0.941 | 0.996 | 0.967 | 556 | 2681 | 5242 | 2681 | 0.24 | 0.944 | 0.184 | — |
+| bge-reranker-v2-m3 (self-hosted) | 256 | 0.835 | 0.695 | 0.918 | 0.793 | 556 | 1284 | 2541 | 1284 | 0.11 | 0.683 | 0.723 | — |
+| mxbai-rerank-base-v2 (self-hosted) | 256 | 0.971 | 0.930 | 1.000 | 0.961 | 556 | 1440 | 2848 | 1440 | 0.13 | 0.849 | 0.414 | — |
+| Qwen3.5-4B yes/no per pair (self-hosted) | 256 | 0.954 | 0.898 | 0.992 | 0.940 | 556 | 2461 | 4784 | 2461 | 0.21 | 0.879 | 0.320 | 0.031 |
+| tev1-4B relevant / not per pair (self-hosted) | 256 | 0.942 | 0.863 | 0.996 | 0.922 | 556 | 2909 | 5455 | 2909 | 0.25 | 0.849 | 0.328 | 0.125 |
+| reflex 4B yes/no per pair (self-hosted) | 256 | 0.922 | 0.824 | 0.992 | 0.897 | 16680 | 351 | 512 | 10397 | 0.41 | 0.824 | 0.402 | 0.136 |
+| Winnow-12B Q8 yes/no per pair (self-hosted) | 256 | 0.954 | 0.902 | 0.992 | 0.941 | 16680 | 538 | 1148 | 15881 | 0.66 | 0.862 | 0.355 | 0.047 |
+| decider-2b v11 yes/no per pair (self-hosted) | 256 | 0.914 | 0.820 | 0.977 | 0.889 | 16680 | 1375 | 2528 | 41854 | 0.10 | 0.822 | 0.488 | 0.225 |
 
 Jev Choice's own nothing-relevant signals (csn-python):
 
@@ -852,8 +972,16 @@ Position bias (csn-python): the same 30 passages sent in reverse order to Jev Ch
 | GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | 152 | 0.328 | 0.164 | 0.366 | 0.316 | 421 | 110 | 198 | 110 | 0.02 | 0.512 | 0.888 | 0.608 |
 | GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | 152 | 0.469 | 0.336 | 0.453 | 0.489 | 421 | 219 | 416 | 219 | 0.05 | 0.549 | 0.836 | 0.397 |
 | GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | 152 | 0.419 | 0.224 | 0.460 | 0.401 | 421 | 262 | 511 | 262 | 0.06 | 0.547 | 0.842 | 0.565 |
-| Open-Jev 2B yes/no per pair (self-hosted) | 152 | 0.558 | 0.447 | 0.600 | 0.581 | 12630 | 331 | 404 | 9945 | 0.63 | 0.594 | 0.809 | 0.215 |
-| Open-Jev 9B yes/no per pair (self-hosted) | 152 | 0.628 | 0.513 | 0.657 | 0.667 | 12630 | 530 | 588 | 15950 | 3.86 | 0.631 | 0.763 | 0.041 |
+| Open-Jev 2B yes/no per pair (self-hosted) | 152 | 0.558 | 0.447 | 0.600 | 0.581 | 12630 | 331 | 404 | 9945 | 0.31 | 0.594 | 0.809 | 0.215 |
+| Open-Jev 9B yes/no per pair (self-hosted) | 152 | 0.628 | 0.513 | 0.657 | 0.667 | 12630 | 530 | 588 | 15950 | 1.93 | 0.631 | 0.763 | 0.041 |
+| Qwen3-Reranker-4B (self-hosted) | 152 | 0.766 | 0.737 | 0.785 | 0.845 | 421 | 1561 | 2604 | 1561 | 0.12 | 0.768 | 0.592 | — |
+| bge-reranker-v2-m3 (self-hosted) | 152 | 0.732 | 0.697 | 0.765 | 0.813 | 421 | 499 | 883 | 499 | 0.04 | 0.706 | 0.763 | — |
+| mxbai-rerank-base-v2 (self-hosted) | 152 | 0.700 | 0.645 | 0.745 | 0.771 | 421 | 864 | 1393 | 864 | 0.07 | 0.666 | 0.776 | — |
+| Qwen3.5-4B yes/no per pair (self-hosted) | 152 | 0.577 | 0.487 | 0.594 | 0.629 | 421 | 1845 | 1953 | 1845 | 0.14 | 0.632 | 0.763 | 0.186 |
+| tev1-4B relevant / not per pair (self-hosted) | 152 | 0.637 | 0.546 | 0.680 | 0.690 | 421 | 1930 | 2159 | 1930 | 0.15 | 0.656 | 0.750 | 0.222 |
+| reflex 4B yes/no per pair (self-hosted) | 152 | 0.596 | 0.500 | 0.615 | 0.637 | 12630 | 324 | 381 | 9751 | 0.36 | 0.635 | 0.816 | 0.139 |
+| Winnow-12B Q8 yes/no per pair (self-hosted) | 152 | 0.668 | 0.612 | 0.701 | 0.729 | 12630 | 285 | 379 | 8897 | 0.33 | 0.676 | 0.684 | 0.138 |
+| decider-2b v11 yes/no per pair (self-hosted) | 152 | 0.624 | 0.507 | 0.657 | 0.657 | 12630 | 675 | 1002 | 20159 | 0.05 | 0.636 | 0.776 | 0.233 |
 
 Jev Choice's own nothing-relevant signals (miracl-fr):
 
@@ -910,8 +1038,16 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | scifact | 564 | gpu_ms=116476.24 | 0.0223 |
 | GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | scifact | 564 | gpu_ms=186707.56 | 0.0353 |
 | GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | scifact | 564 | gpu_ms=308132.68 | 0.0583 |
-| Open-Jev 2B yes/no per pair (self-hosted) | scifact | 16920 | input_tokens=7658271, output_tokens=0 | 0.3645 |
-| Open-Jev 9B yes/no per pair (self-hosted) | scifact | 16920 | input_tokens=7658271, output_tokens=0 | 2.0708 |
+| Open-Jev 2B yes/no per pair (self-hosted) | scifact | 16920 | input_tokens=7658271, output_tokens=0 | 0.1823 |
+| Open-Jev 9B yes/no per pair (self-hosted) | scifact | 16920 | input_tokens=7658271, output_tokens=0 | 1.0354 |
+| Qwen3-Reranker-4B (self-hosted) | scifact | 564 | gpu_ms=1405524.86 | 0.1054 |
+| bge-reranker-v2-m3 (self-hosted) | scifact | 564 | gpu_ms=570861.39 | 0.0428 |
+| mxbai-rerank-base-v2 (self-hosted) | scifact | 564 | gpu_ms=767587.37 | 0.0576 |
+| Qwen3.5-4B yes/no per pair (self-hosted) | scifact | 564 | gpu_ms=1440747.11 | 0.1081 |
+| tev1-4B relevant / not per pair (self-hosted) | scifact | 564 | gpu_ms=1730429.47 | 0.1298 |
+| reflex 4B yes/no per pair (self-hosted) | scifact | 16920 | input_tokens=10061982, output_tokens=0, state_tokens=7050222, question_tokens=3011760, state_cache_hit=0, images=0 | 0.2203 |
+| Winnow-12B Q8 yes/no per pair (self-hosted) | scifact | 16920 | input_tokens=8087551, output_tokens=0 | 0.2976 |
+| decider-2b v11 yes/no per pair (self-hosted) | scifact | 16920 | input_tokens=7368836, output_tokens=0 | 0.0504 |
 | Cohere Rerank 4 Pro | fiqa | 1059 | search_units=1059 | 2.6475 |
 | Cohere Rerank 4 Fast | fiqa | 1059 | search_units=1059 | 2.1180 |
 | ZeroEntropy zerank-2 | fiqa | 1059 | total_tokens=7564780, total_bytes=37031485, inference_latency_s=437.91 | 0.1891 |
@@ -935,8 +1071,16 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | fiqa | 1059 | gpu_ms=159693.33 | 0.0305 |
 | GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | fiqa | 1059 | gpu_ms=319595.02 | 0.0606 |
 | GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | fiqa | 1059 | gpu_ms=494756.92 | 0.0936 |
-| Open-Jev 2B yes/no per pair (self-hosted) | fiqa | 31770 | input_tokens=10431382, output_tokens=0 | 0.6307 |
-| Open-Jev 9B yes/no per pair (self-hosted) | fiqa | 31770 | input_tokens=10431382, output_tokens=0 | 3.0490 |
+| Open-Jev 2B yes/no per pair (self-hosted) | fiqa | 31770 | input_tokens=10431382, output_tokens=0 | 0.3153 |
+| Open-Jev 9B yes/no per pair (self-hosted) | fiqa | 31770 | input_tokens=10431382, output_tokens=0 | 1.5245 |
+| Qwen3-Reranker-4B (self-hosted) | fiqa | 1059 | gpu_ms=2350805.38 | 0.1763 |
+| bge-reranker-v2-m3 (self-hosted) | fiqa | 1059 | gpu_ms=901222.91 | 0.0676 |
+| mxbai-rerank-base-v2 (self-hosted) | fiqa | 1059 | gpu_ms=1276967.36 | 0.0958 |
+| Qwen3.5-4B yes/no per pair (self-hosted) | fiqa | 1059 | gpu_ms=2228521.12 | 0.1671 |
+| tev1-4B relevant / not per pair (self-hosted) | fiqa | 1059 | gpu_ms=2539740.33 | 0.1905 |
+| reflex 4B yes/no per pair (self-hosted) | fiqa | 31770 | input_tokens=14949643, output_tokens=0, state_tokens=9294583, question_tokens=5655060, state_cache_hit=2, images=0 | 0.3930 |
+| Winnow-12B Q8 yes/no per pair (self-hosted) | fiqa | 31770 | input_tokens=11964756, output_tokens=0 | 0.4568 |
+| decider-2b v11 yes/no per pair (self-hosted) | fiqa | 31770 | input_tokens=9887433, output_tokens=0 | 0.0733 |
 | Cohere Rerank 4 Pro | nq | 820 | search_units=820 | 2.0500 |
 | Cohere Rerank 4 Fast | nq | 820 | search_units=820 | 1.6400 |
 | ZeroEntropy zerank-2 | nq | 820 | total_tokens=3291835, total_bytes=16636101, inference_latency_s=364.15 | 0.0823 |
@@ -960,8 +1104,16 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | nq | 820 | gpu_ms=71065.33 | 0.0136 |
 | GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | nq | 820 | gpu_ms=141128.73 | 0.0268 |
 | GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | nq | 820 | gpu_ms=211671.81 | 0.0403 |
-| Open-Jev 2B yes/no per pair (self-hosted) | nq | 24600 | input_tokens=5481913, output_tokens=0 | 0.4496 |
-| Open-Jev 9B yes/no per pair (self-hosted) | nq | 24600 | input_tokens=5481913, output_tokens=0 | 1.9783 |
+| Open-Jev 2B yes/no per pair (self-hosted) | nq | 24600 | input_tokens=5481913, output_tokens=0 | 0.2248 |
+| Open-Jev 9B yes/no per pair (self-hosted) | nq | 24600 | input_tokens=5481913, output_tokens=0 | 0.9891 |
+| Qwen3-Reranker-4B (self-hosted) | nq | 820 | gpu_ms=1190553.1 | 0.0893 |
+| bge-reranker-v2-m3 (self-hosted) | nq | 820 | gpu_ms=430525.51 | 0.0323 |
+| mxbai-rerank-base-v2 (self-hosted) | nq | 820 | gpu_ms=659566.1 | 0.0495 |
+| Qwen3.5-4B yes/no per pair (self-hosted) | nq | 820 | gpu_ms=1476671.11 | 0.1108 |
+| tev1-4B relevant / not per pair (self-hosted) | nq | 820 | gpu_ms=1595688.33 | 0.1197 |
+| reflex 4B yes/no per pair (self-hosted) | nq | 24600 | input_tokens=8999097, output_tokens=0, state_tokens=4620297, question_tokens=4378800, state_cache_hit=34, images=0 | 0.2979 |
+| Winnow-12B Q8 yes/no per pair (self-hosted) | nq | 24600 | input_tokens=6576454, output_tokens=0 | 0.2698 |
+| decider-2b v11 yes/no per pair (self-hosted) | nq | 24600 | input_tokens=5086675, output_tokens=0 | 0.0397 |
 | Cohere Rerank 4 Pro | nfcorpus | 561 | search_units=561 | 1.4025 |
 | Cohere Rerank 4 Fast | nfcorpus | 561 | search_units=561 | 1.1220 |
 | ZeroEntropy zerank-2 | nfcorpus | 561 | total_tokens=6094994, total_bytes=29072565, inference_latency_s=278.06 | 0.1524 |
@@ -985,8 +1137,16 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | nfcorpus | 561 | gpu_ms=89135.91 | 0.0170 |
 | GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | nfcorpus | 561 | gpu_ms=176741.69 | 0.0334 |
 | GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | nfcorpus | 561 | gpu_ms=291808.04 | 0.0551 |
-| Open-Jev 2B yes/no per pair (self-hosted) | nfcorpus | 16830 | input_tokens=7588884, output_tokens=0 | 0.3642 |
-| Open-Jev 9B yes/no per pair (self-hosted) | nfcorpus | 16830 | input_tokens=7588884, output_tokens=0 | 1.8853 |
+| Open-Jev 2B yes/no per pair (self-hosted) | nfcorpus | 16830 | input_tokens=7588884, output_tokens=0 | 0.1821 |
+| Open-Jev 9B yes/no per pair (self-hosted) | nfcorpus | 16830 | input_tokens=7588884, output_tokens=0 | 0.9427 |
+| Qwen3-Reranker-4B (self-hosted) | nfcorpus | 561 | gpu_ms=1399328.46 | 0.1049 |
+| bge-reranker-v2-m3 (self-hosted) | nfcorpus | 561 | gpu_ms=533592.74 | 0.0400 |
+| mxbai-rerank-base-v2 (self-hosted) | nfcorpus | 561 | gpu_ms=762936.86 | 0.0572 |
+| Qwen3.5-4B yes/no per pair (self-hosted) | nfcorpus | 561 | gpu_ms=1443855.74 | 0.1083 |
+| tev1-4B relevant / not per pair (self-hosted) | nfcorpus | 561 | gpu_ms=1680801.88 | 0.1261 |
+| reflex 4B yes/no per pair (self-hosted) | nfcorpus | 16830 | input_tokens=9993126, output_tokens=0, state_tokens=6997386, question_tokens=2995740, state_cache_hit=167, images=0 | 0.2119 |
+| Winnow-12B Q8 yes/no per pair (self-hosted) | nfcorpus | 16830 | input_tokens=8162474, output_tokens=0 | 0.2992 |
+| decider-2b v11 yes/no per pair (self-hosted) | nfcorpus | 16830 | input_tokens=7314483, output_tokens=0 | 0.0503 |
 | Cohere Rerank 4 Pro | trec-covid | 93 | search_units=93 | 0.2325 |
 | Cohere Rerank 4 Fast | trec-covid | 93 | search_units=93 | 0.1860 |
 | ZeroEntropy zerank-2 | trec-covid | 93 | total_tokens=757658, total_bytes=3879586, inference_latency_s=42.62 | 0.0189 |
@@ -1010,8 +1170,16 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | trec-covid | 93 | gpu_ms=12820.12 | 0.0024 |
 | GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | trec-covid | 93 | gpu_ms=25919.9 | 0.0048 |
 | GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | trec-covid | 93 | gpu_ms=41042.46 | 0.0075 |
-| Open-Jev 2B yes/no per pair (self-hosted) | trec-covid | 2790 | input_tokens=1000401, output_tokens=0 | 0.0491 |
-| Open-Jev 9B yes/no per pair (self-hosted) | trec-covid | 2790 | input_tokens=1000401, output_tokens=0 | 0.2569 |
+| Open-Jev 2B yes/no per pair (self-hosted) | trec-covid | 2790 | input_tokens=1000401, output_tokens=0 | 0.0246 |
+| Open-Jev 9B yes/no per pair (self-hosted) | trec-covid | 2790 | input_tokens=1000401, output_tokens=0 | 0.1284 |
+| Qwen3-Reranker-4B (self-hosted) | trec-covid | 93 | gpu_ms=203913.89 | 0.0153 |
+| bge-reranker-v2-m3 (self-hosted) | trec-covid | 93 | gpu_ms=79341.9 | 0.0060 |
+| mxbai-rerank-base-v2 (self-hosted) | trec-covid | 93 | gpu_ms=111716.65 | 0.0084 |
+| Qwen3.5-4B yes/no per pair (self-hosted) | trec-covid | 93 | gpu_ms=206706.03 | 0.0155 |
+| tev1-4B relevant / not per pair (self-hosted) | trec-covid | 93 | gpu_ms=237490.15 | 0.0178 |
+| reflex 4B yes/no per pair (self-hosted) | trec-covid | 2790 | input_tokens=1397024, output_tokens=0, state_tokens=900404, question_tokens=496620, state_cache_hit=0, images=0 | 0.0348 |
+| Winnow-12B Q8 yes/no per pair (self-hosted) | trec-covid | 2790 | input_tokens=1108893, output_tokens=0 | 0.0418 |
+| decider-2b v11 yes/no per pair (self-hosted) | trec-covid | 2790 | input_tokens=952960, output_tokens=0 | 0.0061 |
 | Cohere Rerank 4 Pro | bright-biology | 142 | search_units=142 | 0.3550 |
 | Cohere Rerank 4 Fast | bright-biology | 142 | search_units=142 | 0.2840 |
 | ZeroEntropy zerank-2 | bright-biology | 142 | total_tokens=980428, total_bytes=4909820, inference_latency_s=55.62 | 0.0245 |
@@ -1035,8 +1203,16 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | bright-biology | 142 | gpu_ms=14300.84 | 0.0027 |
 | GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | bright-biology | 142 | gpu_ms=28592.28 | 0.0054 |
 | GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | bright-biology | 142 | gpu_ms=45385.54 | 0.0086 |
-| Open-Jev 2B yes/no per pair (self-hosted) | bright-biology | 4260 | input_tokens=1380085, output_tokens=0 | 0.0812 |
-| Open-Jev 9B yes/no per pair (self-hosted) | bright-biology | 4260 | input_tokens=1380085, output_tokens=0 | 0.3656 |
+| Open-Jev 2B yes/no per pair (self-hosted) | bright-biology | 4260 | input_tokens=1380085, output_tokens=0 | 0.0406 |
+| Open-Jev 9B yes/no per pair (self-hosted) | bright-biology | 4260 | input_tokens=1380085, output_tokens=0 | 0.1828 |
+| Qwen3-Reranker-4B (self-hosted) | bright-biology | 142 | gpu_ms=224784.81 | 0.0169 |
+| bge-reranker-v2-m3 (self-hosted) | bright-biology | 142 | gpu_ms=90495.06 | 0.0068 |
+| mxbai-rerank-base-v2 (self-hosted) | bright-biology | 142 | gpu_ms=124862.08 | 0.0094 |
+| Qwen3.5-4B yes/no per pair (self-hosted) | bright-biology | 142 | gpu_ms=290193.45 | 0.0218 |
+| tev1-4B relevant / not per pair (self-hosted) | bright-biology | 142 | gpu_ms=332661.47 | 0.0249 |
+| reflex 4B yes/no per pair (self-hosted) | bright-biology | 4260 | input_tokens=1985019, output_tokens=0, state_tokens=1226739, question_tokens=758280, state_cache_hit=375, images=0 | 0.0513 |
+| Winnow-12B Q8 yes/no per pair (self-hosted) | bright-biology | 4260 | input_tokens=1572019, output_tokens=0 | 0.0598 |
+| decider-2b v11 yes/no per pair (self-hosted) | bright-biology | 4260 | input_tokens=1305032, output_tokens=0 | 0.0095 |
 | Cohere Rerank 4 Pro | bright-economics | 141 | search_units=141 | 0.3525 |
 | Cohere Rerank 4 Fast | bright-economics | 141 | search_units=141 | 0.2820 |
 | ZeroEntropy zerank-2 | bright-economics | 141 | total_tokens=1585926, total_bytes=7216913, inference_latency_s=73.34 | 0.0396 |
@@ -1060,8 +1236,16 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | bright-economics | 141 | gpu_ms=36113.51 | 0.0070 |
 | GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | bright-economics | 141 | gpu_ms=71410.13 | 0.0137 |
 | GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | bright-economics | 141 | gpu_ms=118635.19 | 0.0226 |
-| Open-Jev 2B yes/no per pair (self-hosted) | bright-economics | 4230 | input_tokens=2036376, output_tokens=0 | 0.0878 |
-| Open-Jev 9B yes/no per pair (self-hosted) | bright-economics | 4230 | input_tokens=2036376, output_tokens=0 | 0.4457 |
+| Open-Jev 2B yes/no per pair (self-hosted) | bright-economics | 4230 | input_tokens=2036376, output_tokens=0 | 0.0439 |
+| Open-Jev 9B yes/no per pair (self-hosted) | bright-economics | 4230 | input_tokens=2036376, output_tokens=0 | 0.2229 |
+| Qwen3-Reranker-4B (self-hosted) | bright-economics | 141 | gpu_ms=464246.29 | 0.0348 |
+| bge-reranker-v2-m3 (self-hosted) | bright-economics | 141 | gpu_ms=187484.08 | 0.0141 |
+| mxbai-rerank-base-v2 (self-hosted) | bright-economics | 141 | gpu_ms=249393.79 | 0.0187 |
+| Qwen3.5-4B yes/no per pair (self-hosted) | bright-economics | 141 | gpu_ms=383887.71 | 0.0288 |
+| tev1-4B relevant / not per pair (self-hosted) | bright-economics | 141 | gpu_ms=442491.36 | 0.0332 |
+| reflex 4B yes/no per pair (self-hosted) | bright-economics | 4230 | input_tokens=2637537, output_tokens=0, state_tokens=1884597, question_tokens=752940, state_cache_hit=85, images=0 | 0.0550 |
+| Winnow-12B Q8 yes/no per pair (self-hosted) | bright-economics | 4230 | input_tokens=2258024, output_tokens=0 | 0.0815 |
+| decider-2b v11 yes/no per pair (self-hosted) | bright-economics | 4230 | input_tokens=1963399, output_tokens=0 | 0.0131 |
 | Cohere Rerank 4 Pro | bright-earth_science | 173 | search_units=173 | 0.4325 |
 | Cohere Rerank 4 Fast | bright-earth_science | 173 | search_units=173 | 0.3460 |
 | ZeroEntropy zerank-2 | bright-earth_science | 173 | total_tokens=1288797, total_bytes=6151682, inference_latency_s=59.79 | 0.0322 |
@@ -1084,8 +1268,16 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | bright-earth_science | 173 | gpu_ms=23883.54 | 0.0046 |
 | GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | bright-earth_science | 173 | gpu_ms=47807.39 | 0.0092 |
 | GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | bright-earth_science | 173 | gpu_ms=76033.12 | 0.0146 |
-| Open-Jev 2B yes/no per pair (self-hosted) | bright-earth_science | 5190 | input_tokens=1819427, output_tokens=0 | 0.0997 |
-| Open-Jev 9B yes/no per pair (self-hosted) | bright-earth_science | 5190 | input_tokens=1819427, output_tokens=0 | 0.5362 |
+| Open-Jev 2B yes/no per pair (self-hosted) | bright-earth_science | 5190 | input_tokens=1819427, output_tokens=0 | 0.0499 |
+| Open-Jev 9B yes/no per pair (self-hosted) | bright-earth_science | 5190 | input_tokens=1819427, output_tokens=0 | 0.2681 |
+| Qwen3-Reranker-4B (self-hosted) | bright-earth_science | 173 | gpu_ms=352653.15 | 0.0264 |
+| bge-reranker-v2-m3 (self-hosted) | bright-earth_science | 173 | gpu_ms=139783.8 | 0.0105 |
+| mxbai-rerank-base-v2 (self-hosted) | bright-earth_science | 173 | gpu_ms=193896.14 | 0.0145 |
+| Qwen3.5-4B yes/no per pair (self-hosted) | bright-earth_science | 173 | gpu_ms=357696.46 | 0.0268 |
+| tev1-4B relevant / not per pair (self-hosted) | bright-earth_science | 173 | gpu_ms=423986.86 | 0.0318 |
+| reflex 4B yes/no per pair (self-hosted) | bright-earth_science | 5190 | input_tokens=2556668, output_tokens=0, state_tokens=1632848, question_tokens=923820, state_cache_hit=92, images=0 | 0.0627 |
+| Winnow-12B Q8 yes/no per pair (self-hosted) | bright-earth_science | 5190 | input_tokens=2128009, output_tokens=0 | 0.0798 |
+| decider-2b v11 yes/no per pair (self-hosted) | bright-earth_science | 5190 | input_tokens=1727264, output_tokens=0 | 0.0115 |
 | Cohere Rerank 4 Pro | bright-psychology | 130 | search_units=130 | 0.3250 |
 | Cohere Rerank 4 Fast | bright-psychology | 130 | search_units=130 | 0.2600 |
 | ZeroEntropy zerank-2 | bright-psychology | 130 | total_tokens=1202021, total_bytes=5843241, inference_latency_s=58.89 | 0.0301 |
@@ -1108,8 +1300,16 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | bright-psychology | 130 | gpu_ms=26422.61 | 0.0051 |
 | GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | bright-psychology | 130 | gpu_ms=53665.76 | 0.0103 |
 | GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | bright-psychology | 130 | gpu_ms=88321.08 | 0.0170 |
-| Open-Jev 2B yes/no per pair (self-hosted) | bright-psychology | 3900 | input_tokens=1587437, output_tokens=0 | 0.0795 |
-| Open-Jev 9B yes/no per pair (self-hosted) | bright-psychology | 3900 | input_tokens=1587437, output_tokens=0 | 0.3897 |
+| Open-Jev 2B yes/no per pair (self-hosted) | bright-psychology | 3900 | input_tokens=1587437, output_tokens=0 | 0.0397 |
+| Open-Jev 9B yes/no per pair (self-hosted) | bright-psychology | 3900 | input_tokens=1587437, output_tokens=0 | 0.1948 |
+| Qwen3-Reranker-4B (self-hosted) | bright-psychology | 130 | gpu_ms=360693.89 | 0.0271 |
+| bge-reranker-v2-m3 (self-hosted) | bright-psychology | 130 | gpu_ms=153183.39 | 0.0115 |
+| mxbai-rerank-base-v2 (self-hosted) | bright-psychology | 130 | gpu_ms=194614.51 | 0.0146 |
+| Qwen3.5-4B yes/no per pair (self-hosted) | bright-psychology | 130 | gpu_ms=312257.77 | 0.0234 |
+| tev1-4B relevant / not per pair (self-hosted) | bright-psychology | 130 | gpu_ms=359483.8 | 0.0270 |
+| reflex 4B yes/no per pair (self-hosted) | bright-psychology | 3900 | input_tokens=2141467, output_tokens=0, state_tokens=1447267, question_tokens=694200, state_cache_hit=108, images=0 | 0.0488 |
+| Winnow-12B Q8 yes/no per pair (self-hosted) | bright-psychology | 3900 | input_tokens=1799670, output_tokens=0 | 0.0661 |
+| decider-2b v11 yes/no per pair (self-hosted) | bright-psychology | 3900 | input_tokens=1520339, output_tokens=0 | 0.0103 |
 | Cohere Rerank 4 Pro | bright-robotics | 136 | search_units=170 | 0.4250 |
 | Cohere Rerank 4 Fast | bright-robotics | 136 | search_units=170 | 0.3400 |
 | ZeroEntropy zerank-2 | bright-robotics | 136 | total_tokens=1875936, total_bytes=7735933, inference_latency_s=61.73 | 0.0469 |
@@ -1132,8 +1332,16 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | bright-robotics | 136 | gpu_ms=145567.7 | 0.0296 |
 | GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | bright-robotics | 136 | gpu_ms=269913.0 | 0.0548 |
 | GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | bright-robotics | 135 | gpu_ms=389945.1 | 0.0783 |
-| Open-Jev 2B yes/no per pair (self-hosted) | bright-robotics | 4080 | input_tokens=4041558, output_tokens=0 | 0.1754 |
-| Open-Jev 9B yes/no per pair (self-hosted) | bright-robotics | 4080 | input_tokens=4041558, output_tokens=0 | 0.7405 |
+| Open-Jev 2B yes/no per pair (self-hosted) | bright-robotics | 4080 | input_tokens=4041558, output_tokens=0 | 0.0877 |
+| Open-Jev 9B yes/no per pair (self-hosted) | bright-robotics | 4080 | input_tokens=4041558, output_tokens=0 | 0.3703 |
+| Qwen3-Reranker-4B (self-hosted) | bright-robotics | 136 | gpu_ms=947632.14 | 0.0711 |
+| bge-reranker-v2-m3 (self-hosted) | bright-robotics | 136 | gpu_ms=500465.79 | 0.0375 |
+| mxbai-rerank-base-v2 (self-hosted) | bright-robotics | 136 | gpu_ms=513179.05 | 0.0385 |
+| Qwen3.5-4B yes/no per pair (self-hosted) | bright-robotics | 136 | gpu_ms=700956.44 | 0.0526 |
+| tev1-4B relevant / not per pair (self-hosted) | bright-robotics | 136 | gpu_ms=801346.11 | 0.0601 |
+| reflex 4B yes/no per pair (self-hosted) | bright-robotics | 4080 | input_tokens=4621824, output_tokens=0, state_tokens=3895584, question_tokens=726240, state_cache_hit=236, images=0 | 0.0761 |
+| Winnow-12B Q8 yes/no per pair (self-hosted) | bright-robotics | 4080 | input_tokens=4920954, output_tokens=0 | 0.1663 |
+| decider-2b v11 yes/no per pair (self-hosted) | bright-robotics | 4080 | input_tokens=3971506, output_tokens=0 | 0.0260 |
 | Cohere Rerank 4 Pro | bright-stackoverflow | 179 | search_units=185 | 0.4625 |
 | Cohere Rerank 4 Fast | bright-stackoverflow | 179 | search_units=185 | 0.3700 |
 | ZeroEntropy zerank-2 | bright-stackoverflow | 179 | total_tokens=3861511, total_bytes=15232103, inference_latency_s=103.36 | 0.0965 |
@@ -1156,8 +1364,16 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | bright-stackoverflow | 179 | gpu_ms=97427.4 | 0.0182 |
 | GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | bright-stackoverflow | 179 | gpu_ms=191140.57 | 0.0354 |
 | GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | bright-stackoverflow | 179 | gpu_ms=301940.78 | 0.0581 |
-| Open-Jev 2B yes/no per pair (self-hosted) | bright-stackoverflow | 5370 | input_tokens=5006391, output_tokens=0 | 0.2047 |
-| Open-Jev 9B yes/no per pair (self-hosted) | bright-stackoverflow | 5370 | input_tokens=5006391, output_tokens=0 | 0.9100 |
+| Open-Jev 2B yes/no per pair (self-hosted) | bright-stackoverflow | 5370 | input_tokens=5006391, output_tokens=0 | 0.1024 |
+| Open-Jev 9B yes/no per pair (self-hosted) | bright-stackoverflow | 5370 | input_tokens=5006391, output_tokens=0 | 0.4550 |
+| Qwen3-Reranker-4B (self-hosted) | bright-stackoverflow | 179 | gpu_ms=889112.93 | 0.0667 |
+| bge-reranker-v2-m3 (self-hosted) | bright-stackoverflow | 179 | gpu_ms=392182.87 | 0.0294 |
+| mxbai-rerank-base-v2 (self-hosted) | bright-stackoverflow | 179 | gpu_ms=461512.24 | 0.0346 |
+| Qwen3.5-4B yes/no per pair (self-hosted) | bright-stackoverflow | 179 | gpu_ms=832361.97 | 0.0624 |
+| tev1-4B relevant / not per pair (self-hosted) | bright-stackoverflow | 179 | gpu_ms=961583.29 | 0.0721 |
+| reflex 4B yes/no per pair (self-hosted) | bright-stackoverflow | 5370 | input_tokens=5770873, output_tokens=0, state_tokens=4815013, question_tokens=955860, state_cache_hit=445, images=0 | 0.0829 |
+| Winnow-12B Q8 yes/no per pair (self-hosted) | bright-stackoverflow | 5370 | input_tokens=5680890, output_tokens=0 | 0.1892 |
+| decider-2b v11 yes/no per pair (self-hosted) | bright-stackoverflow | 5370 | input_tokens=4913132, output_tokens=0 | 0.0314 |
 | Cohere Rerank 4 Pro | bright-sustainable_living | 155 | search_units=155 | 0.3875 |
 | Cohere Rerank 4 Fast | bright-sustainable_living | 155 | search_units=155 | 0.3100 |
 | ZeroEntropy zerank-2 | bright-sustainable_living | 155 | total_tokens=1300737, total_bytes=6287815, inference_latency_s=61.16 | 0.0325 |
@@ -1180,8 +1396,16 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | bright-sustainable_living | 155 | gpu_ms=36080.68 | 0.0067 |
 | GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | bright-sustainable_living | 155 | gpu_ms=70333.34 | 0.0129 |
 | GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | bright-sustainable_living | 155 | gpu_ms=99351.66 | 0.0188 |
-| Open-Jev 2B yes/no per pair (self-hosted) | bright-sustainable_living | 4650 | input_tokens=1759228, output_tokens=0 | 0.1107 |
-| Open-Jev 9B yes/no per pair (self-hosted) | bright-sustainable_living | 4650 | input_tokens=1759228, output_tokens=0 | 0.5057 |
+| Open-Jev 2B yes/no per pair (self-hosted) | bright-sustainable_living | 4650 | input_tokens=1759228, output_tokens=0 | 0.0554 |
+| Open-Jev 9B yes/no per pair (self-hosted) | bright-sustainable_living | 4650 | input_tokens=1759228, output_tokens=0 | 0.2528 |
+| Qwen3-Reranker-4B (self-hosted) | bright-sustainable_living | 155 | gpu_ms=408503.59 | 0.0306 |
+| bge-reranker-v2-m3 (self-hosted) | bright-sustainable_living | 155 | gpu_ms=173287.25 | 0.0130 |
+| mxbai-rerank-base-v2 (self-hosted) | bright-sustainable_living | 155 | gpu_ms=220599.57 | 0.0165 |
+| Qwen3.5-4B yes/no per pair (self-hosted) | bright-sustainable_living | 155 | gpu_ms=353013.57 | 0.0265 |
+| tev1-4B relevant / not per pair (self-hosted) | bright-sustainable_living | 155 | gpu_ms=408029.14 | 0.0306 |
+| reflex 4B yes/no per pair (self-hosted) | bright-sustainable_living | 4650 | input_tokens=2419496, output_tokens=0, state_tokens=1591796, question_tokens=827700, state_cache_hit=128, images=0 | 0.0568 |
+| Winnow-12B Q8 yes/no per pair (self-hosted) | bright-sustainable_living | 4650 | input_tokens=2000620, output_tokens=0 | 0.0748 |
+| decider-2b v11 yes/no per pair (self-hosted) | bright-sustainable_living | 4650 | input_tokens=1678941, output_tokens=0 | 0.0115 |
 | Cohere Rerank 4 Pro | csn-python | 556 | search_units=572 | 1.4300 |
 | Cohere Rerank 4 Fast | csn-python | 556 | search_units=572 | 1.1440 |
 | ZeroEntropy zerank-2 | csn-python | 556 | total_tokens=5884101, total_bytes=27796530, inference_latency_s=340.97 | 0.1471 |
@@ -1205,8 +1429,16 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | csn-python | 556 | gpu_ms=166761.17 | 0.0321 |
 | GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | csn-python | 556 | gpu_ms=339625.34 | 0.0651 |
 | GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | csn-python | 556 | gpu_ms=585985.79 | 0.1114 |
-| Open-Jev 2B yes/no per pair (self-hosted) | csn-python | 16680 | input_tokens=8643484, output_tokens=0 | 0.4710 |
-| Open-Jev 9B yes/no per pair (self-hosted) | csn-python | 16680 | input_tokens=8643484, output_tokens=0 | 2.3308 |
+| Open-Jev 2B yes/no per pair (self-hosted) | csn-python | 16680 | input_tokens=8643484, output_tokens=0 | 0.2355 |
+| Open-Jev 9B yes/no per pair (self-hosted) | csn-python | 16680 | input_tokens=8643484, output_tokens=0 | 1.1654 |
+| Qwen3-Reranker-4B (self-hosted) | csn-python | 556 | gpu_ms=1817165.65 | 0.1363 |
+| bge-reranker-v2-m3 (self-hosted) | csn-python | 556 | gpu_ms=846639.79 | 0.0635 |
+| mxbai-rerank-base-v2 (self-hosted) | csn-python | 556 | gpu_ms=949729.77 | 0.0712 |
+| Qwen3.5-4B yes/no per pair (self-hosted) | csn-python | 556 | gpu_ms=1601959.92 | 0.1201 |
+| tev1-4B relevant / not per pair (self-hosted) | csn-python | 556 | gpu_ms=1847032.85 | 0.1385 |
+| reflex 4B yes/no per pair (self-hosted) | csn-python | 16680 | input_tokens=11019735, output_tokens=0, state_tokens=8050695, question_tokens=2969040, state_cache_hit=0, images=0 | 0.2262 |
+| Winnow-12B Q8 yes/no per pair (self-hosted) | csn-python | 16680 | input_tokens=10476298, output_tokens=0 | 0.3725 |
+| decider-2b v11 yes/no per pair (self-hosted) | csn-python | 16680 | input_tokens=8356549, output_tokens=0 | 0.0571 |
 | Cohere Rerank 4 Pro | miracl-fr | 421 | search_units=421 | 1.0525 |
 | Cohere Rerank 4 Fast | miracl-fr | 421 | search_units=421 | 0.8420 |
 | ZeroEntropy zerank-2 | miracl-fr | 421 | total_tokens=1873503, total_bytes=8134231, inference_latency_s=135.22 | 0.0468 |
@@ -1226,5 +1458,13 @@ ECE marked * is for scores the vendor does not present as probabilities (shown f
 | GLiNER2.5 small 74M, relevant / not per pair (self-hosted) | miracl-fr | 421 | gpu_ms=49544.36 | 0.0095 |
 | GLiNER2.5 base 194M, relevant / not per pair (self-hosted) | miracl-fr | 421 | gpu_ms=98925.92 | 0.0188 |
 | GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted) | miracl-fr | 421 | gpu_ms=119339.55 | 0.0227 |
-| Open-Jev 2B yes/no per pair (self-hosted) | miracl-fr | 12630 | input_tokens=2821090, output_tokens=0 | 0.2650 |
-| Open-Jev 9B yes/no per pair (self-hosted) | miracl-fr | 12630 | input_tokens=2821090, output_tokens=0 | 1.6129 |
+| Open-Jev 2B yes/no per pair (self-hosted) | miracl-fr | 12630 | input_tokens=2821090, output_tokens=0 | 0.1325 |
+| Open-Jev 9B yes/no per pair (self-hosted) | miracl-fr | 12630 | input_tokens=2821090, output_tokens=0 | 0.8064 |
+| Qwen3-Reranker-4B (self-hosted) | miracl-fr | 421 | gpu_ms=694911.35 | 0.0521 |
+| bge-reranker-v2-m3 (self-hosted) | miracl-fr | 421 | gpu_ms=227098.02 | 0.0170 |
+| mxbai-rerank-base-v2 (self-hosted) | miracl-fr | 421 | gpu_ms=383223.6 | 0.0287 |
+| Qwen3.5-4B yes/no per pair (self-hosted) | miracl-fr | 421 | gpu_ms=780916.84 | 0.0586 |
+| tev1-4B relevant / not per pair (self-hosted) | miracl-fr | 421 | gpu_ms=820447.72 | 0.0615 |
+| reflex 4B yes/no per pair (self-hosted) | miracl-fr | 12630 | input_tokens=4613344, output_tokens=0, state_tokens=2365204, question_tokens=2248140, state_cache_hit=4, images=0 | 0.1530 |
+| Winnow-12B Q8 yes/no per pair (self-hosted) | miracl-fr | 12630 | input_tokens=3371275, output_tokens=0 | 0.1392 |
+| decider-2b v11 yes/no per pair (self-hosted) | miracl-fr | 12630 | input_tokens=2604725, output_tokens=0 | 0.0198 |

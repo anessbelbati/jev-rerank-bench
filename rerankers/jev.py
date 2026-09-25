@@ -27,10 +27,13 @@ from common import PRICES, Call, QueryResult, env, post_json
 
 import os
 
-# JEV_URL / JEV_MODEL let the same request builders run against a local server that speaks the same protocol
-# (used for the open-weight Open-Jev adapters); JEV_GPU_RATE (USD per hour) then bills GPU seconds instead of tokens.
+# JEV_URL / JEV_MODEL let the same request builders run against another host that speaks the same protocol: a local
+# server for the open-weight Open-Jev adapters (JEV_GPU_RATE, USD per hour, then bills GPU seconds instead of tokens),
+# or OpenRouter's System One endpoint (https://openrouter.ai/api/v1/systemone, model typesafe/jev-latest), which takes
+# the OpenRouter key and returns the exact billed cost in usage.cost.
 URL = os.environ.get("JEV_URL", "https://api.typesafe.ai/v1/systemone")
 MODEL = os.environ.get("JEV_MODEL", "jev-latest")
+VIA_OPENROUTER = "openrouter.ai" in URL
 RUBRIC = ["The passage is off-topic for the query.",
           "The passage is on a related topic but does not supply what the query asks for.",
           "The passage partly supplies the information needed to answer or verify the query.",
@@ -38,13 +41,18 @@ RUBRIC = ["The passage is off-topic for the query.",
 
 
 def _headers() -> dict:
-    key = os.environ.get("JEV_API_KEY", "") if os.environ.get("JEV_URL") else env("JEV_API_KEY")
+    if VIA_OPENROUTER:
+        key = env("OPENROUTER_API_KEY")
+    else:
+        key = os.environ.get("JEV_API_KEY", "") if os.environ.get("JEV_URL") else env("JEV_API_KEY")
     return {"Authorization": f"Bearer {key}", "Content-Type": "application/json", "Accept": "application/json"}
 
 
 def _cost(usage: dict, ms: float = 0.0) -> float:
     if os.environ.get("JEV_GPU_RATE"):
         return ms / 3.6e6 * float(os.environ["JEV_GPU_RATE"])
+    if "cost" in usage:          # OpenRouter bills the call and says how much
+        return float(usage["cost"] or 0.0)
     p = PRICES["jev"]
     return usage.get("input_tokens", 0) * p["input_per_m"] / 1e6 + usage.get("output_tokens", 0) * p["output_per_m"] / 1e6
 

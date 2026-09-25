@@ -31,7 +31,7 @@ done
 nvidia-smi --query-gpu=memory.used --format=csv
 size=$(echo $SIZE | tr A-Z a-z)
 cd /workspace/bench
-PER=$(python -c "print($RATE/$NSERV)")
+PER=$(python -c "print($RATE/$NSERV/2)")     # the card's price per request in flight: NSERV copies, two requests each (--workers 2)
 j=-1
 for K in $SHARDS; do
   j=$((j+1))

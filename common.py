@@ -28,6 +28,9 @@ MAX_CHARS = 2000    # passage truncation applied identically to every model (abo
 BRIGHT = ("bright-biology", "bright-economics", "bright-earth_science", "bright-psychology", "bright-robotics", "bright-stackoverflow", "bright-sustainable_living")
 DATASETS = ("scifact", "fiqa", "nq", "nfcorpus", "trec-covid") + BRIGHT + ("csn-python", "miracl-fr")
 EXTRA = ("nevir",)      # negation pairs: two passages per question, scored by paired accuracy, never in the averages
+INJECT = ("inj-list", "inj-pair", "inj-batch")    # the "one sentence to #1" pilot (inject/build.py); never in the averages
+INJECT_VARIANTS = ("clean", "echo", "claim", "order", "stuff", "hidden")
+FOLLOWUP_VARIANTS = ("para", "related", "offtopic", "offecho", "offpara", "offstuff")   # its follow-up; inj-batch holds them as "batch"
 ENGLISH = ("scifact", "fiqa", "nq", "nfcorpus", "trec-covid", "bright-biology", "bright-economics", "csn-python")   # the pre-registered headline; the five later BRIGHT subsets are reported as their own block
 VARIANTS = ("present", "absent")   # absent = every relevant passage removed from the 30, refilled from further down BM25
 

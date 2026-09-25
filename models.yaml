@@ -1,0 +1,105 @@
+# Models served over TypeSafe's System One protocol (POST <base_url>/systemone), one entry per model. Each is asked
+# through rerankers/systemone.py: the same requests rerankers/jev.py sends Jev (scripts/validate_systemone.py checks).
+#
+#   uv run run.py --model <name> --plan            # what the entry will run, after the fallback below
+#   uv run run.py --model <name> --dataset all     # run each of its modes; rows go to cache/<name>-<mode>/
+#   uv run run.py --model <name> --dataset nevir   # the negation pairs
+#
+# Fields (all six of the first block are required):
+#   base_url              up to the version; the server takes POST <base_url>/systemone
+#   model                 the "model" value sent in every request
+#   modes                 which setups to run: noul-pair, noul-batch, choice, choice-reversed, score-batch, duel,
+#                         tournament, cascade (the eight Jev setups), and score-pair (the rubric one passage per request)
+#   max_context           the most tokens one request may hold on this server
+#   passages_per_request  the most passages one request may hold (a whole list is 30)
+#   concurrency           queries in flight at once (run.py --workers overrides)
+#   key_env               the NAME of the .env entry holding the server's key; leave out for a server without one
+#   price                 gpu_usd_per_hour (self-hosted: the card's hourly price divided by the requests in flight on
+#                         the card, server copies x concurrency, so that calls running at the same time add up to the
+#                         card's time once; cost = each call's wall time at that rate), or input_per_m / output_per_m in
+#                         USD per million tokens; a reply that carries usage.cost (OpenRouter) is billed at that
+#   label, serve          free text: the name to show (up to the first " (" names the README row), and how the
+#                         server was started
+#   runs_on               the README table's "Runs on" cell, e.g. "API" or "Self-hosted: RTX 4090"
+#
+# Fallback: a mode that puts all 30 passages in one request needs up to about 31,000 tokens here (Jev's own count;
+# every mode's measured size is in results/request_sizes.json). On a server that takes fewer than 30 passages per
+# request, or whose max_context is smaller than a mode needs, that mode runs in its one-passage form instead:
+# score-batch as score-pair, every other multi-passage mode as noul-pair.
+#
+# On a GPU pod running several copies of a server on one card, each run.py process can point at its own copy and
+# carry the pod's rate per request in flight: SYSTEMONE_BASE_URL=http://127.0.0.1:8792/v1 SYSTEMONE_GPU_RATE=0.0925
+# for four copies of two requests each on a $0.74/h card (openjev/pod.sh shows the pattern: one run.py shard per copy).
+
+models:
+  open-jev-2b:
+    label: Open-Jev 2B (ZefanCai/Open-Jev-2B, revision 0c7aa49; LoRA adapter and scalar head on Qwen3.5-2B)
+    base_url: http://127.0.0.1:8791/v1
+    model: open-jev
+    modes: [noul-pair]
+    max_context: 4096          # the run servers; the lists that exceeded it were redone on a 16,384-token server (openjev/fix.sh)
+    passages_per_request: 30
+    concurrency: 2             # per server copy; the Sept 22 pods ran four copies per card, one run.py shard each
+    price: {gpu_usd_per_hour: 0.0925}  # RTX 4090 at $0.74/h over four copies x two requests each, the card behind about 85% of the calls
+    runs_on: "Self-hosted: RTX 4090, L40S"
+    serve: python -m jev.server --checkpoint models/Open-Jev-2B/package/checkpoint --max-length 4096 --port 8791
+
+  open-jev-9b:
+    label: Open-Jev 9B (ZefanCai/Open-Jev-9B, revision 47e9668; LoRA adapter and scalar head on Qwen3.5-9B)
+    base_url: http://127.0.0.1:8791/v1
+    model: open-jev
+    modes: [noul-pair]
+    max_context: 4096
+    passages_per_request: 30
+    concurrency: 2
+    price: {gpu_usd_per_hour: 0.265}   # A100 80GB at $1.59/h over three copies x two requests each; the run also used H100, L40S and RTX PRO 6000 pods
+    runs_on: "Self-hosted: A100, H100, L40S, RTX PRO 6000"
+    serve: python -m jev.server --checkpoint models/Open-Jev-9B/package/checkpoint --max-length 4096 --port 8791
+
+  reflex-4b:
+    label: reflex 4B (kshetrajna12/reflex, tag stable = commit 19586a1, 2026-09-20; frozen Qwen/Qwen3.5-4B revision 851bf6e read through reflex's prompt, each question in two option orders)
+    base_url: http://127.0.0.1:8008/v1
+    model: reflex-latest
+    modes: [noul-pair]
+    max_context: 32768
+    passages_per_request: 30
+    concurrency: 2             # the engine answers one request at a time (a lock); the second waits its turn
+    price: {gpu_usd_per_hour: 0.135}   # RTX A5000 at $0.27/h (RunPod secure cloud) over the two requests in flight
+    runs_on: "Self-hosted: RTX A5000"
+    serve: git checkout 19586a1 && uv sync && uv run reflex-serve --stable --port 8008
+
+  winnow-12b:
+    label: Winnow-12B Q8 (EldanRing/Winnow-12B Q8_0 GGUF from revision b2b1421, sha256 b710efc4; a merged LoRA fine-tune of Gemma 4 12B) on EldanRing/winnow-inference commit 77d1458
+    base_url: http://127.0.0.1:8091/v1
+    model: Winnow-12B
+    modes: [noul-pair]
+    max_context: 65536         # the server's tested profile (5070ti-64k)
+    passages_per_request: 30
+    concurrency: 2             # the server answers one decision request at a time and queues the rest
+    price: {gpu_usd_per_hour: 0.135}   # RTX A5000 at $0.27/h (RunPod secure cloud) over the two requests in flight
+    runs_on: "Self-hosted: RTX A5000"
+    serve: git checkout 77d1458 && python3 scripts/setup.py --text-only && python3 scripts/serve.py --text-only
+
+  decider-2b:
+    label: decider-2b v11 (Mapika/decider-2b revision 533964d, 2026-09-24; a fine-tune of Qwen3.5-2B-Base) through its own decider/serve.py
+    base_url: http://127.0.0.1:8000/v1
+    model: decider-2b
+    modes: [noul-pair]
+    max_context: 32768         # DECIDER_MAX_STATE_TOKENS
+    passages_per_request: 30
+    concurrency: 32            # the server packs the requests in flight into one forward pass (DECIDER_MAX_BATCH 32)
+    price: {gpu_usd_per_hour: 0.0084375}  # RTX A5000 at $0.27/h (RunPod secure cloud) over the 32 requests in flight
+    runs_on: "Self-hosted: RTX A5000"
+    serve: DECIDER_MODEL=. uvicorn decider.serve:app --host 127.0.0.1 --port 8000   (inside the snapshot of revision 533964d)
+
+  # your-model:
+  #   label: Your model (org/repo, revision)
+  #   base_url: https://your-host.example/v1
+  #   model: your-model-id
+  #   key_env: YOUR_MODEL_API_KEY
+  #   modes: [noul-pair, noul-batch, choice, score-batch]
+  #   max_context: 32768
+  #   passages_per_request: 30
+  #   concurrency: 4
+  #   price: {input_per_m: 0.05, output_per_m: 0}
+  #   runs_on: API

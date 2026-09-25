@@ -416,6 +416,7 @@ dependencies = [
     { name = "pyarrow" },
     { name = "pystemmer" },
     { name = "python-dotenv" },
+    { name = "pyyaml" },
     { name = "requests" },
     { name = "tqdm" },
 ]
@@ -429,6 +430,7 @@ requires-dist = [
     { name = "pyarrow", specifier = ">=17" },
     { name = "pystemmer", specifier = ">=2.2" },
     { name = "python-dotenv", specifier = ">=1.0" },
+    { name = "pyyaml", specifier = ">=6.0" },
     { name = "requests", specifier = ">=2.32" },
     { name = "tqdm", specifier = ">=4.66" },
 ]

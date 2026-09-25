@@ -31,3 +31,18 @@ REGISTRY = {
     "deepseek-pair": lambda: LLMYesProb("deepseek/deepseek-v4.1-flash", "deepseek-pair", provider="DeepSeek"),
     "deepseek-json": lambda: LLMJsonScores("deepseek/deepseek-v4.1-flash", "deepseek-json", provider="DeepSeek"),
 }
+
+# System One servers from models.yaml: one model key per entry and mode, <name>-<mode>, asked through systemone.py.
+from .registry import load as _load_models  # noqa: E402
+from .systemone import make as _make  # noqa: E402
+
+MODELS = _load_models()
+for _entry in MODELS.values():
+    if _entry.name in REGISTRY:
+        raise SystemExit(f"models.yaml: {_entry.name} is already a built-in model key; pick another name")
+    for _key in _entry.keys:
+        if _key in REGISTRY:
+            raise SystemExit(f"models.yaml: {_entry.name} would run as {_key}, which already exists; pick another name")
+        _mode = next(s.mode for s in _entry.steps if s.key == _key)
+        REGISTRY[_key] = lambda e=_entry, m=_mode, k=_key: _make(e.endpoint, m, k)
+KEY_ENTRY = {k: e for e in MODELS.values() for k in e.keys}

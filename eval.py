@@ -24,7 +24,9 @@ MODELS = ["bm25", "cohere-pro", "cohere-fast", "zerank-2", "deepseek-pair", "dee
           "jev-score-batch", "jev-duel", "jev-tournament", "jev-cascade", "jev-choice-reversed",
           "qwen-rlcd-batch", "qwen-rlcd-rubric", "qwen-rlcd-pair", "qwen-rlcd-batch-reversed",
           "laya-noul-pair", "laya-score-pair", "laya-multi-noul-pair", "gliner25-small-pair", "gliner25-base-pair", "gliner25-multi-pair",
-          "open-jev-2b-noul-pair", "open-jev-9b-noul-pair"]
+          "open-jev-2b-noul-pair", "open-jev-9b-noul-pair",
+          "qwen3-reranker-4b", "bge-reranker-v2-m3", "mxbai-rerank-base-v2", "qwen35-4b-yesno-pair", "tev1-4b-pair",
+          "reflex-4b-noul-pair", "winnow-12b-noul-pair", "decider-2b-noul-pair"]
 LABELS = {"bm25": "BM25 (floor)", "cohere-pro": "Cohere Rerank 4 Pro", "cohere-fast": "Cohere Rerank 4 Fast",
           "zerank-2": "ZeroEntropy zerank-2",
           "deepseek-pair": "DeepSeek V4.1 Flash P(yes) per pair", "deepseek-json": "DeepSeek V4.1 Flash JSON, 30 in one call",
@@ -38,10 +40,15 @@ LABELS = {"bm25": "BM25 (floor)", "cohere-pro": "Cohere Rerank 4 Pro", "cohere-f
           "laya-multi-noul-pair": "Laya multilingual 322M yes/no per pair (self-hosted)",
           "gliner25-small-pair": "GLiNER2.5 small 74M, relevant / not per pair (self-hosted)", "gliner25-base-pair": "GLiNER2.5 base 194M, relevant / not per pair (self-hosted)",
           "gliner25-multi-pair": "GLiNER2.5 multi 0.3B, relevant / not per pair (self-hosted)",
-          "open-jev-2b-noul-pair": "Open-Jev 2B yes/no per pair (self-hosted)", "open-jev-9b-noul-pair": "Open-Jev 9B yes/no per pair (self-hosted)"}
+          "open-jev-2b-noul-pair": "Open-Jev 2B yes/no per pair (self-hosted)", "open-jev-9b-noul-pair": "Open-Jev 9B yes/no per pair (self-hosted)",
+          "qwen3-reranker-4b": "Qwen3-Reranker-4B (self-hosted)", "bge-reranker-v2-m3": "bge-reranker-v2-m3 (self-hosted)",
+          "mxbai-rerank-base-v2": "mxbai-rerank-base-v2 (self-hosted)", "qwen35-4b-yesno-pair": "Qwen3.5-4B yes/no per pair (self-hosted)",
+          "tev1-4b-pair": "tev1-4B relevant / not per pair (self-hosted)", "reflex-4b-noul-pair": "reflex 4B yes/no per pair (self-hosted)",
+          "winnow-12b-noul-pair": "Winnow-12B Q8 yes/no per pair (self-hosted)", "decider-2b-noul-pair": "decider-2b v11 yes/no per pair (self-hosted)"}
 # Models whose scores are presented as probabilities and so can be held to calibration.
 PROB_MODELS = {"jev-noul-pair", "jev-noul-batch", "deepseek-pair", "qwen-rlcd-batch", "qwen-rlcd-pair",
-               "laya-noul-pair", "laya-multi-noul-pair", "gliner25-small-pair", "gliner25-base-pair", "gliner25-multi-pair", "open-jev-2b-noul-pair", "open-jev-9b-noul-pair"}
+               "laya-noul-pair", "laya-multi-noul-pair", "gliner25-small-pair", "gliner25-base-pair", "gliner25-multi-pair", "open-jev-2b-noul-pair", "open-jev-9b-noul-pair",
+               "qwen35-4b-yesno-pair", "tev1-4b-pair", "reflex-4b-noul-pair", "winnow-12b-noul-pair", "decider-2b-noul-pair"}
 
 
 def load_run(model: str, dataset: str, variant: str) -> dict[str, dict]:

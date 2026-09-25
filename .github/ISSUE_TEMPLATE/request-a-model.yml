@@ -1,0 +1,56 @@
+name: Request a model
+description: Ask for a model to be run through the benchmark and added to the main table.
+title: "Request a model: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Every model in the table gets the same 30 BM25 passages per question, the same wording and the same scoring.
+        If you can serve the model yourself, "Test your own model" in the README gets a row in faster: one command,
+        then a pull request.
+  - type: input
+    id: model
+    attributes:
+      label: Model
+      description: Its name and a link (Hugging Face page, API docs or paper).
+      placeholder: org/model-name, https://huggingface.co/org/model-name
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of model is it?
+      options:
+        - Speaks TypeSafe's System One protocol (POST /v1/systemone)
+        - A plain reranker (a query and passages in, a score per passage out)
+        - A chat model or something else
+        - Not sure
+    validations:
+      required: true
+  - type: input
+    id: weights
+    attributes:
+      label: Weights and license
+      description: Where the weights are and their license, or "API only" with the price.
+  - type: input
+    id: server
+    attributes:
+      label: Server code
+      description: The repo and commit that serves it, or the command that starts the server, if there is one.
+  - type: input
+    id: size
+    attributes:
+      label: Size and window
+      description: Parameters, the context window in tokens, and how many passages one request can hold if you know.
+  - type: textarea
+    id: why
+    attributes:
+      label: Why it is worth running
+      description: Results elsewhere, price, speed, or what you expect it to do well or badly.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before posting
+      options:
+        - label: It is not already in the README's main table or in an open issue.
+          required: true

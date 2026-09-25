@@ -21,6 +21,8 @@ B = int(sys.argv[1]) if len(sys.argv) > 1 else 10_000
 SEED = 0
 JEV = [m for m in MODELS if m.startswith("jev-") and m != "jev-choice-reversed"]   # the reversed run is a diagnostic, not a setup
 OTHER = [m for m in MODELS if not m.startswith("jev-") and m != "bm25"]
+NEW = ["qwen3-reranker-4b", "bge-reranker-v2-m3", "mxbai-rerank-base-v2", "qwen35-4b-yesno-pair", "tev1-4b-pair",
+       "reflex-4b-noul-pair", "winnow-12b-noul-pair", "decider-2b-noul-pair"]    # the 2026-09-25 runs
 
 
 def per_query(ds: str) -> tuple[list[str], dict[str, dict[str, np.ndarray]]]:
@@ -86,7 +88,8 @@ def main() -> dict:
                                                                        ("jev-score-batch", "deepseek-json"), ("jev-score-batch", "jev-noul-pair"),
                                                                        ("qwen-rlcd-pair", "bm25"), ("qwen-rlcd-batch", "bm25"), ("qwen-rlcd-pair", "qwen-rlcd-batch"),
                                                                        ("laya-score-pair", "bm25"), ("laya-noul-pair", "bm25"), ("jev-noul-pair", "laya-noul-pair"),
-                                                                       ("open-jev-2b-noul-pair", "bm25"), ("open-jev-9b-noul-pair", "bm25"), ("jev-noul-pair", "open-jev-9b-noul-pair"), ("jev-noul-pair", "open-jev-2b-noul-pair"), ("open-jev-9b-noul-pair", "laya-noul-pair"))
+                                                                       ("open-jev-2b-noul-pair", "bm25"), ("open-jev-9b-noul-pair", "bm25"), ("jev-noul-pair", "open-jev-9b-noul-pair"), ("jev-noul-pair", "open-jev-2b-noul-pair"), ("open-jev-9b-noul-pair", "laya-noul-pair"),
+                                                                       *((m, "bm25") for m in NEW), *(("jev-noul-pair", m) for m in NEW))
                       if a in boot and b in boot}
         print(f"\n8-dataset average, {met}: best = {best} ({obs[best]:.3f})")
         for m in sorted(models, key=lambda m: -obs[m]):

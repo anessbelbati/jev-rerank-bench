@@ -3,6 +3,7 @@
     uv run run.py --model jev-noul-batch --dataset scifact
     uv run run.py --model llm-gpt4o-mini --dataset all --workers 8
     uv run run.py --model cohere-pro --dataset fiqa --variant present --limit 20
+    uv run run.py --model open-jev-2b --dataset all      # a models.yaml entry: each of its modes, with its concurrency
 
 A query already in the cache is skipped, so a crashed or rate-limited run just resumes. Latency is recorded per
 HTTP call; `--workers` queries run at once, which is stated with the results.
@@ -18,8 +19,9 @@ from dataclasses import asdict
 
 from tqdm import tqdm
 
-from common import CANDIDATES, DATASETS, EXTRA, RESULTS, VARIANTS, Cache, read_jsonl, truncate
-from rerankers import REGISTRY
+from common import CANDIDATES, DATASETS, EXTRA, FOLLOWUP_VARIANTS, INJECT, INJECT_VARIANTS, RESULTS, VARIANTS, Cache, read_jsonl, truncate
+from rerankers import KEY_ENTRY, MODELS, REGISTRY
+from rerankers.registry import describe
 
 
 def run(model_key: str, dataset: str, variant: str, limit: int | None, workers: int, cache_as: str | None = None, shard: str = "0/1", reverse: bool = False, slice_: str = "0/1", skip_file: str | None = None) -> dict:
@@ -80,18 +82,34 @@ def run(model_key: str, dataset: str, variant: str, limit: int | None, workers: 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("--model", required=True, choices=sorted(REGISTRY))
-    ap.add_argument("--dataset", required=True, choices=list(DATASETS) + list(EXTRA) + ["all"])
-    ap.add_argument("--variant", default="both", choices=list(VARIANTS) + ["both"])
+    ap.add_argument("--model", required=True, choices=sorted(REGISTRY) + sorted(MODELS),
+                    help="a model key, or a models.yaml entry name (runs each of its modes)")
+    ap.add_argument("--dataset", choices=list(DATASETS) + list(EXTRA) + list(INJECT) + ["all"])
+    ap.add_argument("--plan", action="store_true", help="print what a models.yaml entry will run, and stop")
+    ap.add_argument("--variant", default="both", choices=list(VARIANTS) + list(INJECT_VARIANTS) + list(FOLLOWUP_VARIANTS) + ["batch", "both", "inject", "followup"])
     ap.add_argument("--limit", type=int, default=None, help="only this many uncached queries (smoke test)")
-    ap.add_argument("--workers", type=int, default=6)
+    ap.add_argument("--workers", type=int, default=None, help="queries in flight (default: the models.yaml concurrency, else 6)")
     ap.add_argument("--cache-as", default=None, help="write rows under this model key (a different backend via JEV_URL)")
     ap.add_argument("--shard", default="0/1", help="k/n: this process takes every n-th query starting at k")
     ap.add_argument("--reverse", action="store_true", help="walk datasets, variants and queries in reverse order")
     ap.add_argument("--slice", default="0/1", help="i/m: this process takes the i-th of m contiguous chunks of its shard")
     ap.add_argument("--skip-file", default=None, help="file of dataset|variant|qid lines to leave out (done elsewhere)")
     a = ap.parse_args()
+    if a.plan:
+        entry = MODELS.get(a.model) or KEY_ENTRY.get(a.model)
+        print("\n".join(describe(entry)) if entry else f"{a.model} is a built-in model, not a models.yaml entry")
+        raise SystemExit(0)
+    if not a.dataset:
+        ap.error("--dataset is required (or --plan)")
+    if a.model in MODELS:
+        print("\n".join(describe(MODELS[a.model])), flush=True)
+    keys = MODELS[a.model].keys if a.model in MODELS else [a.model]
+    if a.cache_as and len(keys) > 1:
+        raise SystemExit(f"--cache-as names one folder, and {a.model} runs {len(keys)} modes; run them one key at a time")
     order = lambda xs: list(xs)[::-1] if a.reverse else list(xs)
-    for ds in order(DATASETS if a.dataset == "all" else [a.dataset]):
-        for v in order(VARIANTS if a.variant == "both" else [a.variant]):
-            run(a.model, ds, v, a.limit, a.workers, a.cache_as, a.shard, a.reverse, a.slice, a.skip_file)
+    for key in keys:
+        workers = a.workers or (KEY_ENTRY[key].concurrency if key in KEY_ENTRY else 6)
+        for ds in order(DATASETS if a.dataset == "all" else [a.dataset]):
+            for v in order(VARIANTS if a.variant == "both" else INJECT_VARIANTS if a.variant == "inject"
+                            else FOLLOWUP_VARIANTS if a.variant == "followup" else [a.variant]):
+                run(key, ds, v, a.limit, workers, a.cache_as, a.shard, a.reverse, a.slice, a.skip_file)

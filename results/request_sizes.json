@@ -1,0 +1,70 @@
+{
+ "source": "usage.input_tokens of every saved Jev call (cache/jev-*), all 14 datasets and NevIR, both variants",
+ "modes": {
+  "noul-pair": {
+   "passages": 1,
+   "max_input_tokens": 8900,
+   "p99_input_tokens": 1649,
+   "median_input_tokens": 577.0,
+   "calls": 159432
+  },
+  "noul-batch": {
+   "passages": 30,
+   "max_input_tokens": 30278,
+   "p99_input_tokens": 17778,
+   "median_input_tokens": 6563.0,
+   "calls": 7896
+  },
+  "choice": {
+   "passages": 30,
+   "max_input_tokens": 28348,
+   "p99_input_tokens": 15848,
+   "median_input_tokens": 4633.0,
+   "calls": 7896
+  },
+  "score-batch": {
+   "passages": 30,
+   "max_input_tokens": 31118,
+   "p99_input_tokens": 18618,
+   "median_input_tokens": 7403.0,
+   "calls": 7896
+  },
+  "duel": {
+   "passages": 10,
+   "max_input_tokens": 16425,
+   "p99_input_tokens": 8455,
+   "median_input_tokens": 4616.5,
+   "calls": 5130
+  },
+  "tournament": {
+   "passages": 30,
+   "max_input_tokens": 28706,
+   "p99_input_tokens": 17047,
+   "median_input_tokens": 7456.0,
+   "calls": 5130
+  },
+  "cascade": {
+   "passages": 30,
+   "max_input_tokens": 30278,
+   "p99_input_tokens": 18619,
+   "median_input_tokens": 9028.0,
+   "calls": 5130
+  },
+  "choice-reversed": {
+   "passages": 30,
+   "max_input_tokens": 28348,
+   "p99_input_tokens": 15848,
+   "median_input_tokens": 4633.0,
+   "calls": 7896,
+   "same_as": "choice"
+  },
+  "score-pair": {
+   "passages": 1,
+   "max_input_tokens": 8900,
+   "p99_input_tokens": 1649,
+   "median_input_tokens": 577.0,
+   "calls": 159432,
+   "same_as": "noul-pair"
+  }
+ }
+}
